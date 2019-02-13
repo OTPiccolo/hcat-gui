@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="net.emb.hcat.gui.core" id="net.emb.hcat.gui.core.product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="1.0.0.qualifier" useFeatures="true" includeLaunchers="true">
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <programArgs>-clearPersistedState
+      </programArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
+      </vmArgsMac>
+   </launcherArgs>
+
+   <windowImages/>
+
+   <features>
+      <feature id="net.emb.hcat.gui.feature" version="1.0.0.qualifier"/>
+      <feature id="net.emb.hcat.gui.rcp.feature" version="1.0.0.qualifier"/>
+   </features>
+
+
+</product>

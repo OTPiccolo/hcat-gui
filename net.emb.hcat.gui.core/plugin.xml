@@ -12,7 +12,15 @@
                name="applicationCSS"
                value="platform:/plugin/net.emb.hcat.gui.core/css/default.css">
          </property>
-      </product>
+         <property
+			    name="lifeCycleURI"
+			    value="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.lifecycle.WorkspaceSelectionManager">
+		</property>
+         <property
+               name="appName"
+               value="net.emb.hcat.gui.core">
+         </property>
+	</product>
    </extension>
 
 </plugin>

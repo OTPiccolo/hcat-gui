@@ -4,5 +4,9 @@
 			<unit id="org.eclipse.sdk.feature.group" version="4.10.0.v20181206-1038"/>
 			<repository location="http://download.eclipse.org/releases/2018-12/"/>
 		</location>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+			<unit id="org.eclipse.nebula.feature.feature.group" version="2.1.0.201812241324"/>
+			<repository location="http://download.eclipse.org/nebula/releases/2.1.0"/>
+		</location>
 	</locations>
 </target>

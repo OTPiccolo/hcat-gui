@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
-import net.emb.hcat.gui.core.imports.ImportWizard;
+import net.emb.hcat.gui.core.imports.SelectionWizard;
 
 public class WorkspaceSelectionManager {
 	@PostContextCreate
@@ -22,7 +22,7 @@ public class WorkspaceSelectionManager {
 		final Shell shell = new Shell(SWT.SHELL_TRIM);
 		
 		IEclipseContext eclipseContext = EclipseContextFactory.create();
-		IWizard wizard = ContextInjectionFactory.make(ImportWizard.class, eclipseContext);
+		IWizard wizard = ContextInjectionFactory.make(SelectionWizard.class, eclipseContext);
 
 		WizardDialog dialog = new WizardDialog(shell, wizard);
 		

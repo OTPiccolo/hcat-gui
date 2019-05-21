@@ -4,15 +4,15 @@ import org.eclipse.jface.wizard.Wizard;
 
 import net.emb.hcat.gui.core.messages.Messages;
 
-public class ImportWizard extends Wizard {
+public class SelectionWizard extends Wizard {
 
-	public ImportWizard() {
-		setWindowTitle(Messages.ImportWizard_Title);
+	public SelectionWizard() {
+		setWindowTitle(Messages.SelectionWizard_Title);
 	}
 
 	@Override
 	public void addPages() {
-		addPage(new ImportPage());
+		addPage(new SelectionPage());
 	}
 
 	@Override

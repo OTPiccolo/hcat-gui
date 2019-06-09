@@ -5,8 +5,9 @@
       <children xsi:type="advanced:Perspective" xmi:id="_6wlLkcgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.perspective.sample">
         <children xsi:type="basic:PartSashContainer" xmi:id="_6wlLksgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.partsashcontainer.sample">
           <children xsi:type="basic:PartStack" xmi:id="_6wlLk8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.partstack.sample">
-            <children xsi:type="basic:Part" xmi:id="_3OwqIC-9EemdB4aYK-ZD6g" elementId="net.emb.hcat.gui.core.part.navigator" contributionURI="bundleclass://org.eclipse.ui.navigator/org.eclipse.ui.navigator.CommonNavigator" label="Workspace Navigation" iconURI="platform:/plugin/org.eclipse.ui/icons/full/eview16/filenav_nav.png"/>
-            <children xsi:type="basic:Part" xmi:id="_6wlLlMgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.part.sample" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.parts.SamplePart" label="Sample Part"/>
+            <children xsi:type="basic:Part" xmi:id="_N4b_MIfCEemoerllcQemDQ" elementId="net.emb.hcat.gui.core.part.transform" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.parts.TransformerPart" label="Transform"/>
+            <children xsi:type="basic:Part" xmi:id="_6wlLlMgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.part.overview" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.parts.OverviewPart" label="Overview"/>
+            <children xsi:type="basic:Part" xmi:id="_3OwqIC-9EemdB4aYK-ZD6g" elementId="net.emb.hcat.gui.core.part.navigator" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.parts.NavigatorPart" label="Workspace Navigation" iconURI="platform:/plugin/org.eclipse.ui/icons/full/eview16/filenav_nav.png"/>
           </children>
         </children>
       </children>

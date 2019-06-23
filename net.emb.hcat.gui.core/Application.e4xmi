@@ -3,13 +3,15 @@
   <children xsi:type="basic:TrimmedWindow" xmi:id="_6wlLccgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.window.main" label="HCAT" width="500" height="400">
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_6wlLkMgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.ide.perspectivestack">
       <children xsi:type="advanced:Perspective" xmi:id="_6wlLkcgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.perspective.sample">
-        <children xsi:type="basic:PartSashContainer" xmi:id="_6wlLksgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.partsashcontainer.sample">
-          <children xsi:type="basic:PartStack" xmi:id="_6wlLk8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.partstack.sample">
-            <children xsi:type="basic:Part" xmi:id="_6Wk8sJASEemWz_L1mKdVWA" elementId="net.emb.hcat.gui.core.part.codon" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.parts.CodonPart" label="Codon"/>
-            <children xsi:type="basic:Part" xmi:id="_mbYy8I9JEemUjKTWDWNwOg" elementId="net.emb.hcat.gui.core.part.matrix" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.parts.DistanceMatrixPart" label="Distanz Matrix"/>
-            <children xsi:type="basic:Part" xmi:id="_N4b_MIfCEemoerllcQemDQ" elementId="net.emb.hcat.gui.core.part.transform" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.parts.TransformerPart" label="Transform"/>
-            <children xsi:type="basic:Part" xmi:id="_6wlLlMgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.part.overview" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.parts.OverviewPart" label="Overview"/>
-            <children xsi:type="basic:Part" xmi:id="_3OwqIC-9EemdB4aYK-ZD6g" elementId="net.emb.hcat.gui.core.part.navigator" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.parts.NavigatorPart" label="Workspace Navigation" iconURI="platform:/plugin/org.eclipse.ui/icons/full/eview16/filenav_nav.png"/>
+        <children xsi:type="basic:PartSashContainer" xmi:id="_6wlLksgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.partsashcontainer.0" selectedElement="_3OwqIC-9EemdB4aYK-ZD6g" horizontal="true">
+          <children xsi:type="basic:Part" xmi:id="_3OwqIC-9EemdB4aYK-ZD6g" elementId="net.emb.hcat.gui.core.part.navigator" containerData="1500" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.parts.NavigatorPart" label="Workspace Navigation" iconURI="platform:/plugin/org.eclipse.ui/icons/full/eview16/filenav_nav.png"/>
+          <children xsi:type="basic:PartSashContainer" xmi:id="_aMB40JWZEemESvzLcJJOSg" elementId="net.emb.hcat.gui.core.partsashcontainer.1" containerData="8500" selectedElement="_6wlLk8gZEeSyMNYR5xypkQ">
+            <children xsi:type="basic:PartStack" xmi:id="_6wlLk8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.partstack.0" containerData="7500" selectedElement="_6wlLlMgZEeSyMNYR5xypkQ">
+              <children xsi:type="basic:Part" xmi:id="_6wlLlMgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.part.overview" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.parts.OverviewPart" label="Overview"/>
+              <children xsi:type="basic:Part" xmi:id="_mbYy8I9JEemUjKTWDWNwOg" elementId="net.emb.hcat.gui.core.part.matrix" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.parts.DistanceMatrixPart" label="Distanz Matrix"/>
+              <children xsi:type="basic:Part" xmi:id="_6Wk8sJASEemWz_L1mKdVWA" elementId="net.emb.hcat.gui.core.part.codon" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.parts.CodonPart" label="Codon"/>
+            </children>
+            <children xsi:type="basic:Part" xmi:id="_N4b_MIfCEemoerllcQemDQ" elementId="net.emb.hcat.gui.core.part.transform" containerData="2500" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.parts.TransformerPart" label="Transform"/>
           </children>
         </children>
       </children>

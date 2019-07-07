@@ -23,6 +23,7 @@ import org.osgi.service.event.EventHandler;
 import net.emb.hcat.cli.Sequence;
 import net.emb.hcat.cli.haplotype.Haplotype;
 import net.emb.hcat.gui.core.EventTopics;
+import net.emb.hcat.gui.core.messages.Messages;
 
 public class MainPart {
 
@@ -45,19 +46,19 @@ public class MainPart {
 		final TabFolder folder = new TabFolder(parent, SWT.BOTTOM);
 
 		final TabItem overviewItem = new TabItem(folder, SWT.NONE);
-		overviewItem.setText("Data overview");
+		overviewItem.setText(Messages.MainPart_OverviewTab);
 		overview = ContextInjectionFactory.make(OverviewPart.class, context);
 		overview.createComposite(folder);
 		overviewItem.setControl(overview.getControl());
 
 		final TabItem matrixItem = new TabItem(folder, SWT.NONE);
-		matrixItem.setText("Genetic distance matrix");
+		matrixItem.setText(Messages.MainPart_DistanceMatrixTab);
 		matrix = ContextInjectionFactory.make(DistanceMatrixPart.class, context);
 		matrix.createComposite(folder);
 		matrixItem.setControl(matrix.getControl());
 
 		final TabItem translationItem = new TabItem(folder, SWT.NONE);
-		translationItem.setText("Translation");
+		translationItem.setText(Messages.MainPart_TranslationTab);
 		codon = ContextInjectionFactory.make(CodonPart.class, context);
 		codon.createComposite(folder);
 		translationItem.setControl(codon.getControl());

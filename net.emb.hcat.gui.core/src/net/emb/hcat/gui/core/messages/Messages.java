@@ -10,15 +10,18 @@ public class Messages extends NLS {
 	public static String HcatFunction_Indices;
 	public static String HcatFunction_SaveHaplotypes;
 	public static String HcatFunction_SequenceTranslation;
+	public static String MainPart_DistanceMatrixTab;
+	public static String MainPart_OverviewTab;
+	public static String MainPart_TranslationTab;
 	public static String SelectionPage_Description;
 	public static String SelectionPage_Title;
-	public static String SelectionWizard_Title;
-	public static String SelectionPage_lblWorkspace_text;
 	public static String SelectionPage_button_text;
-	public static String WorkspaceModus_BatchFunctionProcession;
-	public static String WorkspaceModus_SingleFunctionProcession;
 	public static String SelectionPage_lblName_text;
 	public static String SelectionPage_lblModus_text;
+	public static String SelectionPage_lblWorkspace_text;
+	public static String SelectionWizard_Title;
+	public static String WorkspaceModus_BatchFunctionProcession;
+	public static String WorkspaceModus_SingleFunctionProcession;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

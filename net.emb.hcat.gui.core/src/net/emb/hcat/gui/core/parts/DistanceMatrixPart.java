@@ -2,12 +2,7 @@ package net.emb.hcat.gui.core.parts;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-
 import org.eclipse.e4.ui.di.Focus;
-import org.eclipse.e4.ui.di.Persist;
-import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -20,35 +15,27 @@ import org.eclipse.nebula.widgets.grid.GridColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
-import net.emb.hcat.cli.Sequence;
 import net.emb.hcat.cli.haplotype.DistanceMatrix;
 import net.emb.hcat.cli.haplotype.Haplotype;
 
 public class DistanceMatrixPart {
 
-	private static final List<Sequence> loadSequences() {
-		// Load your sequences.
-		return null;
-	}
-
+	private Control control;
 	private GridTableViewer tableViewer;
-
-	@Inject
-	private MDirtyable dirty;
 
 	private List<Haplotype> haploModel;
 
-	@PostConstruct
-	public void createComposite(final Composite parent) {
-		parent.setLayout(new GridLayout(1, false));
+	public Control createComposite(final Composite parent) {
+		final Composite body = new Composite(parent, SWT.NONE);
+		body.setLayout(new GridLayout(1, false));
 
-		haploModel = createHaploDataModel();
-
-		tableViewer = createViewer(parent);
+		tableViewer = createViewer(body);
 		tableViewer.getGrid().setLayoutData(GridDataFactory.defaultsFor(tableViewer.getGrid()).create());
 
-		tableViewer.setInput(haploModel);
+		control = body;
+		return body;
 	}
 
 	private GridTableViewer createViewer(final Composite parent) {
@@ -109,17 +96,22 @@ public class DistanceMatrixPart {
 		return viewer;
 	}
 
+	public Control getControl() {
+		return control;
+	}
+
 	@Focus
 	public void setFocus() {
 		tableViewer.getGrid().setFocus();
 	}
 
-	@Persist
-	public void save() {
-		dirty.setDirty(false);
+	public void setModel(final List<Haplotype> haplotypes) {
+		haploModel = haplotypes;
+		updateViewer();
 	}
 
-	private List<Haplotype> createHaploDataModel() {
-		return Haplotype.createHaplotypes(loadSequences());
+	private void updateViewer() {
+		tableViewer.setInput(haploModel);
 	}
+
 }

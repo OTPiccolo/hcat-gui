@@ -8,23 +8,23 @@ import java.util.List;
 import net.emb.hcat.gui.core.base.BaseContext;
 
 public class WizardDialogContext extends BaseContext {
-	
+
 	private String name;
-	
+
 	private File workspace;
-	
-	List<HcatFunction> autoFunctions = new ArrayList<HcatFunction>(5);
-	
+
+	private List<HcatFunction> autoFunctions = new ArrayList<HcatFunction>(5);
+
 	/**
-	 * The workspace can open in two different modus. 
+	 * The workspace can open in two different modus.
 	 */
-	WorkspaceModus workspaceModus;
+	private WorkspaceModus workspaceModus;
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		firePropertyChange("name", this.name, this.name = name);
 	}
 
@@ -32,7 +32,7 @@ public class WizardDialogContext extends BaseContext {
 		return workspace;
 	}
 
-	public void setWorkspace(File workspace) {
+	public void setWorkspace(final File workspace) {
 		firePropertyChange("workspace", this.workspace, this.workspace = workspace);
 	}
 
@@ -40,12 +40,12 @@ public class WizardDialogContext extends BaseContext {
 		return autoFunctions;
 	}
 
-	public void setAutoFunctions(List<HcatFunction> autoFunctions) {
+	public void setAutoFunctions(final List<HcatFunction> autoFunctions) {
 		this.autoFunctions = autoFunctions;
 		firePropertyChange("autoFunctions", Collections.emptyList(), this.autoFunctions = autoFunctions);
 	}
-	
-	public void addAutoFunctions(HcatFunction autoFunction) {
+
+	public void addAutoFunctions(final HcatFunction autoFunction) {
 		autoFunctions.add(autoFunction);
 		firePropertyChange("autoFunctions", Collections.emptyList(), this.autoFunctions);
 	}
@@ -54,9 +54,8 @@ public class WizardDialogContext extends BaseContext {
 		return workspaceModus;
 	}
 
-	public void setWorkspaceModus(WorkspaceModus workspaceModus) {
+	public void setWorkspaceModus(final WorkspaceModus workspaceModus) {
 		firePropertyChange("workspaceModus", this.workspaceModus, this.workspaceModus = workspaceModus);
 	}
-	
-	
+
 }

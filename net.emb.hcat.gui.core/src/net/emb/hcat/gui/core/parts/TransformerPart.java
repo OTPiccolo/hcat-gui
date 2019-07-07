@@ -11,14 +11,15 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.Focus;
-import org.eclipse.e4.ui.di.Persist;
-import org.eclipse.e4.ui.model.application.ui.MDirtyable;
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.nebula.jface.gridviewer.GridTableViewer;
@@ -34,27 +35,18 @@ import net.emb.hcat.cli.Difference;
 import net.emb.hcat.cli.Sequence;
 import net.emb.hcat.cli.haplotype.Haplotype;
 import net.emb.hcat.cli.haplotype.HaplotypeTransformer;
+import net.emb.hcat.gui.core.EventTopics;
 
 public class TransformerPart {
 
-	private static final List<Sequence> loadSequences() {
-		// Load your sequences.
-		return null;
-	}
-
 	private ComboViewer comboViewer;
 	private GridTableViewer tableViewer;
-
-	@Inject
-	private MDirtyable dirty;
 
 	private List<Haplotype> haploModel;
 
 	@PostConstruct
 	public void createComposite(final Composite parent) {
 		parent.setLayout(new GridLayout(2, false));
-
-		haploModel = createHaploDataModel();
 
 		final Label label = new Label(parent, SWT.NONE);
 		label.setText("Master Sequenz:");
@@ -65,8 +57,6 @@ public class TransformerPart {
 
 		tableViewer = createViewer(parent);
 		tableViewer.getGrid().setLayoutData(GridDataFactory.defaultsFor(tableViewer.getGrid()).span(2, 1).create());
-
-		comboViewer.setInput(haploModel);
 	}
 
 	private ComboViewer createCombo(final Composite parent) {
@@ -86,7 +76,7 @@ public class TransformerPart {
 			}
 		});
 		viewer.setComparator(new ViewerComparator());
-		viewer.addPostSelectionChangedListener(e -> tableViewer.setInput(new HaplotypeTransformer(haploModel).compareToMaster((Sequence) e.getStructuredSelection().getFirstElement())));
+		viewer.addPostSelectionChangedListener(e -> tableViewer.setInput(createViewerInput((Sequence) comboViewer.getStructuredSelection().getFirstElement())));
 		return viewer;
 	}
 
@@ -148,17 +138,39 @@ public class TransformerPart {
 		return viewer;
 	}
 
+	private Map<Haplotype, Difference> createViewerInput(final Sequence sequence) {
+		if (sequence == null) {
+			return null;
+		}
+		return new HaplotypeTransformer(haploModel).compareToMaster(sequence);
+	}
+
 	@Focus
 	public void setFocus() {
 		comboViewer.getCombo().setFocus();
 	}
 
-	@Persist
-	public void save() {
-		dirty.setDirty(false);
+	@Inject
+	@Optional
+	public void setSelectedHaplotype(@UIEventTopic(EventTopics.SELECTED_HAPLOTYPE) final Haplotype haplotype) {
+		setSelectedSequence(haplotype == null ? null : haplotype.getFirstSequence());
 	}
 
-	private List<Haplotype> createHaploDataModel() {
-		return Haplotype.createHaplotypes(loadSequences());
+	@Inject
+	@Optional
+	public void setSelectedSequence(@UIEventTopic(EventTopics.SELECTED_SEQUENCE) final Sequence sequence) {
+		if (sequence == null) {
+			comboViewer.setSelection(StructuredSelection.EMPTY, true);
+			return;
+		}
+		comboViewer.setSelection(new StructuredSelection(sequence), true);
 	}
+
+	@Inject
+	@Optional
+	public void setActiveHaplotypes(@UIEventTopic(EventTopics.ACTIVE_HAPLOTYPES) final List<Haplotype> haplotypes) {
+		haploModel = haplotypes;
+		comboViewer.setInput(haplotypes);
+	}
+
 }

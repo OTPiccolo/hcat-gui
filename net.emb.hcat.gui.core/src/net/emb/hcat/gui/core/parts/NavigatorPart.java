@@ -1,79 +1,145 @@
 package net.emb.hcat.gui.core.parts;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.inject.Inject;
 
+import org.eclipse.core.commands.Command;
+import org.eclipse.core.commands.IParameter;
+import org.eclipse.core.commands.Parameterization;
+import org.eclipse.core.commands.ParameterizedCommand;
+import org.eclipse.core.commands.common.NotDefinedException;
+import org.eclipse.e4.core.commands.ECommandService;
+import org.eclipse.e4.core.commands.EHandlerService;
+import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.Focus;
-import org.eclipse.jface.viewers.StructuredViewer;
-import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.ITreeSelection;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.internal.navigator.NavigatorContentService;
-import org.eclipse.ui.navigator.CommonViewerSorter;
 
+import net.emb.hcat.gui.core.Constants;
+import net.emb.hcat.gui.core.EventTopics;
+
+@SuppressWarnings("restriction")
 public class NavigatorPart {
 
 	private static final String ID = "net.emb.hcat.gui.core.part.navigator";
 
-	private StructuredViewer viewer;
+	private TreeViewer treeViewer;
 
-	public NavigatorPart() {
-		super();
-		System.out.println("Boo!");
-	}
+	@Inject
+	private ECommandService commandService;
+
+	@Inject
+	private EHandlerService handlerService;
 
 	@PostConstruct
-	public void createComposite(final Composite parent) {
+	public void createComposite(final Composite parent, final IEclipseContext context) {
 		parent.setLayout(new FillLayout());
 		System.out.println("Nabaadfda");
 		setViewer(createViewer(parent));
-
-		final NavigatorContentService service = new NavigatorContentService(ID, getViewer());
-		getViewer().setContentProvider(service.createCommonContentProvider());
-		// getViewer().setContentProvider(ArrayContentProvider.getInstance());
-		getViewer().setLabelProvider(service.createCommonLabelProvider());
-
-		// final INavigatorFilterService filterService =
-		// getViewer().getNavigatorContentService().getFilterService();
-		// final ViewerFilter[] visibleFilters =
-		// filterService.getVisibleFilters(true);
-		// for (final ViewerFilter visibleFilter : visibleFilters) {
-		// getViewer().addFilter(visibleFilter);
-		// }
-
-		getViewer().setSorter(new CommonViewerSorter());
-
-		System.out.println(getViewer().getContentProvider());
-		getViewer().setInput(new File("D:\\Downloads").listFiles());
-		System.out.println(getViewer().getInput());
-		parent.getDisplay().timerExec(500, () -> System.out.println(getViewer().getControl().getBounds()));
+		setWorkingDirectory((Path) context.get("workspace"));
 	}
 
 	@PreDestroy
 	public void destroy() {
-		// getViewer().dispose();
+		// Do nothing.
 	}
 
 	@Focus
 	public void setFocus() {
-		// getViewer().getTree().setFocus();
+		getViewer().getTree().setFocus();
 	}
 
-	private StructuredViewer getViewer() {
+	private TreeViewer getViewer() {
+		return treeViewer;
+	}
+
+	private void setViewer(final TreeViewer viewer) {
+		this.treeViewer = viewer;
+	}
+
+	private TreeViewer createViewer(final Composite parent) {
+		final TreeViewer viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+		viewer.setContentProvider(new ITreeContentProvider() {
+
+			@Override
+			public boolean hasChildren(final Object element) {
+				return false;
+			}
+
+			@Override
+			public Object getParent(final Object element) {
+				return null;
+			}
+
+			@Override
+			public Object[] getElements(final Object inputElement) {
+				Object[] elements = null;
+				if (inputElement != null) {
+					try {
+						elements = Files.list((Path) inputElement).filter(p -> p.getFileName().toString().endsWith(".txt")).collect(Collectors.toList()).toArray();
+					} catch (final IOException e) {
+						e.printStackTrace();
+					}
+
+				}
+				return elements;
+			}
+
+			@Override
+			public Object[] getChildren(final Object parentElement) {
+				return null;
+			}
+		});
+
+		viewer.setLabelProvider(new LabelProvider() {
+			@Override
+			public String getText(final Object element) {
+				return ((Path) element).getFileName().toString();
+			}
+		});
+
+		viewer.addDoubleClickListener(e -> {
+			for (final Object element : ((ITreeSelection) e.getSelection()).toArray()) {
+				openFile((Path) element);
+			}
+		});
 		return viewer;
 	}
 
-	private void setViewer(final StructuredViewer viewer) {
-		this.viewer = viewer;
+	private void openFile(final Path path) {
+		System.out.println("Open: " + path);
+		final ParameterizedCommand pcmd;
+		try {
+			final Command cmd = commandService.getCommand(Constants.OPEN_FILE_COMMAND_ID);
+			final IParameter columnParam = cmd.getParameter(Constants.OPEN_FILE_COMMAND_PARAMETER_ID);
+			final Parameterization param = new Parameterization(columnParam, path.toString());
+			pcmd = new ParameterizedCommand(cmd, new Parameterization[] { param });
+		} catch (final NotDefinedException e) {
+			e.printStackTrace();
+			return;
+		}
+
+		handlerService.executeHandler(pcmd);
 	}
 
-	private StructuredViewer createViewer(final Composite parent) {
-		// return new CommonViewer(getClass().getCanonicalName(), parent,
-		// SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
-		return new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+	@Inject
+	@Optional
+	public void setWorkingDirectory(@UIEventTopic(EventTopics.WORKING_DIRECTORY) final Path path) {
+		System.out.println("Yeah!: " + path);
+		getViewer().setInput(path);
 	}
 
 }

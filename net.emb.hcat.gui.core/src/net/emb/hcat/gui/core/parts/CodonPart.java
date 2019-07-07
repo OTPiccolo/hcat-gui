@@ -4,12 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-
 import org.eclipse.e4.ui.di.Focus;
-import org.eclipse.e4.ui.di.Persist;
-import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -38,45 +33,39 @@ import net.emb.hcat.cli.io.CodonTableReader;
 
 public class CodonPart {
 
-	private static final List<Sequence> loadSequences() {
-		// Load your sequences.
-		return null;
-	}
-
+	private Control control;
 	private ComboViewer comboViewer;
 	private GridTableViewer tableViewer;
 
 	private CodonTransformationData data;
 	private Function<CodonTransformer, Sequence> transformation;
 
-	@Inject
-	private MDirtyable dirty;
-
 	private List<Sequence> seqModel;
 
-	@PostConstruct
-	public void createComposite(final Composite parent) {
-		parent.setLayout(new GridLayout(2, false));
+	public Control createComposite(final Composite parent) {
+		final Composite body = new Composite(parent, SWT.NONE);
+		body.setLayout(new GridLayout(2, false));
 
-		seqModel = createSeqDataModel();
-
-		final Label labelCodon = new Label(parent, SWT.NONE);
+		final Label labelCodon = new Label(body, SWT.NONE);
 		labelCodon.setText("Codon Transformation:");
 		labelCodon.setLayoutData(GridDataFactory.defaultsFor(labelCodon).create());
 
-		comboViewer = createCombo(parent);
+		comboViewer = createCombo(body);
 		comboViewer.getCombo().setLayoutData(GridDataFactory.defaultsFor(comboViewer.getCombo()).create());
 		comboViewer.setInput(CodonTableReader.readDefaultTable());
 
-		final Label labelOffset = new Label(parent, SWT.NONE);
+		final Label labelOffset = new Label(body, SWT.NONE);
 		labelOffset.setText("Offset:");
 		labelOffset.setLayoutData(GridDataFactory.defaultsFor(labelOffset).create());
 
-		final Control radio = createRadio(parent);
+		final Control radio = createRadio(body);
 		radio.setLayoutData(GridDataFactory.defaultsFor(radio).create());
 
-		tableViewer = createViewer(parent);
+		tableViewer = createViewer(body);
 		tableViewer.getGrid().setLayoutData(GridDataFactory.defaultsFor(tableViewer.getGrid()).span(2, 1).create());
+
+		control = body;
+		return control;
 	}
 
 	private ComboViewer createCombo(final Composite parent) {
@@ -196,17 +185,18 @@ public class CodonPart {
 		tableViewer.setInput(codons);
 	}
 
+	public Control getControl() {
+		return control;
+	}
+
 	@Focus
 	public void setFocus() {
 		comboViewer.getCombo().setFocus();
 	}
 
-	@Persist
-	public void save() {
-		dirty.setDirty(false);
+	public void setModel(final List<Sequence> sequences) {
+		seqModel = sequences;
+		updateViewer();
 	}
 
-	private List<Sequence> createSeqDataModel() {
-		return loadSequences();
-	}
 }

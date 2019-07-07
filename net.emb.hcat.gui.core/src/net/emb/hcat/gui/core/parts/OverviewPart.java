@@ -2,12 +2,10 @@ package net.emb.hcat.gui.core.parts;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
-import org.eclipse.e4.ui.di.Persist;
-import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.nebula.jface.gridviewer.GridTableViewer;
 import org.eclipse.nebula.jface.gridviewer.GridViewerColumn;
@@ -19,9 +17,11 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 import net.emb.hcat.cli.Sequence;
 import net.emb.hcat.cli.haplotype.Haplotype;
+import net.emb.hcat.gui.core.EventTopics;
 
 public class OverviewPart {
 
@@ -43,33 +43,29 @@ public class OverviewPart {
 		protected abstract String getText(final Haplotype haplotype);
 	}
 
-	private static final List<Sequence> loadSequences() {
-		// Load your sequences.
-		return null;
-	}
-
+	private Control control;
 	private GridTableViewer tableViewer;
 
 	@Inject
-	private MDirtyable dirty;
+	private IEventBroker broker;
 
 	private List<Sequence> seqModel;
 	private List<Haplotype> haploModel;
 
-	@PostConstruct
-	public void createComposite(final Composite parent) {
-		parent.setLayout(new GridLayout(1, false));
+	private boolean showAsSequnces;
 
-		seqModel = createSeqDataModel();
-		haploModel = createHaploDataModel();
+	public Control createComposite(final Composite parent) {
+		final Composite body = new Composite(parent, SWT.NONE);
+		body.setLayout(new GridLayout(1, false));
 
-		tableViewer = createViewer(parent);
+		tableViewer = createViewer(body);
 		tableViewer.getGrid().setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		final Button button = createSwitch(parent);
+		final Button button = createSwitch(body);
 		button.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		tableViewer.setInput(seqModel);
+		control = body;
+		return body;
 	}
 
 	private GridTableViewer createViewer(final Composite parent) {
@@ -79,6 +75,7 @@ public class OverviewPart {
 		final GridViewerColumn idColumn = new GridViewerColumn(viewer, SWT.NONE);
 		idColumn.getColumn().setText("ID");
 		idColumn.getColumn().setWidth(200);
+		idColumn.getColumn().setWordWrap(true);
 		idColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			protected String getText(final Sequence sequence) {
@@ -111,6 +108,8 @@ public class OverviewPart {
 			}
 		});
 
+		viewer.addPostSelectionChangedListener(e -> broker.post(showAsSequnces ? EventTopics.SELECTED_SEQUENCE : EventTopics.SELECTED_HAPLOTYPE, e.getStructuredSelection().getFirstElement()));
+
 		final ColumnSorter sorter = new ColumnSorter(viewer);
 		sorter.applySorting();
 
@@ -123,19 +122,20 @@ public class OverviewPart {
 
 	private Button createSwitch(final Composite parent) {
 		final Button button = new Button(parent, SWT.CHECK);
-		button.setText("Show as Haplotypes");
+		button.setText("Show as Sequences");
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				if (button.getSelection()) {
-					tableViewer.setInput(haploModel);
-				} else {
-					tableViewer.setInput(seqModel);
-				}
+				showAsSequnces = button.getSelection();
+				updateViewer();
 			}
 		});
 
 		return button;
+	}
+
+	public Control getControl() {
+		return control;
 	}
 
 	@Focus
@@ -143,16 +143,14 @@ public class OverviewPart {
 		tableViewer.getGrid().setFocus();
 	}
 
-	@Persist
-	public void save() {
-		dirty.setDirty(false);
+	public void setModel(final List<Haplotype> haplotypes, final List<Sequence> sequences) {
+		seqModel = sequences;
+		haploModel = haplotypes;
+		updateViewer();
 	}
 
-	private List<Sequence> createSeqDataModel() {
-		return loadSequences();
+	private void updateViewer() {
+		tableViewer.setInput(showAsSequnces ? seqModel : haploModel);
 	}
 
-	private List<Haplotype> createHaploDataModel() {
-		return Haplotype.createHaplotypes(seqModel);
-	}
 }

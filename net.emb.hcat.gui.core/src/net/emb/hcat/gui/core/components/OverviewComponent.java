@@ -1,4 +1,4 @@
-package net.emb.hcat.gui.core.parts;
+package net.emb.hcat.gui.core.components;
 
 import java.util.List;
 
@@ -22,8 +22,9 @@ import org.eclipse.swt.widgets.Control;
 import net.emb.hcat.cli.Sequence;
 import net.emb.hcat.cli.haplotype.Haplotype;
 import net.emb.hcat.gui.core.EventTopics;
+import net.emb.hcat.gui.core.parts.ColumnSorter;
 
-public class OverviewPart {
+public class OverviewComponent {
 
 	// Maybe use StyledCellLabelProvider?
 	private static abstract class ColumnLabelProvider extends org.eclipse.jface.viewers.ColumnLabelProvider {

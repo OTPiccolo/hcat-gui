@@ -1,4 +1,4 @@
-package net.emb.hcat.gui.core.parts;
+package net.emb.hcat.gui.core.components;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Control;
 import net.emb.hcat.cli.haplotype.DistanceMatrix;
 import net.emb.hcat.cli.haplotype.Haplotype;
 
-public class DistanceMatrixPart {
+public class DistanceMatrixComponent {
 
 	private Control control;
 	private GridTableViewer tableViewer;

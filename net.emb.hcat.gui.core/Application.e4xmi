@@ -9,7 +9,7 @@
             <children xsi:type="basic:PartStack" xmi:id="_6wlLk8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.partstack.0" containerData="7500">
               <tags>editorArea</tags>
             </children>
-            <children xsi:type="basic:Part" xmi:id="_N4b_MIfCEemoerllcQemDQ" elementId="net.emb.hcat.gui.core.part.transform" containerData="2500" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.parts.TransformerPart" label="Transform"/>
+            <children xsi:type="basic:Part" xmi:id="_N4b_MIfCEemoerllcQemDQ" elementId="net.emb.hcat.gui.core.part.transform" containerData="2500" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.parts.HaplotypeTablePart" label="Transform"/>
           </children>
         </children>
       </children>

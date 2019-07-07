@@ -37,7 +37,7 @@ import net.emb.hcat.cli.haplotype.Haplotype;
 import net.emb.hcat.cli.haplotype.HaplotypeTransformer;
 import net.emb.hcat.gui.core.EventTopics;
 
-public class TransformerPart {
+public class HaplotypeTablePart {
 
 	private ComboViewer comboViewer;
 	private GridTableViewer tableViewer;

@@ -23,6 +23,9 @@ import org.osgi.service.event.EventHandler;
 import net.emb.hcat.cli.Sequence;
 import net.emb.hcat.cli.haplotype.Haplotype;
 import net.emb.hcat.gui.core.EventTopics;
+import net.emb.hcat.gui.core.components.TranslationComponent;
+import net.emb.hcat.gui.core.components.DistanceMatrixComponent;
+import net.emb.hcat.gui.core.components.OverviewComponent;
 import net.emb.hcat.gui.core.messages.Messages;
 
 public class MainPart {
@@ -34,9 +37,9 @@ public class MainPart {
 	private List<Sequence> sequences;
 	private List<Haplotype> haplotypes;
 
-	private OverviewPart overview;
-	private DistanceMatrixPart matrix;
-	private CodonPart codon;
+	private OverviewComponent overview;
+	private DistanceMatrixComponent matrix;
+	private TranslationComponent codon;
 
 	private EventHandler partListener;
 
@@ -47,19 +50,19 @@ public class MainPart {
 
 		final TabItem overviewItem = new TabItem(folder, SWT.NONE);
 		overviewItem.setText(Messages.MainPart_OverviewTab);
-		overview = ContextInjectionFactory.make(OverviewPart.class, context);
+		overview = ContextInjectionFactory.make(OverviewComponent.class, context);
 		overview.createComposite(folder);
 		overviewItem.setControl(overview.getControl());
 
 		final TabItem matrixItem = new TabItem(folder, SWT.NONE);
 		matrixItem.setText(Messages.MainPart_DistanceMatrixTab);
-		matrix = ContextInjectionFactory.make(DistanceMatrixPart.class, context);
+		matrix = ContextInjectionFactory.make(DistanceMatrixComponent.class, context);
 		matrix.createComposite(folder);
 		matrixItem.setControl(matrix.getControl());
 
 		final TabItem translationItem = new TabItem(folder, SWT.NONE);
 		translationItem.setText(Messages.MainPart_TranslationTab);
-		codon = ContextInjectionFactory.make(CodonPart.class, context);
+		codon = ContextInjectionFactory.make(TranslationComponent.class, context);
 		codon.createComposite(folder);
 		translationItem.setControl(codon.getControl());
 

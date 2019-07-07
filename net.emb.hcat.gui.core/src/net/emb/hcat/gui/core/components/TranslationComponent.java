@@ -1,4 +1,4 @@
-package net.emb.hcat.gui.core.parts;
+package net.emb.hcat.gui.core.components;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ import net.emb.hcat.cli.codon.CodonTransformationData;
 import net.emb.hcat.cli.codon.CodonTransformer;
 import net.emb.hcat.cli.io.CodonTableReader;
 
-public class CodonPart {
+public class TranslationComponent {
 
 	private Control control;
 	private ComboViewer comboViewer;

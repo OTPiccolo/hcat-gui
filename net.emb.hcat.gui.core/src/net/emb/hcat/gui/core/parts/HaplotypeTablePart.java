@@ -87,9 +87,10 @@ public class HaplotypeTablePart {
 			@Override
 			public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput) {
 				if (oldInput != null) {
-					// Remove old columns. Skip ID column as always present.
+					// Remove old columns. Skip ID and sequence column as always
+					// present.
 					final GridColumn[] columns = ((GridTableViewer) viewer).getGrid().getColumns();
-					for (int i = 1; i < columns.length; i++) {
+					for (int i = 2; i < columns.length; i++) {
 						columns[i].dispose();
 					}
 				}
@@ -123,12 +124,28 @@ public class HaplotypeTablePart {
 
 		final GridViewerColumn idColumn = new GridViewerColumn(viewer, SWT.NONE);
 		idColumn.getColumn().setText(Messages.HaplotypeTablePart_IdColumn);
-		idColumn.getColumn().setWidth(200);
+		idColumn.getColumn().setWidth(150);
 		idColumn.setLabelProvider(new ColumnLabelProvider() {
 			@SuppressWarnings("unchecked")
 			@Override
 			public String getText(final Object element) {
-				return ((Entry<Haplotype, ?>) element).getKey().getFirstSequence().getName();
+				return ((Entry<Haplotype, ?>) element).getKey().getName();
+			}
+		});
+
+		final GridViewerColumn seqNamesColumn = new GridViewerColumn(viewer, SWT.NONE);
+		seqNamesColumn.getColumn().setText(Messages.HaplotypeTablePart_SeqNamesColumn);
+		seqNamesColumn.getColumn().setWidth(150);
+		seqNamesColumn.setLabelProvider(new ColumnLabelProvider() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public String getText(final Object element) {
+				final Haplotype haplotype = ((Entry<Haplotype, ?>) element).getKey();
+				String text = haplotype.stream().map(seq -> seq.getName() == null ? Messages.HaplotypeTablePart_NotAvailable : seq.getName()).reduce("", (a, b) -> a + "/" + b); //$NON-NLS-1$ //$NON-NLS-2$
+				if (!text.isEmpty()) {
+					text = text.substring(1);
+				}
+				return text;
 			}
 		});
 

@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Control;
 
 import net.emb.hcat.cli.haplotype.DistanceMatrix;
 import net.emb.hcat.cli.haplotype.Haplotype;
+import net.emb.hcat.gui.core.messages.Messages;
 
 public class DistanceMatrixComponent {
 
@@ -65,8 +66,11 @@ public class DistanceMatrixComponent {
 						column.setLabelProvider(new ColumnLabelProvider() {
 							@Override
 							public String getText(final Object element) {
-								final Integer distance = matrix.getDistance((Haplotype) element, haplotype);
-								return distance == null ? "0" : distance.toString();
+								Integer distance = matrix.getDistance((Haplotype) element, haplotype);
+								if (distance == null) {
+									distance = 0;
+								}
+								return distance.toString();
 							}
 						});
 					}
@@ -80,7 +84,7 @@ public class DistanceMatrixComponent {
 		});
 
 		final GridViewerColumn idColumn = new GridViewerColumn(viewer, SWT.NONE);
-		idColumn.getColumn().setText("ID");
+		idColumn.getColumn().setText(Messages.DistanceMatrixComponent_IdColumn);
 		idColumn.getColumn().setWidth(200);
 		idColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override

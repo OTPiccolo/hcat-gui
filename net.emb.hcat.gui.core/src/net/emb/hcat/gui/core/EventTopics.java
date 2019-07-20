@@ -8,6 +8,7 @@ import org.eclipse.e4.ui.di.UIEventTopic;
  * @author Heiko Mattes
  * @see UIEventTopic
  */
+@SuppressWarnings("nls")
 public class EventTopics {
 
 	/**

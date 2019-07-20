@@ -36,6 +36,7 @@ import net.emb.hcat.cli.Sequence;
 import net.emb.hcat.cli.haplotype.Haplotype;
 import net.emb.hcat.cli.haplotype.HaplotypeTransformer;
 import net.emb.hcat.gui.core.EventTopics;
+import net.emb.hcat.gui.core.messages.Messages;
 
 public class HaplotypeTablePart {
 
@@ -49,7 +50,7 @@ public class HaplotypeTablePart {
 		parent.setLayout(new GridLayout(2, false));
 
 		final Label label = new Label(parent, SWT.NONE);
-		label.setText("Master Sequenz:");
+		label.setText(Messages.HaplotypeTablePart_masterSequenceLabel);
 		label.setLayoutData(GridDataFactory.defaultsFor(label).create());
 
 		comboViewer = createCombo(parent);
@@ -121,7 +122,7 @@ public class HaplotypeTablePart {
 		});
 
 		final GridViewerColumn idColumn = new GridViewerColumn(viewer, SWT.NONE);
-		idColumn.getColumn().setText("ID");
+		idColumn.getColumn().setText(Messages.HaplotypeTablePart_idColumn);
 		idColumn.getColumn().setWidth(200);
 		idColumn.setLabelProvider(new ColumnLabelProvider() {
 			@SuppressWarnings("unchecked")

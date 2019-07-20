@@ -30,6 +30,7 @@ import net.emb.hcat.cli.Sequence;
 import net.emb.hcat.cli.codon.CodonTransformationData;
 import net.emb.hcat.cli.codon.CodonTransformer;
 import net.emb.hcat.cli.io.CodonTableReader;
+import net.emb.hcat.gui.core.messages.Messages;
 
 public class TranslationComponent {
 
@@ -47,7 +48,7 @@ public class TranslationComponent {
 		body.setLayout(new GridLayout(2, false));
 
 		final Label labelCodon = new Label(body, SWT.NONE);
-		labelCodon.setText("Codon Transformation:");
+		labelCodon.setText(Messages.TranslationComponent_CodonLabel);
 		labelCodon.setLayoutData(GridDataFactory.defaultsFor(labelCodon).create());
 
 		comboViewer = createCombo(body);
@@ -55,7 +56,7 @@ public class TranslationComponent {
 		comboViewer.setInput(CodonTableReader.readDefaultTable());
 
 		final Label labelOffset = new Label(body, SWT.NONE);
-		labelOffset.setText("Offset:");
+		labelOffset.setText(Messages.TranslationComponent_OffsetLabel);
 		labelOffset.setLayoutData(GridDataFactory.defaultsFor(labelOffset).create());
 
 		final Control radio = createRadio(body);
@@ -90,7 +91,7 @@ public class TranslationComponent {
 		body.setLayout(new RowLayout());
 
 		final Button automaticButton = new Button(body, SWT.RADIO);
-		automaticButton.setText("Automatic");
+		automaticButton.setText(Messages.TranslationComponent_AutomaticButton);
 		automaticButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
@@ -100,7 +101,7 @@ public class TranslationComponent {
 		});
 
 		final Button o1Button = new Button(body, SWT.RADIO);
-		o1Button.setText("1");
+		o1Button.setText(Messages.TranslationComponent_1Button);
 		o1Button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
@@ -110,7 +111,7 @@ public class TranslationComponent {
 		});
 
 		final Button o2Button = new Button(body, SWT.RADIO);
-		o2Button.setText("2");
+		o2Button.setText(Messages.TranslationComponent_2Button);
 		o2Button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
@@ -120,7 +121,7 @@ public class TranslationComponent {
 		});
 
 		final Button o3Button = new Button(body, SWT.RADIO);
-		o3Button.setText("3");
+		o3Button.setText(Messages.TranslationComponent_3Button);
 		o3Button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
@@ -140,7 +141,7 @@ public class TranslationComponent {
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
 
 		final GridViewerColumn idColumn = new GridViewerColumn(viewer, SWT.NONE);
-		idColumn.getColumn().setText("ID");
+		idColumn.getColumn().setText(Messages.TranslationComponent_IdColumn);
 		idColumn.getColumn().setWidth(200);
 		idColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -149,7 +150,7 @@ public class TranslationComponent {
 			}
 		});
 		final GridViewerColumn codonColumn = new GridViewerColumn(viewer, SWT.NONE);
-		codonColumn.getColumn().setText("Codon");
+		codonColumn.getColumn().setText(Messages.TranslationComponent_CodonColumn);
 		codonColumn.getColumn().setWidth(400);
 		codonColumn.getColumn().setWordWrap(true);
 		codonColumn.setLabelProvider(new ColumnLabelProvider() {

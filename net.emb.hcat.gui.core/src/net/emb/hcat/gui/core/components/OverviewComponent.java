@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Control;
 import net.emb.hcat.cli.Sequence;
 import net.emb.hcat.cli.haplotype.Haplotype;
 import net.emb.hcat.gui.core.EventTopics;
+import net.emb.hcat.gui.core.messages.Messages;
 import net.emb.hcat.gui.core.parts.ColumnSorter;
 
 public class OverviewComponent {
@@ -74,7 +75,7 @@ public class OverviewComponent {
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
 
 		final GridViewerColumn idColumn = new GridViewerColumn(viewer, SWT.NONE);
-		idColumn.getColumn().setText("ID");
+		idColumn.getColumn().setText(Messages.OverviewComponent_IdColumn);
 		idColumn.getColumn().setWidth(200);
 		idColumn.getColumn().setWordWrap(true);
 		idColumn.setLabelProvider(new ColumnLabelProvider() {
@@ -85,7 +86,7 @@ public class OverviewComponent {
 
 			@Override
 			protected String getText(final Haplotype haplotype) {
-				String text = haplotype.stream().map(seq -> seq.getName() == null ? "<N/A>" : seq.getName()).reduce("", (a, b) -> a + "\n" + b);
+				String text = haplotype.stream().map(seq -> seq.getName() == null ? Messages.OverviewComponent_notAvailable : seq.getName()).reduce("", (a, b) -> a + "\n" + b); //$NON-NLS-1$ //$NON-NLS-2$
 				if (!text.isEmpty()) {
 					text = text.substring(1);
 				}
@@ -94,7 +95,7 @@ public class OverviewComponent {
 		});
 
 		final GridViewerColumn seqColumn = new GridViewerColumn(viewer, SWT.NONE);
-		seqColumn.getColumn().setText("Sequence");
+		seqColumn.getColumn().setText(Messages.OverviewComponent_SequenceColumn);
 		seqColumn.getColumn().setWidth(400);
 		seqColumn.getColumn().setWordWrap(true);
 		seqColumn.setLabelProvider(new ColumnLabelProvider() {
@@ -123,7 +124,7 @@ public class OverviewComponent {
 
 	private Button createSwitch(final Composite parent) {
 		final Button button = new Button(parent, SWT.CHECK);
-		button.setText("Show as Sequences");
+		button.setText(Messages.OverviewComponent_ShowAsSequenceButton);
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {

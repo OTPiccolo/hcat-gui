@@ -5,8 +5,8 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "net.emb.hcat.gui.core.messages.messages"; //$NON-NLS-1$
 	public static String DistanceMatrixComponent_IdColumn;
-	public static String HaplotypeTablePart_idColumn;
-	public static String HaplotypeTablePart_masterSequenceLabel;
+	public static String HaplotypeTablePart_IdColumn;
+	public static String HaplotypeTablePart_MasterSequenceLabel;
 	public static String HcatFunction_CutSequences;
 	public static String HcatFunction_ExportConvertedFile;
 	public static String HcatFunction_HaplotypeAnalysis;

@@ -50,7 +50,7 @@ public class HaplotypeTablePart {
 		parent.setLayout(new GridLayout(2, false));
 
 		final Label label = new Label(parent, SWT.NONE);
-		label.setText(Messages.HaplotypeTablePart_masterSequenceLabel);
+		label.setText(Messages.HaplotypeTablePart_MasterSequenceLabel);
 		label.setLayoutData(GridDataFactory.defaultsFor(label).create());
 
 		comboViewer = createCombo(parent);
@@ -122,7 +122,7 @@ public class HaplotypeTablePart {
 		});
 
 		final GridViewerColumn idColumn = new GridViewerColumn(viewer, SWT.NONE);
-		idColumn.getColumn().setText(Messages.HaplotypeTablePart_idColumn);
+		idColumn.getColumn().setText(Messages.HaplotypeTablePart_IdColumn);
 		idColumn.getColumn().setWidth(200);
 		idColumn.setLabelProvider(new ColumnLabelProvider() {
 			@SuppressWarnings("unchecked")

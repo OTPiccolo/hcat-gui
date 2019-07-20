@@ -61,7 +61,7 @@ public class DistanceMatrixComponent {
 
 					for (final Haplotype haplotype : haplotypes) {
 						final GridViewerColumn column = new GridViewerColumn((GridTableViewer) viewer, SWT.NONE);
-						column.getColumn().setText(haplotype.getFirstSequence().getName());
+						column.getColumn().setText(haplotype.getName());
 						column.getColumn().setWidth(40);
 						column.setLabelProvider(new ColumnLabelProvider() {
 							@Override

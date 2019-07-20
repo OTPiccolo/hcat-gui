@@ -76,8 +76,8 @@ public class OverviewComponent {
 
 		final GridViewerColumn idColumn = new GridViewerColumn(viewer, SWT.NONE);
 		idColumn.getColumn().setText(Messages.OverviewComponent_IdColumn);
-		idColumn.getColumn().setWidth(200);
-		idColumn.getColumn().setWordWrap(true);
+		idColumn.getColumn().setWidth(150);
+		idColumn.getColumn().setWordWrap(false);
 		idColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			protected String getText(final Sequence sequence) {
@@ -86,7 +86,23 @@ public class OverviewComponent {
 
 			@Override
 			protected String getText(final Haplotype haplotype) {
-				String text = haplotype.stream().map(seq -> seq.getName() == null ? Messages.OverviewComponent_notAvailable : seq.getName()).reduce("", (a, b) -> a + "\n" + b); //$NON-NLS-1$ //$NON-NLS-2$
+				return haplotype.getName();
+			}
+		});
+
+		final GridViewerColumn nameColumn = new GridViewerColumn(viewer, SWT.NONE);
+		nameColumn.getColumn().setText(Messages.OverviewComponent_SeqNameColumn);
+		nameColumn.getColumn().setWidth(150);
+		nameColumn.getColumn().setWordWrap(true);
+		nameColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			protected String getText(final Sequence sequence) {
+				return sequence.getName();
+			}
+
+			@Override
+			protected String getText(final Haplotype haplotype) {
+				String text = haplotype.stream().map(seq -> seq.getName() == null ? Messages.OverviewComponent_NotAvailable : seq.getName()).reduce("", (a, b) -> a + "\n" + b); //$NON-NLS-1$ //$NON-NLS-2$
 				if (!text.isEmpty()) {
 					text = text.substring(1);
 				}

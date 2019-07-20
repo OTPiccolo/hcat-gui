@@ -17,7 +17,8 @@ public class Messages extends NLS {
 	public static String MainPart_OverviewTab;
 	public static String MainPart_TranslationTab;
 	public static String OverviewComponent_IdColumn;
-	public static String OverviewComponent_notAvailable;
+	public static String OverviewComponent_NotAvailable;
+	public static String OverviewComponent_SeqNameColumn;
 	public static String OverviewComponent_SequenceColumn;
 	public static String OverviewComponent_ShowAsSequenceButton;
 	public static String SelectionPage_Description;

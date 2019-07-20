@@ -89,7 +89,7 @@ public class ColumnSorter {
 			public int compare(final Viewer viewer, final Object e1, final Object e2) {
 				if (sortingColumn == null) {
 					// Don't sort.
-					return -1;
+					return 0;
 				}
 
 				switch (sortingColumn.getSort()) {
@@ -99,7 +99,7 @@ public class ColumnSorter {
 					return getComparator().reversed().compare(sortingLabelProvider.getText(e1), sortingLabelProvider.getText(e2));
 				default:
 					// Don't sort.
-					return -1;
+					return 0;
 				}
 			}
 		});

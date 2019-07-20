@@ -89,7 +89,7 @@ public class DistanceMatrixComponent {
 		idColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(final Object element) {
-				return ((Haplotype) element).getFirstSequence().getName();
+				return ((Haplotype) element).getName();
 			}
 		});
 

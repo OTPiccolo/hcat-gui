@@ -1,6 +1,7 @@
 package net.emb.hcat.gui.core.parts;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -44,6 +45,7 @@ public class HaplotypeTablePart {
 	private GridTableViewer tableViewer;
 
 	private List<Haplotype> haploModel;
+	private Haplotype masterHaplotype;
 
 	@PostConstruct
 	public void createComposite(final Composite parent) {
@@ -77,7 +79,7 @@ public class HaplotypeTablePart {
 			}
 		});
 		viewer.setComparator(new ViewerComparator());
-		viewer.addPostSelectionChangedListener(e -> tableViewer.setInput(createViewerInput((Sequence) comboViewer.getStructuredSelection().getFirstElement())));
+		viewer.addPostSelectionChangedListener(e -> masterSequenceSelected((Sequence) comboViewer.getStructuredSelection().getFirstElement()));
 		return viewer;
 	}
 
@@ -109,7 +111,14 @@ public class HaplotypeTablePart {
 							@SuppressWarnings("unchecked")
 							@Override
 							public String getText(final Object element) {
-								return String.valueOf(((Entry<?, Difference>) element).getValue().getDifference().charAt(pos));
+								final Entry<Haplotype, Difference> entry = (Entry<Haplotype, Difference>) element;
+								// Master haplotype should always show its
+								// value, so it can be compared to the
+								// differences.
+								if (entry.getKey() == masterHaplotype) {
+									return String.valueOf(masterHaplotype.getFirstSequence().getValue().charAt(pos));
+								}
+								return String.valueOf(entry.getValue().getDifference().charAt(pos));
 							}
 						});
 					}
@@ -156,11 +165,32 @@ public class HaplotypeTablePart {
 		return viewer;
 	}
 
+	private void masterSequenceSelected(final Sequence sequence) {
+		masterHaplotype = findHaplotype(sequence);
+		tableViewer.setInput(createViewerInput(sequence));
+	}
+
+	private Haplotype findHaplotype(final Sequence sequence) {
+		for (final Haplotype haplotype : haploModel) {
+			if (haplotype.belongsToHaplotype(sequence)) {
+				return haplotype;
+			}
+		}
+		return null;
+	}
+
 	private Map<Haplotype, Difference> createViewerInput(final Sequence sequence) {
 		if (sequence == null) {
 			return null;
 		}
-		return new HaplotypeTransformer(haploModel).compareToMaster(sequence);
+
+		// Make sure that the haplotype that is used for comparison (master
+		// haplotype) is always at first position.
+		final Map<Haplotype, Difference> compared = new HaplotypeTransformer(haploModel).compareToMaster(sequence);
+		final LinkedHashMap<Haplotype, Difference> input = new LinkedHashMap<Haplotype, Difference>(compared.size());
+		input.put(masterHaplotype, compared.get(masterHaplotype));
+		input.putAll(compared);
+		return input;
 	}
 
 	@Focus

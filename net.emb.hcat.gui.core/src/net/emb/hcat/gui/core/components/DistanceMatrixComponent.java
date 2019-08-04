@@ -3,6 +3,9 @@ package net.emb.hcat.gui.core.components;
 import java.text.MessageFormat;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -20,6 +23,7 @@ import org.eclipse.swt.widgets.Control;
 
 import net.emb.hcat.cli.haplotype.DistanceMatrix;
 import net.emb.hcat.cli.haplotype.Haplotype;
+import net.emb.hcat.gui.core.EventTopics;
 import net.emb.hcat.gui.core.messages.Messages;
 
 public class DistanceMatrixComponent {
@@ -28,6 +32,9 @@ public class DistanceMatrixComponent {
 	private GridTableViewer tableViewer;
 
 	private List<Haplotype> haploModel;
+
+	@Inject
+	private IEventBroker broker;
 
 	public Control createComposite(final Composite parent) {
 		final Composite body = new Composite(parent, SWT.NONE);
@@ -53,7 +60,7 @@ public class DistanceMatrixComponent {
 					for (int i = 1; i < columns.length; i++) {
 						columns[i].dispose();
 					}
-					columns[0].setFooterText("");
+					columns[0].setFooterText(""); //$NON-NLS-1$
 				}
 
 				if (newInput != null) {
@@ -99,6 +106,8 @@ public class DistanceMatrixComponent {
 				return ((Haplotype) element).getName();
 			}
 		});
+
+		viewer.addPostSelectionChangedListener(e -> broker.post(EventTopics.SELECTED_HAPLOTYPE, e.getStructuredSelection().getFirstElement()));
 
 		final Grid grid = viewer.getGrid();
 		grid.setHeaderVisible(true);

@@ -1,5 +1,6 @@
 package net.emb.hcat.gui.core.components;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import org.eclipse.e4.ui.di.Focus;
@@ -45,12 +46,14 @@ public class DistanceMatrixComponent {
 
 			@Override
 			public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput) {
+				final GridTableViewer gridViewer = (GridTableViewer) viewer;
 				if (oldInput != null) {
 					// Remove old columns. Skip ID column as always present.
-					final GridColumn[] columns = ((GridTableViewer) viewer).getGrid().getColumns();
+					final GridColumn[] columns = gridViewer.getGrid().getColumns();
 					for (int i = 1; i < columns.length; i++) {
 						columns[i].dispose();
 					}
+					columns[0].setFooterText("");
 				}
 
 				if (newInput != null) {
@@ -60,7 +63,7 @@ public class DistanceMatrixComponent {
 					final DistanceMatrix matrix = new DistanceMatrix(haplotypes);
 
 					for (final Haplotype haplotype : haplotypes) {
-						final GridViewerColumn column = new GridViewerColumn((GridTableViewer) viewer, SWT.NONE);
+						final GridViewerColumn column = new GridViewerColumn(gridViewer, SWT.NONE);
 						column.getColumn().setText(haplotype.getName());
 						column.getColumn().setWidth(40);
 						column.setLabelProvider(new ColumnLabelProvider() {
@@ -74,6 +77,10 @@ public class DistanceMatrixComponent {
 							}
 						});
 					}
+
+					// Set min/max distance information.
+					final String footer = MessageFormat.format(Messages.DistanceMatrixComponent_MinMaxFooter, matrix.getMinDistance(), matrix.getMaxDistance());
+					gridViewer.getGrid().getColumn(0).setFooterText(footer);
 				}
 			}
 
@@ -96,6 +103,7 @@ public class DistanceMatrixComponent {
 		final Grid grid = viewer.getGrid();
 		grid.setHeaderVisible(true);
 		grid.setAutoHeight(true);
+		grid.setFooterVisible(true);
 
 		return viewer;
 	}

@@ -20,15 +20,18 @@ import org.eclipse.swt.widgets.TabItem;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
-import net.emb.hcat.cli.Sequence;
 import net.emb.hcat.cli.haplotype.Haplotype;
+import net.emb.hcat.cli.sequence.Sequence;
 import net.emb.hcat.gui.core.EventTopics;
-import net.emb.hcat.gui.core.components.TranslationComponent;
 import net.emb.hcat.gui.core.components.DistanceMatrixComponent;
 import net.emb.hcat.gui.core.components.OverviewComponent;
+import net.emb.hcat.gui.core.components.TranslationComponent;
 import net.emb.hcat.gui.core.messages.Messages;
 
 public class MainPart {
+
+	/** Part ID */
+	public static final String ID = "net.emb.hcat.gui.core.partdescriptor.main"; //$NON-NLS-1$
 
 	@Inject
 	private IEventBroker broker;

@@ -19,8 +19,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import net.emb.hcat.cli.Sequence;
 import net.emb.hcat.cli.haplotype.Haplotype;
+import net.emb.hcat.cli.sequence.Sequence;
 import net.emb.hcat.gui.core.EventTopics;
 import net.emb.hcat.gui.core.messages.Messages;
 import net.emb.hcat.gui.core.parts.ColumnSorter;

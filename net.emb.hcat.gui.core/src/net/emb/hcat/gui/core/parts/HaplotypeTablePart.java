@@ -32,14 +32,17 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import net.emb.hcat.cli.Difference;
-import net.emb.hcat.cli.Sequence;
 import net.emb.hcat.cli.haplotype.Haplotype;
 import net.emb.hcat.cli.haplotype.HaplotypeTransformer;
+import net.emb.hcat.cli.sequence.Difference;
+import net.emb.hcat.cli.sequence.Sequence;
 import net.emb.hcat.gui.core.EventTopics;
 import net.emb.hcat.gui.core.messages.Messages;
 
 public class HaplotypeTablePart {
+
+	/** Part ID */
+	public static final String ID = "net.emb.hcat.gui.core.part.transform"; //$NON-NLS-1$
 
 	private ComboViewer comboViewer;
 	private GridTableViewer tableViewer;

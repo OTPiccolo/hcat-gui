@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Named;
@@ -14,7 +15,7 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
 
-import net.emb.hcat.cli.Sequence;
+import net.emb.hcat.cli.sequence.Sequence;
 import net.emb.hcat.cli.io.FastaReader;
 import net.emb.hcat.gui.core.Constants;
 import net.emb.hcat.gui.core.parts.MainPart;

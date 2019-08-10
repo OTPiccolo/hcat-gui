@@ -26,10 +26,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 
-import net.emb.hcat.cli.Sequence;
 import net.emb.hcat.cli.codon.CodonTransformationData;
 import net.emb.hcat.cli.codon.CodonTransformer;
 import net.emb.hcat.cli.io.CodonTableReader;
+import net.emb.hcat.cli.sequence.Sequence;
 import net.emb.hcat.gui.core.messages.Messages;
 
 public class TranslationComponent {

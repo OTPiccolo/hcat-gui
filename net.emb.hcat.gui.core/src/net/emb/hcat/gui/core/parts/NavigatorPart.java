@@ -3,6 +3,8 @@ package net.emb.hcat.gui.core.parts;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -34,9 +36,12 @@ import net.emb.hcat.gui.core.EventTopics;
 @SuppressWarnings("restriction")
 public class NavigatorPart {
 
-	private static final String ID = "net.emb.hcat.gui.core.part.navigator";
+	/** Part ID */
+	public static final String ID = "net.emb.hcat.gui.core.part.navigator"; //$NON-NLS-1$
 
 	private TreeViewer treeViewer;
+
+	private Set<String> fileEndings;
 
 	@Inject
 	private ECommandService commandService;
@@ -47,9 +52,23 @@ public class NavigatorPart {
 	@PostConstruct
 	public void createComposite(final Composite parent, final IEclipseContext context) {
 		parent.setLayout(new FillLayout());
-		System.out.println("Nabaadfda");
 		setViewer(createViewer(parent));
 		setWorkingDirectory((Path) context.get("workspace"));
+	}
+
+	private Set<String> getFileEndings() {
+		if (fileEndings == null) {
+			fileEndings = createFileEndings();
+		}
+		return fileEndings;
+	}
+
+	private Set<String> createFileEndings() {
+		final Set<String> fileEndings = new HashSet<String>();
+		fileEndings.add(".txt"); //$NON-NLS-1$
+		fileEndings.add(".fas"); //$NON-NLS-1$
+		fileEndings.add(".phy"); //$NON-NLS-1$
+		return fileEndings;
 	}
 
 	@PreDestroy
@@ -89,7 +108,11 @@ public class NavigatorPart {
 				Object[] elements = null;
 				if (inputElement != null) {
 					try {
-						elements = Files.list((Path) inputElement).filter(p -> p.getFileName().toString().endsWith(".txt")).collect(Collectors.toList()).toArray();
+						elements = Files.list((Path) inputElement).filter(p -> {
+							final String s = p.getFileName().toString();
+							final int index = s.lastIndexOf('.');
+							return index == -1 ? false : getFileEndings().contains(s.substring(index));
+						}).collect(Collectors.toList()).toArray();
 					} catch (final IOException e) {
 						e.printStackTrace();
 					}
@@ -120,7 +143,6 @@ public class NavigatorPart {
 	}
 
 	private void openFile(final Path path) {
-		System.out.println("Open: " + path);
 		final ParameterizedCommand pcmd;
 		try {
 			final Command cmd = commandService.getCommand(Constants.OPEN_FILE_COMMAND_ID);
@@ -138,7 +160,6 @@ public class NavigatorPart {
 	@Inject
 	@Optional
 	public void setWorkingDirectory(@UIEventTopic(EventTopics.WORKING_DIRECTORY) final Path path) {
-		System.out.println("Yeah!: " + path);
 		getViewer().setInput(path);
 	}
 

@@ -30,9 +30,6 @@ import net.emb.hcat.gui.core.messages.Messages;
 
 public class MainPart {
 
-	/** Part ID */
-	public static final String ID = "net.emb.hcat.gui.core.partdescriptor.main"; //$NON-NLS-1$
-
 	@Inject
 	private IEventBroker broker;
 

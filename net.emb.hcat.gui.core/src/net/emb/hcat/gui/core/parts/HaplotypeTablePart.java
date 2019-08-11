@@ -41,9 +41,6 @@ import net.emb.hcat.gui.core.messages.Messages;
 
 public class HaplotypeTablePart {
 
-	/** Part ID */
-	public static final String ID = "net.emb.hcat.gui.core.part.transform"; //$NON-NLS-1$
-
 	private ComboViewer comboViewer;
 	private GridTableViewer tableViewer;
 

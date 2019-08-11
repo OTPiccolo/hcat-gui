@@ -36,9 +36,6 @@ import net.emb.hcat.gui.core.EventTopics;
 @SuppressWarnings("restriction")
 public class NavigatorPart {
 
-	/** Part ID */
-	public static final String ID = "net.emb.hcat.gui.core.part.navigator"; //$NON-NLS-1$
-
 	private TreeViewer treeViewer;
 
 	private Set<String> fileEndings;
@@ -53,7 +50,7 @@ public class NavigatorPart {
 	public void createComposite(final Composite parent, final IEclipseContext context) {
 		parent.setLayout(new FillLayout());
 		setViewer(createViewer(parent));
-		setWorkingDirectory((Path) context.get("workspace"));
+		setWorkingDirectory((Path) context.get(Constants.WORKSPACE_CONTEXT));
 	}
 
 	private Set<String> getFileEndings() {

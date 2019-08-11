@@ -3,8 +3,10 @@ package net.emb.hcat.gui.core.parts;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -90,37 +92,61 @@ public class NavigatorPart {
 		final TreeViewer viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 		viewer.setContentProvider(new ITreeContentProvider() {
 
+			Predicate<? super Path> validElement = p -> {
+				if (Files.isDirectory(p)) {
+					return true;
+				}
+				final String s = p.getFileName().toString();
+				final int index = s.lastIndexOf('.');
+				return index == -1 ? false : getFileEndings().contains(s.substring(index));
+			};
+			Comparator<? super Path> pathComparator = (p1, p2) -> {
+				if (Files.isDirectory(p1)) {
+					if (Files.isDirectory(p2)) {
+						return p1.compareTo(p2);
+					}
+					return -1;
+				}
+				if (Files.isDirectory(p2)) {
+					return 1;
+				}
+				return p1.compareTo(p2);
+			};
+
 			@Override
 			public boolean hasChildren(final Object element) {
-				return false;
+				final Path path = (Path) element;
+				try {
+					return Files.isDirectory(path) && Files.list(path).anyMatch(validElement);
+				} catch (final IOException e) {
+					e.printStackTrace();
+					return false;
+				}
 			}
 
 			@Override
 			public Object getParent(final Object element) {
-				return null;
+				return ((Path) element).getParent();
 			}
 
 			@Override
 			public Object[] getElements(final Object inputElement) {
+				return getChildren(inputElement);
+			}
+
+			@Override
+			public Object[] getChildren(final Object parentElement) {
 				Object[] elements = null;
-				if (inputElement != null) {
+				if (parentElement != null) {
+					final Path path = (Path) parentElement;
 					try {
-						elements = Files.list((Path) inputElement).filter(p -> {
-							final String s = p.getFileName().toString();
-							final int index = s.lastIndexOf('.');
-							return index == -1 ? false : getFileEndings().contains(s.substring(index));
-						}).collect(Collectors.toList()).toArray();
+						elements = Files.list(path).filter(validElement).sorted(pathComparator).collect(Collectors.toList()).toArray();
 					} catch (final IOException e) {
 						e.printStackTrace();
 					}
 
 				}
 				return elements;
-			}
-
-			@Override
-			public Object[] getChildren(final Object parentElement) {
-				return null;
 			}
 		});
 

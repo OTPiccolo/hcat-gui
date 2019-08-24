@@ -1,6 +1,7 @@
 package net.emb.hcat.gui.core.parts;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
@@ -8,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -29,6 +31,7 @@ import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
@@ -38,21 +41,34 @@ import net.emb.hcat.gui.core.EventTopics;
 @SuppressWarnings("restriction")
 public class NavigatorPart {
 
-	private TreeViewer treeViewer;
-
-	private Set<String> fileEndings;
-
 	@Inject
 	private ECommandService commandService;
 
 	@Inject
 	private EHandlerService handlerService;
 
+	private TreeViewer treeViewer;
+
+	private Set<String> fileEndings;
+
+	private Image folderImage;
+	private Image fileImage;
+
 	@PostConstruct
 	public void createComposite(final Composite parent, final IEclipseContext context) {
 		parent.setLayout(new FillLayout());
 		setViewer(createViewer(parent));
 		setWorkingDirectory((Path) context.get(Constants.WORKSPACE_CONTEXT));
+		try (InputStream is = getClass().getResourceAsStream("/icons/folder.gif")) { //$NON-NLS-1$
+			folderImage = new Image(parent.getDisplay(), is);
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
+		try (InputStream is = getClass().getResourceAsStream("/icons/file.gif")) { //$NON-NLS-1$
+			fileImage = new Image(parent.getDisplay(), is);
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private Set<String> getFileEndings() {
@@ -72,7 +88,12 @@ public class NavigatorPart {
 
 	@PreDestroy
 	public void destroy() {
-		// Do nothing.
+		if (folderImage != null) {
+			folderImage.dispose();
+		}
+		if (fileImage != null) {
+			fileImage.dispose();
+		}
 	}
 
 	@Focus
@@ -116,8 +137,11 @@ public class NavigatorPart {
 			@Override
 			public boolean hasChildren(final Object element) {
 				final Path path = (Path) element;
-				try {
-					return Files.isDirectory(path) && Files.list(path).anyMatch(validElement);
+				if (!Files.isDirectory(path)) {
+					return false;
+				}
+				try (Stream<Path> s = Files.list(path)) {
+					return s.anyMatch(validElement);
 				} catch (final IOException e) {
 					e.printStackTrace();
 					return false;
@@ -155,6 +179,15 @@ public class NavigatorPart {
 			public String getText(final Object element) {
 				return ((Path) element).getFileName().toString();
 			}
+
+			@Override
+			public Image getImage(final Object element) {
+				final Path p = (Path) element;
+				if (Files.isDirectory(p)) {
+					return folderImage;
+				}
+				return fileImage;
+			}
 		});
 
 		viewer.addDoubleClickListener(e -> {
@@ -184,6 +217,10 @@ public class NavigatorPart {
 	@Optional
 	public void setWorkingDirectory(@UIEventTopic(EventTopics.WORKING_DIRECTORY) final Path path) {
 		getViewer().setInput(path);
+		// After opening the application, the part isn't yet displayed, which
+		// seems to muck with the displaying of folder/file icons. Refreshing
+		// fixes that problem.
+		getViewer().getTree().getDisplay().timerExec(50, () -> getViewer().refresh());
 	}
 
 }

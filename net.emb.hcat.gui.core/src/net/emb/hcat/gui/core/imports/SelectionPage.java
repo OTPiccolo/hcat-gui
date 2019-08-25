@@ -2,14 +2,17 @@ package net.emb.hcat.gui.core.imports;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-
-import net.emb.hcat.gui.core.messages.Messages;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
+
+import net.emb.hcat.gui.core.messages.Messages;
 
 public class SelectionPage extends WizardPage {
 	private Text workspace;
@@ -21,6 +24,8 @@ public class SelectionPage extends WizardPage {
 	private Button singleModus;
 	private Button batchModus;
 
+	private String workspaceStr;
+
 	public SelectionPage() {
 		super("selectionPage"); //$NON-NLS-1$
 		setTitle(Messages.SelectionPage_Title);
@@ -28,8 +33,8 @@ public class SelectionPage extends WizardPage {
 	}
 
 	@Override
-	public void createControl(Composite parent) {
-		Composite container = new Composite(parent, SWT.NONE);
+	public void createControl(final Composite parent) {
+		final Composite container = new Composite(parent, SWT.NONE);
 
 		setControl(container);
 		container.setLayout(new GridLayout(3, false));
@@ -42,16 +47,31 @@ public class SelectionPage extends WizardPage {
 		workspaceName.setText("");
 		workspaceName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
-		Label lblWorkspace = new Label(container, SWT.NONE);
+		final Label lblWorkspace = new Label(container, SWT.NONE);
 		lblWorkspace.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblWorkspace.setText(Messages.SelectionPage_lblWorkspace_text);
 
+		workspaceStr = System.getProperty("user.dir");
 		workspace = new Text(container, SWT.BORDER);
-		workspace.setText("");
+		workspace.setText(workspaceStr);
 		workspace.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		workspace.addModifyListener(e -> workspaceStr = workspace.getText());
 
 		select = new Button(container, SWT.NONE);
 		select.setText(Messages.SelectionPage_button_text);
+		select.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(final SelectionEvent e) {
+				final DirectoryDialog dialog = new DirectoryDialog(getShell(), SWT.OPEN);
+				dialog.setFilterPath(workspace.getText());
+				dialog.setText("Choose directory");
+				dialog.setText("Choose a directory, where your haplotypes reside.");
+				final String directory = dialog.open();
+				if (directory != null) {
+					workspace.setText(directory);
+				}
+			}
+		});
 
 		lblModus = new Label(container, SWT.NONE);
 		lblModus.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -86,5 +106,9 @@ public class SelectionPage extends WizardPage {
 
 	public Text getWorkspaceName() {
 		return workspaceName;
+	}
+
+	public String getWorkspaceStr() {
+		return workspaceStr;
 	}
 }

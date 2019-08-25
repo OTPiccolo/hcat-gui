@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import net.emb.hcat.gui.core.Constants;
 import net.emb.hcat.gui.core.base.BaseContext;
 
 public class WizardDialogContext extends BaseContext {
@@ -33,7 +34,7 @@ public class WizardDialogContext extends BaseContext {
 	}
 
 	public void setWorkspace(final File workspace) {
-		firePropertyChange("workspace", this.workspace, this.workspace = workspace);
+		firePropertyChange(Constants.WORKSPACE_CONTEXT, this.workspace, this.workspace = workspace);
 	}
 
 	public List<HcatFunction> getAutoFunctions() {

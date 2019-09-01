@@ -16,8 +16,6 @@ Require-Bundle: javax.inject;bundle-version="0.0.0";visibility:=reexport,
  org.eclipse.e4.ui.di;bundle-version="0.0.0";visibility:=reexport,
  org.eclipse.e4.core.contexts;bundle-version="0.0.0";visibility:=reexport,
  org.eclipse.core.runtime;bundle-version="0.0.0";visibility:=reexport,
- org.eclipse.ui.navigator,
- org.eclipse.ui,
  org.eclipse.nebula.widgets.grid,
  org.eclipse.osgi.services;bundle-version="3.7.100"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

@@ -4,9 +4,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.ColumnViewer;
+import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.nebula.jface.gridviewer.GridTableViewer;
 import org.eclipse.nebula.jface.gridviewer.GridViewerColumn;
 import org.eclipse.nebula.widgets.grid.Grid;
@@ -43,6 +48,90 @@ public class OverviewComponent {
 		protected abstract String getText(final Sequence sequence);
 
 		protected abstract String getText(final Haplotype haplotype);
+	}
+
+	@SuppressWarnings("unused")
+	private static abstract class EditingSupport extends org.eclipse.jface.viewers.EditingSupport {
+
+		public EditingSupport(final ColumnViewer viewer) {
+			super(viewer);
+		}
+
+		@Override
+		protected boolean canEdit(final Object element) {
+			if (element instanceof Sequence) {
+				return canEdit((Sequence) element);
+			}
+			if (element instanceof Haplotype) {
+				return canEdit((Haplotype) element);
+			}
+			return false;
+		}
+
+		protected boolean canEdit(final Sequence sequence) {
+			return false;
+		}
+
+		protected boolean canEdit(final Haplotype haplotype) {
+			return false;
+		}
+
+		@Override
+		protected Object getValue(final Object element) {
+			if (element instanceof Sequence) {
+				return getValue((Sequence) element);
+			}
+			if (element instanceof Haplotype) {
+				return getValue((Haplotype) element);
+			}
+			return null;
+		}
+
+		protected Object getValue(final Sequence sequence) {
+			return sequence.toString();
+		}
+
+		protected Object getValue(final Haplotype haplotype) {
+			return haplotype.toString();
+		}
+
+		@Override
+		public void setValue(final Object element, final Object value) {
+			if (element instanceof Sequence) {
+				setValue((Sequence) element, value);
+			}
+			if (element instanceof Haplotype) {
+				setValue((Haplotype) element, value);
+			}
+			getViewer().update(element, null);
+		}
+
+		public void setValue(final Sequence element, final Object value) {
+			// Do nothing.
+		}
+
+		public void setValue(final Haplotype element, final Object value) {
+			// Do nothing
+		}
+
+		@Override
+		protected CellEditor getCellEditor(final Object element) {
+			if (element instanceof Sequence) {
+				return getCellEditor((Sequence) element);
+			}
+			if (element instanceof Haplotype) {
+				return getCellEditor((Haplotype) element);
+			}
+			return null;
+		}
+
+		protected CellEditor getCellEditor(final Sequence element) {
+			return null;
+		}
+
+		protected CellEditor getCellEditor(final Haplotype element) {
+			return null;
+		}
 	}
 
 	private Control control;
@@ -89,6 +178,28 @@ public class OverviewComponent {
 				return haplotype.getName();
 			}
 		});
+		idColumn.setEditingSupport(new EditingSupport(viewer) {
+			@Override
+			protected boolean canEdit(final Haplotype haplotype) {
+				return true;
+			}
+
+			@Override
+			protected Object getValue(final Haplotype haplotype) {
+				return haplotype.getName();
+			}
+
+			@Override
+			public void setValue(final Haplotype element, final Object value) {
+				element.setName((String) value);
+				broker.post(EventTopics.UPDATE_HAPLOTYPE, element);
+			}
+
+			@Override
+			protected CellEditor getCellEditor(final Haplotype element) {
+				return new TextCellEditor(viewer.getGrid());
+			}
+		});
 
 		final GridViewerColumn nameColumn = new GridViewerColumn(viewer, SWT.NONE);
 		nameColumn.getColumn().setText(Messages.OverviewComponent_SeqNameColumn);
@@ -112,7 +223,7 @@ public class OverviewComponent {
 
 		final GridViewerColumn seqColumn = new GridViewerColumn(viewer, SWT.NONE);
 		seqColumn.getColumn().setText(Messages.OverviewComponent_SequenceColumn);
-		seqColumn.getColumn().setWidth(400);
+		seqColumn.getColumn().setWidth(500);
 		seqColumn.getColumn().setWordWrap(true);
 		seqColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -132,8 +243,10 @@ public class OverviewComponent {
 		sorter.applySorting();
 
 		final Grid grid = viewer.getGrid();
+		grid.setCellSelectionEnabled(true);
 		grid.setHeaderVisible(true);
 		grid.setAutoHeight(true);
+		grid.enableDefaultKeyListener();
 
 		return viewer;
 	}
@@ -169,6 +282,14 @@ public class OverviewComponent {
 
 	private void updateViewer() {
 		tableViewer.setInput(showAsSequnces ? seqModel : haploModel);
+	}
+
+	@Inject
+	@Optional
+	public void updateHaplotype(@UIEventTopic(EventTopics.UPDATE_HAPLOTYPE) final Haplotype haplotype) {
+		if (haplotype != null && tableViewer != null && !tableViewer.getGrid().isDisposed()) {
+			tableViewer.update(haplotype, null);
+		}
 	}
 
 }

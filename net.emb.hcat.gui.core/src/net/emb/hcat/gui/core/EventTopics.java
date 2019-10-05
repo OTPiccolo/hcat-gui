@@ -28,7 +28,18 @@ public class EventTopics {
 	 * The event topic for the currently selected sequence, for which
 	 * information should be displayed.
 	 */
-	public static final String SELECTED_SEQUENCE = "SelectedSequenec";
+	public static final String SELECTED_SEQUENCE = "SelectedSequence";
+
+	/**
+	 * The event topic that an haplotype's values have been changed and needs to
+	 * be updated.
+	 */
+	public static final String UPDATE_HAPLOTYPE = "UpdateHaplotype";
+	/**
+	 * The event topic that a sequence's values have been changed and needs to
+	 * be updated.
+	 */
+	public static final String UPDATE_SEQUENCE = "UpdateHaplotype";
 
 	/**
 	 * The event topic for the working directory, where the sequences are

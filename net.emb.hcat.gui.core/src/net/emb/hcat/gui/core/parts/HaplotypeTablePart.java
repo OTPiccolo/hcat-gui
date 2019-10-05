@@ -187,7 +187,7 @@ public class HaplotypeTablePart {
 		// Make sure that the haplotype that is used for comparison (master
 		// haplotype) is always at first position.
 		final Map<Haplotype, Difference> compared = new HaplotypeTransformer(haploModel).compareToMaster(sequence);
-		final LinkedHashMap<Haplotype, Difference> input = new LinkedHashMap<Haplotype, Difference>(compared.size());
+		final LinkedHashMap<Haplotype, Difference> input = new LinkedHashMap<>(compared.size());
 		input.put(masterHaplotype, compared.get(masterHaplotype));
 		input.putAll(compared);
 		return input;
@@ -219,6 +219,23 @@ public class HaplotypeTablePart {
 	public void setActiveHaplotypes(@UIEventTopic(EventTopics.ACTIVE_HAPLOTYPES) final List<Haplotype> haplotypes) {
 		haploModel = haplotypes;
 		comboViewer.setInput(haplotypes);
+	}
+
+	@Inject
+	@Optional
+	public void updateHaplotype(@UIEventTopic(EventTopics.UPDATE_HAPLOTYPE) final Haplotype haplotype) {
+		if (haplotype != null && tableViewer != null && !tableViewer.getGrid().isDisposed()) {
+			@SuppressWarnings("unchecked")
+			final Map<Haplotype, Difference> input = (Map<Haplotype, Difference>) tableViewer.getInput();
+			if (input != null) {
+				for (final Entry<Haplotype, Difference> entry : input.entrySet()) {
+					if (entry.getKey().equals(haplotype)) {
+						tableViewer.update(entry, null);
+						break;
+					}
+				}
+			}
+		}
 	}
 
 }

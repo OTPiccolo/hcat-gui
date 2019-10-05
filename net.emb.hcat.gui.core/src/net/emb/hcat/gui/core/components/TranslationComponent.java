@@ -32,6 +32,11 @@ import net.emb.hcat.cli.io.CodonTableReader;
 import net.emb.hcat.cli.sequence.Sequence;
 import net.emb.hcat.gui.core.messages.Messages;
 
+/**
+ * Component to translate sequences into codons.
+ * 
+ * @author OT Piccolo
+ */
 public class TranslationComponent {
 
 	private Control control;
@@ -43,6 +48,13 @@ public class TranslationComponent {
 
 	private List<Sequence> seqModel;
 
+	/**
+	 * Creates this component.
+	 *
+	 * @param parent
+	 *            The parent composite
+	 * @return The top control of this component.
+	 */
 	public Control createComposite(final Composite parent) {
 		final Composite body = new Composite(parent, SWT.NONE);
 		body.setLayout(new GridLayout(2, false));
@@ -177,7 +189,7 @@ public class TranslationComponent {
 			return;
 		}
 
-		final List<Sequence> codons = new ArrayList<Sequence>(seqModel.size());
+		final List<Sequence> codons = new ArrayList<>(seqModel.size());
 		for (final Sequence seq : seqModel) {
 			final CodonTransformer transformer = new CodonTransformer(data, seq);
 			codons.add(transformation.apply(transformer));
@@ -186,6 +198,11 @@ public class TranslationComponent {
 		tableViewer.setInput(codons);
 	}
 
+	/**
+	 * Gets the top control of this component.
+	 *
+	 * @return
+	 */
 	public Control getControl() {
 		return control;
 	}
@@ -195,6 +212,12 @@ public class TranslationComponent {
 		comboViewer.getCombo().setFocus();
 	}
 
+	/**
+	 * Sets the model this component is working on.
+	 *
+	 * @param sequences
+	 *            The sequences this component is working on.
+	 */
 	public void setModel(final List<Sequence> sequences) {
 		seqModel = sequences;
 		updateViewer();

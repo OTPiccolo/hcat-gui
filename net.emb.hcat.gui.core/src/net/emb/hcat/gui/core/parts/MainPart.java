@@ -92,18 +92,42 @@ public class MainPart {
 		broker.post(EventTopics.ACTIVE_HAPLOTYPES, null);
 	}
 
+	/**
+	 * Gets the ID of this part. It must be unique between all parts.
+	 *
+	 * @return The ID of this part.
+	 */
 	public String getId() {
 		return id;
 	}
 
+	/**
+	 * Sets the ID of this part. It must be unique between all parts.
+	 *
+	 * @param id
+	 *            The ID of this part. Usually it is the path to the sequence
+	 *            file that has been opened.
+	 */
 	public void setId(final String id) {
 		this.id = id;
 	}
 
+	/**
+	 * Gets all sequences that are displayed in this part.
+	 *
+	 * @return All sequences.
+	 */
 	public List<Sequence> getSequences() {
 		return sequences;
 	}
 
+	/**
+	 * Sets all sequences that are displayed in this part. From these sequences,
+	 * the haplotypes will be generated.
+	 *
+	 * @param sequences
+	 *            The sequences. May be null to display nothing.
+	 */
 	public void setSequences(final List<Sequence> sequences) {
 		this.sequences = sequences;
 		haplotypes = sequences == null ? null : Haplotype.createHaplotypes(sequences);
@@ -116,6 +140,11 @@ public class MainPart {
 		codon.setModel(getSequences());
 	}
 
+	/**
+	 * Gets all haplotypes thar are displayed in this part.
+	 * 
+	 * @return
+	 */
 	public List<Haplotype> getHaplotypes() {
 		return haplotypes;
 	}

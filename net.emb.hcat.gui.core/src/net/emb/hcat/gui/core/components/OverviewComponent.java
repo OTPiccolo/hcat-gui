@@ -31,6 +31,11 @@ import net.emb.hcat.gui.core.EventTopics;
 import net.emb.hcat.gui.core.messages.Messages;
 import net.emb.hcat.gui.core.parts.ColumnSorter;
 
+/**
+ * Component to display an overview over sequences and haplotypes.
+ * 
+ * @author OT Piccolo
+ */
 public class OverviewComponent {
 
 	// Maybe use StyledCellLabelProvider?
@@ -146,6 +151,13 @@ public class OverviewComponent {
 
 	private boolean showAsSequnces;
 
+	/**
+	 * Creates this component.
+	 *
+	 * @param parent
+	 *            The parent composite
+	 * @return The top control of this component.
+	 */
 	public Control createComposite(final Composite parent) {
 		final Composite body = new Composite(parent, SWT.NONE);
 		body.setLayout(new GridLayout(1, false));
@@ -266,6 +278,11 @@ public class OverviewComponent {
 		return button;
 	}
 
+	/**
+	 * Gets the top control of this component.
+	 *
+	 * @return
+	 */
 	public Control getControl() {
 		return control;
 	}
@@ -275,6 +292,15 @@ public class OverviewComponent {
 		tableViewer.getGrid().setFocus();
 	}
 
+	/**
+	 * Sets the model this component is working on.
+	 *
+	 * @param haplotypes
+	 *            The haplotypes this component is working on. Must be the
+	 *            haplotypes corresponding to the given sequences.
+	 * @param sequences
+	 *            The sequences this component is working on.
+	 */
 	public void setModel(final List<Haplotype> haplotypes, final List<Sequence> sequences) {
 		seqModel = sequences;
 		haploModel = haplotypes;
@@ -293,18 +319,46 @@ public class OverviewComponent {
 		}
 	}
 
+	/**
+	 * Whether the component shows sequences.
+	 *
+	 * @return <code>true</code>, if sequences are shown, <code>false</code>
+	 *         otherwise.
+	 * @see #isShowAsHaplotypes()
+	 */
 	public boolean isShowAsSequences() {
 		return showAsSequnces;
 	}
 
+	/**
+	 * Whether the component shows haplotypes.
+	 *
+	 * @return <code>true</code>, if haplotypes are shown, <code>false</code>
+	 *         otherwise.
+	 * @see #isShowAsSequences()
+	 */
 	public boolean isShowAsHaplotypes() {
 		return !showAsSequnces;
 	}
 
+	/**
+	 * Gets the currently selected sequence.
+	 *
+	 * @return The currently selected sequence, or <code>null</code>, if no
+	 *         sequence is selected or haplotypes are shown.
+	 * @see #isShowAsSequences()
+	 */
 	public Sequence getSelectedSequence() {
 		return isShowAsSequences() ? (Sequence) ((IStructuredSelection) tableViewer.getSelection()).getFirstElement() : null;
 	}
 
+	/**
+	 * Gets the currently selected haplotype.
+	 *
+	 * @return The currently selected haplotype, or <code>null</code>, if no
+	 *         sequence is selected or sequences are shown.
+	 * @see #isShowAsHaplotypes()
+	 */
 	public Haplotype getSelectedHaplotype() {
 		return isShowAsHaplotypes() ? (Haplotype) ((IStructuredSelection) tableViewer.getSelection()).getFirstElement() : null;
 	}

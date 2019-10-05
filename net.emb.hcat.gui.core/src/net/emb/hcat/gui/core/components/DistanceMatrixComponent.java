@@ -28,6 +28,11 @@ import net.emb.hcat.cli.haplotype.Haplotype;
 import net.emb.hcat.gui.core.EventTopics;
 import net.emb.hcat.gui.core.messages.Messages;
 
+/**
+ * Component to show a distance matrix for sequences.
+ * 
+ * @author OT Piccolo
+ */
 public class DistanceMatrixComponent {
 
 	private Control control;
@@ -38,6 +43,13 @@ public class DistanceMatrixComponent {
 	@Inject
 	private IEventBroker broker;
 
+	/**
+	 * Creates this component.
+	 *
+	 * @param parent
+	 *            The parent composite
+	 * @return The top control of this component.
+	 */
 	public Control createComposite(final Composite parent) {
 		final Composite body = new Composite(parent, SWT.NONE);
 		body.setLayout(new GridLayout(1, false));
@@ -119,6 +131,11 @@ public class DistanceMatrixComponent {
 		return viewer;
 	}
 
+	/**
+	 * Gets the top control of this component.
+	 *
+	 * @return
+	 */
 	public Control getControl() {
 		return control;
 	}
@@ -128,6 +145,12 @@ public class DistanceMatrixComponent {
 		tableViewer.getGrid().setFocus();
 	}
 
+	/**
+	 * Sets the model this component is working on.
+	 *
+	 * @param haplotypes
+	 *            The haplotypes this component is working on.
+	 */
 	public void setModel(final List<Haplotype> haplotypes) {
 		haploModel = haplotypes;
 		updateViewer();

@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.e4.ui.model.application.ui.MUIElement;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.UIEvents.EventTags;
 import org.eclipse.e4.ui.workbench.UIEvents.UILifeCycle;
@@ -71,10 +72,24 @@ public class MainPart {
 	}
 
 	@PreDestroy
-	public void destroy() {
+	public void destroy(final MPart part) {
 		if (partListener != null) {
 			broker.unsubscribe(partListener);
+			clearWorkbench(part);
 		}
+	}
+
+	// Hack that the HaplotypeTablePart will be cleared when no part is still
+	// open.
+	private void clearWorkbench(final MPart part) {
+		for (final MUIElement element : part.getParent().getChildren()) {
+			if (element.isToBeRendered()) {
+				return;
+			}
+		}
+
+		broker.post(EventTopics.ACTIVE_SEQUENCES, null);
+		broker.post(EventTopics.ACTIVE_HAPLOTYPES, null);
 	}
 
 	public String getId() {
@@ -92,10 +107,10 @@ public class MainPart {
 	public void setSequences(final List<Sequence> sequences) {
 		this.sequences = sequences;
 		haplotypes = sequences == null ? null : Haplotype.createHaplotypes(sequences);
-		updateItems();
+		updateComponents();
 	}
 
-	private void updateItems() {
+	private void updateComponents() {
 		overview.setModel(getHaplotypes(), getSequences());
 		matrix.setModel(getHaplotypes());
 		codon.setModel(getSequences());
@@ -109,6 +124,11 @@ public class MainPart {
 		if (isPart(e)) {
 			broker.post(EventTopics.ACTIVE_SEQUENCES, getSequences());
 			broker.post(EventTopics.ACTIVE_HAPLOTYPES, getHaplotypes());
+			if (overview.isShowAsHaplotypes()) {
+				broker.post(EventTopics.SELECTED_HAPLOTYPE, overview.getSelectedHaplotype());
+			} else if (overview.isShowAsSequences()) {
+				broker.post(EventTopics.SELECTED_SEQUENCE, overview.getSelectedSequence());
+			}
 		}
 	}
 

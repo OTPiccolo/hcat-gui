@@ -46,7 +46,7 @@ public class OpenHandler {
 	}
 
 	private List<Sequence> getSequences(final Path path) {
-		final List<Sequence> sequences = new ArrayList<Sequence>();
+		final List<Sequence> sequences = new ArrayList<>();
 		final ESequenceType type = getSequenceType(path);
 		if (type != null) {
 			try (ISequenceReader reader = type.createReader(new BufferedReader(new FileReader(path.toString())))) {
@@ -69,6 +69,8 @@ public class OpenHandler {
 				return ESequenceType.FASTA;
 			case "phy":
 				return ESequenceType.PHYLIP;
+			default:
+				return null;
 			}
 		}
 		return null;

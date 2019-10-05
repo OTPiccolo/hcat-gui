@@ -69,6 +69,9 @@ public class HaplotypeTablePart {
 			@SuppressWarnings("unchecked")
 			@Override
 			public Object[] getElements(final Object inputElement) {
+				if (inputElement == null) {
+					return new Object[0];
+				}
 				return ((Collection<Haplotype>) inputElement).stream().flatMap(h -> h.stream()).collect(Collectors.toList()).toArray();
 			}
 		});
@@ -171,6 +174,9 @@ public class HaplotypeTablePart {
 	}
 
 	private Haplotype findHaplotype(final Sequence sequence) {
+		if (sequence == null) {
+			return null;
+		}
 		for (final Haplotype haplotype : haploModel) {
 			if (haplotype.belongsToHaplotype(sequence)) {
 				return haplotype;
@@ -209,9 +215,9 @@ public class HaplotypeTablePart {
 	public void setSelectedSequence(@UIEventTopic(EventTopics.SELECTED_SEQUENCE) final Sequence sequence) {
 		if (sequence == null) {
 			comboViewer.setSelection(StructuredSelection.EMPTY, true);
-			return;
+		} else {
+			comboViewer.setSelection(new StructuredSelection(sequence), true);
 		}
-		comboViewer.setSelection(new StructuredSelection(sequence), true);
 	}
 
 	@Inject
@@ -219,6 +225,7 @@ public class HaplotypeTablePart {
 	public void setActiveHaplotypes(@UIEventTopic(EventTopics.ACTIVE_HAPLOTYPES) final List<Haplotype> haplotypes) {
 		haploModel = haplotypes;
 		comboViewer.setInput(haplotypes);
+		tableViewer.setInput(null);
 	}
 
 	@Inject

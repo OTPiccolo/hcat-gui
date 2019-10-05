@@ -11,6 +11,7 @@ import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.nebula.jface.gridviewer.GridTableViewer;
 import org.eclipse.nebula.jface.gridviewer.GridViewerColumn;
@@ -290,6 +291,22 @@ public class OverviewComponent {
 		if (haplotype != null && tableViewer != null && !tableViewer.getGrid().isDisposed()) {
 			tableViewer.update(haplotype, null);
 		}
+	}
+
+	public boolean isShowAsSequences() {
+		return showAsSequnces;
+	}
+
+	public boolean isShowAsHaplotypes() {
+		return !showAsSequnces;
+	}
+
+	public Sequence getSelectedSequence() {
+		return isShowAsSequences() ? (Sequence) ((IStructuredSelection) tableViewer.getSelection()).getFirstElement() : null;
+	}
+
+	public Haplotype getSelectedHaplotype() {
+		return isShowAsHaplotypes() ? (Haplotype) ((IStructuredSelection) tableViewer.getSelection()).getFirstElement() : null;
 	}
 
 }

@@ -6,6 +6,7 @@ public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "net.emb.hcat.gui.core.messages.messages"; //$NON-NLS-1$
 	public static String DistanceMatrixComponent_IdColumn;
 	public static String DistanceMatrixComponent_MinMaxFooter;
+	public static String HaplotypeComponent_MaxFooter;
 	public static String HaplotypeTablePart_IdColumn;
 	public static String HaplotypeTablePart_NotAvailable;
 	public static String HaplotypeTablePart_MasterSequenceLabel;

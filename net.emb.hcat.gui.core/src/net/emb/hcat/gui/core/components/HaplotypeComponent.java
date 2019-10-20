@@ -1,6 +1,8 @@
 package net.emb.hcat.gui.core.components;
 
+import java.text.MessageFormat;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,23 +110,26 @@ public class HaplotypeComponent {
 		viewer.setContentProvider(new IStructuredContentProvider() {
 			@Override
 			public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput) {
+				final GridTableViewer gridViewer = (GridTableViewer) viewer;
 				if (oldInput != null) {
 					// Remove old columns. Skip ID and sequence column as always
 					// present.
-					final GridColumn[] columns = ((GridTableViewer) viewer).getGrid().getColumns();
+					final GridColumn[] columns = gridViewer.getGrid().getColumns();
 					for (int i = 2; i < columns.length; i++) {
 						columns[i].dispose();
 					}
+					columns[0].setFooterText(""); //$NON-NLS-1$
 				}
 
 				if (newInput != null) {
 					// Add new columns. Skip ID column as always present.
 					@SuppressWarnings("unchecked")
 					final Map<Haplotype, Difference> map = (Map<Haplotype, Difference>) newInput;
+					final int maxDistance = map.isEmpty() ? 0 : map.values().stream().map(Difference::getDistance).max(Comparator.naturalOrder()).get();
 					final SortedSet<Integer> positions = new TreeSet<>();
 					map.values().stream().map(Difference::getDifferencePosition).forEach(positions::addAll);
 					for (final Integer pos : positions) {
-						final GridViewerColumn column = new GridViewerColumn((GridTableViewer) viewer, SWT.NONE);
+						final GridViewerColumn column = new GridViewerColumn(gridViewer, SWT.NONE);
 						column.getColumn().setText(pos.toString());
 						column.getColumn().setWidth(40);
 						column.setLabelProvider(new ColumnLabelProvider() {
@@ -142,6 +147,10 @@ public class HaplotypeComponent {
 							}
 						});
 					}
+
+					// Set max distance information.
+					final String footer = MessageFormat.format(Messages.HaplotypeComponent_MaxFooter, maxDistance);
+					gridViewer.getGrid().getColumn(0).setFooterText(footer);
 				}
 			}
 
@@ -181,6 +190,7 @@ public class HaplotypeComponent {
 		final Grid grid = viewer.getGrid();
 		grid.setHeaderVisible(true);
 		grid.setAutoHeight(true);
+		grid.setFooterVisible(true);
 
 		return viewer;
 	}

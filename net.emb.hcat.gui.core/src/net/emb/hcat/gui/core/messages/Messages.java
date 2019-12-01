@@ -20,6 +20,15 @@ public class Messages extends NLS {
 	public static String MainPart_DistanceMatrixTab;
 	public static String MainPart_OverviewTab;
 	public static String MainPart_TranslationTab;
+	public static String OpenHandler_errorEmptyFileMessage;
+	public static String OpenHandler_errorEmptyFileTitle;
+	public static String OpenHandler_errorUnknownFormatMessage;
+	public static String OpenHandler_errorUnknownFormatTitle;
+	public static String OpenHandler_openDialogAllFiles;
+	public static String OpenHandler_openDialogAllFormats;
+	public static String OpenHandler_openDialogFastaFormat;
+	public static String OpenHandler_openDialogTitle;
+	public static String OpenHandler_openDialogPhylipFormat;
 	public static String OverviewComponent_IdColumn;
 	public static String OverviewComponent_NotAvailable;
 	public static String OverviewComponent_SeqNameColumn;

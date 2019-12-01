@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,11 +16,16 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.e4.ui.workbench.modeling.EPartService.PartState;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Shell;
 
 import net.emb.hcat.cli.io.ESequenceType;
 import net.emb.hcat.cli.io.ISequenceReader;
 import net.emb.hcat.cli.sequence.Sequence;
 import net.emb.hcat.gui.core.Constants;
+import net.emb.hcat.gui.core.messages.Messages;
 import net.emb.hcat.gui.core.parts.MainPart;
 
 public class OpenHandler {
@@ -30,15 +36,41 @@ public class OpenHandler {
 	}
 
 	@Execute
-	public void execute(final EPartService partService, @Named(Constants.OPEN_FILE_COMMAND_PARAMETER_ID) final String fileParam) {
+	public void execute(final EPartService partService, final Shell shell) {
+		final FileDialog dialog = createFileDialog(shell);
+		final String fileName = dialog.open();
+
+		if (fileName != null) {
+			final Path path = Paths.get(fileName);
+			openPart(partService, shell, path);
+		}
+	}
+
+	private FileDialog createFileDialog(final Shell shell) {
+		final FileDialog dialog = new FileDialog(shell, SWT.OPEN);
+		dialog.setText(Messages.OpenHandler_openDialogTitle);
+		dialog.setFilterExtensions(new String[] { "*.fas;*.txt;*.phy", "*.fas;*.txt", "*.phy", "*" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		dialog.setFilterNames(new String[] { Messages.OpenHandler_openDialogAllFormats, Messages.OpenHandler_openDialogFastaFormat, Messages.OpenHandler_openDialogPhylipFormat, Messages.OpenHandler_openDialogAllFiles });
+		return dialog;
+	}
+
+	@Execute
+	public void execute(final EPartService partService, final Shell shell, @Named(Constants.OPEN_FILE_COMMAND_PARAMETER_ID) final String fileParam) {
 		final Path path = Paths.get(fileParam);
 
+		openPart(partService, shell, path);
+	}
+
+	private void openPart(final EPartService partService, final Shell shell, final Path path) {
 		MPart part = findPart(partService, path);
 		if (part == null) {
 			part = createPart(partService, path);
 		}
 
 		final List<Sequence> sequences = getSequences(path);
+		if (sequences.isEmpty()) {
+			createMessageDialog(shell, path);
+		}
 		final MainPart mainPart = (MainPart) part.getObject();
 		mainPart.setSequences(sequences);
 
@@ -64,10 +96,10 @@ public class OpenHandler {
 		if (index != -1) {
 			final String ending = fileName.substring(index + 1).toLowerCase();
 			switch (ending) {
-			case "fas":
-			case "txt":
+			case "fas": //$NON-NLS-1$
+			case "txt": //$NON-NLS-1$
 				return ESequenceType.FASTA;
-			case "phy":
+			case "phy": //$NON-NLS-1$
 				return ESequenceType.PHYLIP;
 			default:
 				return null;
@@ -108,5 +140,27 @@ public class OpenHandler {
 		mainPart.setId(path.toString());
 
 		return part;
+	}
+
+	private void createMessageDialog(final Shell shell, final Path path) {
+		final ESequenceType sequenceType = getSequenceType(path);
+
+		int kind;
+		String title;
+		String message;
+
+		if (sequenceType == null) {
+			// Opened file format could not be determined.
+			kind = MessageDialog.ERROR;
+			title = Messages.OpenHandler_errorUnknownFormatTitle;
+			message = MessageFormat.format(Messages.OpenHandler_errorUnknownFormatMessage, path);
+		} else {
+			// File format was recognized, but empty.
+			kind = MessageDialog.WARNING;
+			title = Messages.OpenHandler_errorEmptyFileTitle;
+			message = MessageFormat.format(Messages.OpenHandler_errorEmptyFileMessage, path, sequenceType);
+		}
+
+		MessageDialog.open(kind, shell, title, message, SWT.NONE);
 	}
 }

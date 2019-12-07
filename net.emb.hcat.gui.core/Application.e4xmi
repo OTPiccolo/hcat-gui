@@ -33,7 +33,7 @@
   </children>
   <handlers xmi:id="_6wlLfcgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handler.quitCommand" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.handlers.QuitHandler" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
   <handlers xmi:id="_6wlLgcgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handler.openCommand" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.handlers.OpenHandler" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
-  <handlers xmi:id="_6wlLhMgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handler.saveCommand" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.handlers.SaveHandler" command="_6wlLg8gZEeSyMNYR5xypkQ"/>
+  <handlers xmi:id="_6wlLhMgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handler.saveCommand" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.handlers.SaveAsHandler" command="_6wlLg8gZEeSyMNYR5xypkQ"/>
   <handlers xmi:id="_6wlLh8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handler.aboutCommand" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.handlers.AboutHandler" command="_6wlLhsgZEeSyMNYR5xypkQ"/>
   <bindingTables xmi:id="_6wlLfsgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.bindingtable" bindingContext="_6wlLecgZEeSyMNYR5xypkQ">
     <bindings xmi:id="_6wlLf8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.keybinding.m1q" keySequence="M1+Q" command="_6wlLfMgZEeSyMNYR5xypkQ"/>

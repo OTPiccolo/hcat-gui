@@ -68,8 +68,8 @@ public class SaveAsHandler {
 
 	private FileDialog createDialog(final Shell shell) {
 		final FileDialog dialog = new FileDialog(shell, SWT.SAVE);
-		dialog.setFilterExtensions(new String[] { "*.fas", "*.phy", "*.phy" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		dialog.setFilterNames(new String[] { Messages.SaveAsHandler_fastaFileExtension, Messages.SaveAsHandler_phylipFileExtension, Messages.SaveAsHandler_phylipTcsFileExtension });
+		dialog.setFilterExtensions(new String[] { "*.fas", "*.phy", "*.phy", "*.csv" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		dialog.setFilterNames(new String[] { Messages.SaveAsHandler_fastaFileExtension, Messages.SaveAsHandler_phylipFileExtension, Messages.SaveAsHandler_phylipTcsFileExtension, Messages.SaveAsHandler_csvFileExtension });
 		return dialog;
 	}
 

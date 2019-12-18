@@ -55,7 +55,7 @@ public class OpenHandler {
 	}
 
 	@Execute
-	public void execute(final EPartService partService, final Shell shell, @Named(Constants.OPEN_FILE_COMMAND_PARAMETER_ID) final String fileParam) {
+	public void execute(final EPartService partService, final Shell shell, @Named(Constants.OPEN_COMMAND_PARAMETER_ID) final String fileParam) {
 		final Path path = Paths.get(fileParam);
 
 		openPart(partService, shell, path);

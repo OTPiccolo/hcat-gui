@@ -49,7 +49,7 @@ public class WorkspaceSelectionManager {
 		shell.dispose();
 		final String workspace = wizard.getWorkspace();
 
-		eclipseContext.set(Constants.WORKSPACE_CONTEXT, Paths.get(workspace));
+		eclipseContext.set(Constants.WORKSPACE_CONTEXT_ID, Paths.get(workspace));
 		broker.post(EventTopics.WORKING_DIRECTORY, Paths.get(workspace));
 	}
 

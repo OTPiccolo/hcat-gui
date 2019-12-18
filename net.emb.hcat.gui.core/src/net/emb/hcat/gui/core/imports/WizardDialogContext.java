@@ -34,7 +34,7 @@ public class WizardDialogContext extends BaseContext {
 	}
 
 	public void setWorkspace(final File workspace) {
-		firePropertyChange(Constants.WORKSPACE_CONTEXT, this.workspace, this.workspace = workspace);
+		firePropertyChange(Constants.WORKSPACE_CONTEXT_ID, this.workspace, this.workspace = workspace);
 	}
 
 	public List<HcatFunction> getAutoFunctions() {

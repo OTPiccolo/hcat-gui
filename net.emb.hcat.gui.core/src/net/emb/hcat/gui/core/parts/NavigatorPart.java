@@ -58,7 +58,7 @@ public class NavigatorPart {
 	public void createComposite(final Composite parent, final IEclipseContext context) {
 		parent.setLayout(new FillLayout());
 		setViewer(createViewer(parent));
-		setWorkingDirectory((Path) context.get(Constants.WORKSPACE_CONTEXT));
+		setWorkingDirectory((Path) context.get(Constants.WORKSPACE_CONTEXT_ID));
 		try (InputStream is = getClass().getResourceAsStream("/icons/folder.gif")) { //$NON-NLS-1$
 			folderImage = new Image(parent.getDisplay(), is);
 		} catch (final IOException e) {
@@ -201,8 +201,8 @@ public class NavigatorPart {
 	private void openFile(final Path path) {
 		final ParameterizedCommand pcmd;
 		try {
-			final Command cmd = commandService.getCommand(Constants.OPEN_FILE_COMMAND_ID);
-			final IParameter columnParam = cmd.getParameter(Constants.OPEN_FILE_COMMAND_PARAMETER_ID);
+			final Command cmd = commandService.getCommand(Constants.OPEN_COMMAND_ID);
+			final IParameter columnParam = cmd.getParameter(Constants.OPEN_COMMAND_PARAMETER_ID);
 			final Parameterization param = new Parameterization(columnParam, path.toString());
 			pcmd = new ParameterizedCommand(cmd, new Parameterization[] { param });
 		} catch (final NotDefinedException e) {

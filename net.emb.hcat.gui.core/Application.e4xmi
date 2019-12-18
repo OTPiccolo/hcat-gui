@@ -20,6 +20,9 @@
         <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLjMgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handleditem.save" label="Save" iconURI="platform:/plugin/net.emb.hcat.gui.core/icons/save_edit.png" command="_6wlLg8gZEeSyMNYR5xypkQ"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLjcgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handleditem.quit" label="Quit" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
       </children>
+      <children xsi:type="menu:Menu" xmi:id="_Er-Q0CGrEeqL6q41GEyy8w" elementId="edit" label="Edit">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_WSFy8CGrEeqL6q41GEyy8w" elementId="net.emb.hcat.gui.core.handleditem.cutSequence" label="Cut Sequence" command="_HVJSgCGrEeqL6q41GEyy8w"/>
+      </children>
       <children xsi:type="menu:Menu" xmi:id="_6wlLjsgZEeSyMNYR5xypkQ" elementId="help" label="Help">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLj8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handleditem.about" label="About" command="_6wlLhsgZEeSyMNYR5xypkQ"/>
       </children>
@@ -31,10 +34,11 @@
       </children>
     </trimBars>
   </children>
-  <handlers xmi:id="_6wlLfcgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handler.quitCommand" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.handlers.QuitHandler" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
-  <handlers xmi:id="_6wlLgcgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handler.openCommand" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.handlers.OpenHandler" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
-  <handlers xmi:id="_6wlLhMgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handler.saveCommand" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.handlers.SaveAsHandler" command="_6wlLg8gZEeSyMNYR5xypkQ"/>
-  <handlers xmi:id="_6wlLh8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handler.aboutCommand" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.handlers.AboutHandler" command="_6wlLhsgZEeSyMNYR5xypkQ"/>
+  <handlers xmi:id="_6wlLfcgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handler.quitHandler" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.handlers.QuitHandler" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
+  <handlers xmi:id="_6wlLgcgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handler.openHandler" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.handlers.OpenHandler" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
+  <handlers xmi:id="_6wlLhMgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handler.saveHandler" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.handlers.SaveAsHandler" command="_6wlLg8gZEeSyMNYR5xypkQ"/>
+  <handlers xmi:id="_6wlLh8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handler.aboutHandler" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.handlers.AboutHandler" command="_6wlLhsgZEeSyMNYR5xypkQ"/>
+  <handlers xmi:id="_vAetYCGtEeqL6q41GEyy8w" elementId="net.emb.hcat.gui.core.handler.cutSequenceHandler" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.handlers.CutSequenceHandler" command="_HVJSgCGrEeqL6q41GEyy8w"/>
   <bindingTables xmi:id="_6wlLfsgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.bindingtable" bindingContext="_6wlLecgZEeSyMNYR5xypkQ">
     <bindings xmi:id="_6wlLf8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.keybinding.m1q" keySequence="M1+Q" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
     <bindings xmi:id="_6wlLgsgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.keybinding.m1o" keySequence="M1+O" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
@@ -48,10 +52,11 @@
   <descriptors xmi:id="_wGC0EJXQEemyobe59e_BnQ" elementId="net.emb.hcat.gui.core.partdescriptor.main" label="Main Part" allowMultiple="true" category="editorArea" closeable="true" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.parts.MainPart"/>
   <commands xmi:id="_6wlLfMgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.file.exit" commandName="quitCommand"/>
   <commands xmi:id="_6wlLgMgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.file.open" commandName="openCommand">
-    <parameters xmi:id="_0FOWIJpUEemHVMZxI2y8fw" elementId="org.eclipse.ui.file.open.parameter.file" name="File" optional="false"/>
+    <parameters xmi:id="_0FOWIJpUEemHVMZxI2y8fw" elementId="org.eclipse.ui.file.open.parameter.file" name="File"/>
   </commands>
   <commands xmi:id="_6wlLg8gZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.file.save" commandName="saveCommand"/>
   <commands xmi:id="_6wlLhsgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.help.aboutAction" commandName="aboutCommand"/>
+  <commands xmi:id="_HVJSgCGrEeqL6q41GEyy8w" elementId="net.emb.hcat.ui.cutSequence" commandName="cutSequenceCommand"/>
   <addons xmi:id="_6wlLcsgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_6wlLc8gZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_6wlLdMgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

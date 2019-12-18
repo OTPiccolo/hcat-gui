@@ -2,8 +2,14 @@ package net.emb.hcat.gui.core.messages;
 
 import org.eclipse.osgi.util.NLS;
 
+@SuppressWarnings("javadoc")
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "net.emb.hcat.gui.core.messages.messages"; //$NON-NLS-1$
+	public static String CutSequenceWizard_fromSpinner;
+	public static String CutSequenceWizard_pageDescription;
+	public static String CutSequenceWizard_pageTitle;
+	public static String CutSequenceWizard_toSpinner;
+	public static String CutSequenceWizard_wizardTitle;
 	public static String DistanceMatrixComponent_IdColumn;
 	public static String DistanceMatrixComponent_MinMaxFooter;
 	public static String HaplotypeComponent_MaxFooter;

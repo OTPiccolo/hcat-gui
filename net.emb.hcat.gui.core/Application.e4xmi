@@ -15,16 +15,16 @@
       </children>
     </children>
     <mainMenu xmi:id="_6wlLicgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.main.menu">
-      <children xsi:type="menu:Menu" xmi:id="_6wlLisgZEeSyMNYR5xypkQ" elementId="file" label="File">
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLi8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handleditem.file.open" label="Open" iconURI="platform:/plugin/net.emb.hcat.gui.core/icons/sample.png" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLjMgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handleditem.save" label="Save" iconURI="platform:/plugin/net.emb.hcat.gui.core/icons/save_edit.png" command="_6wlLg8gZEeSyMNYR5xypkQ"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLjcgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handleditem.quit" label="Quit" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
+      <children xsi:type="menu:Menu" xmi:id="_6wlLisgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.menu.file" label="%Application_fileMenu">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLi8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handleditem.file.open" label="%Application_fileMenu_Open" iconURI="platform:/plugin/net.emb.hcat.gui.core/icons/sample.png" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLjMgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handleditem.save" label="%Application_fileMenu_Save" iconURI="platform:/plugin/net.emb.hcat.gui.core/icons/save_edit.png" command="_6wlLg8gZEeSyMNYR5xypkQ"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLjcgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handleditem.quit" label="%Application_fileMenu_Quit" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
       </children>
-      <children xsi:type="menu:Menu" xmi:id="_Er-Q0CGrEeqL6q41GEyy8w" elementId="edit" label="Edit">
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_WSFy8CGrEeqL6q41GEyy8w" elementId="net.emb.hcat.gui.core.handleditem.cutSequence" label="Cut Sequence" command="_HVJSgCGrEeqL6q41GEyy8w"/>
+      <children xsi:type="menu:Menu" xmi:id="_Er-Q0CGrEeqL6q41GEyy8w" elementId="net.emb.hcat.gui.core.menu.edit" label="%Application_editMenu" mnemonics="">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_WSFy8CGrEeqL6q41GEyy8w" elementId="net.emb.hcat.gui.core.handleditem.cutSequence" label="%Application_editMenu_CutSequence" command="_HVJSgCGrEeqL6q41GEyy8w"/>
       </children>
-      <children xsi:type="menu:Menu" xmi:id="_6wlLjsgZEeSyMNYR5xypkQ" elementId="help" label="Help">
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLj8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handleditem.about" label="About" command="_6wlLhsgZEeSyMNYR5xypkQ"/>
+      <children xsi:type="menu:Menu" xmi:id="_6wlLjsgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.menu.help" label="%Application_helpMenu">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLj8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handleditem.about" label="%Application_helpMenu_About" command="_6wlLhsgZEeSyMNYR5xypkQ"/>
       </children>
     </mainMenu>
     <trimBars xmi:id="_6wlLlcgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.trimbar.top">

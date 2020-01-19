@@ -20,6 +20,7 @@ Require-Bundle: javax.inject;bundle-version="0.0.0";visibility:=reexport,
  org.eclipse.osgi.services;bundle-version="3.7.100"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
+Bundle-Localization: src/net/emb/hcat/gui/core/messages/messages
 Bundle-ClassPath: lib/hcat-cli.jar,.
 Export-Package: net.emb.hcat.cli,net.emb.hcat.cli.codon,net.emb.hcat.cli
  .haplotype,net.emb.hcat.cli.io,net.emb.hcat.gui.core,net.emb.hcat.gui.c

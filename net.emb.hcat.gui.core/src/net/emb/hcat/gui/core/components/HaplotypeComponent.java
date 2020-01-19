@@ -229,23 +229,40 @@ public class HaplotypeComponent {
 	/**
 	 * Gets the top control of this component.
 	 *
-	 * @return
+	 * @return The control, or <code>null</code> if not yet created.
 	 */
 	public Control getControl() {
 		return control;
 	}
 
+	/**
+	 * Sets focus to this component.
+	 */
 	@Focus
 	public void setFocus() {
-		comboViewer.getCombo().setFocus();
+		if (comboViewer != null && !comboViewer.getCombo().isDisposed()) {
+			comboViewer.getCombo().setFocus();
+		}
 	}
 
+	/**
+	 * Selects the given haplotype.
+	 *
+	 * @param haplotype
+	 *            The haplotype to select.
+	 */
 	@Inject
 	@Optional
 	public void setSelectedHaplotype(@UIEventTopic(EventTopics.SELECTED_HAPLOTYPE) final Haplotype haplotype) {
 		setSelectedSequence(haplotype == null ? null : haplotype.getFirstSequence());
 	}
 
+	/**
+	 * Select the given sequence.
+	 *
+	 * @param sequence
+	 *            The sequence to select.
+	 */
 	@Inject
 	@Optional
 	public void setSelectedSequence(@UIEventTopic(EventTopics.SELECTED_SEQUENCE) final Sequence sequence) {
@@ -256,6 +273,12 @@ public class HaplotypeComponent {
 		}
 	}
 
+	/**
+	 * Sets the haplotypes to be displayed in this component.
+	 * 
+	 * @param haplotypes
+	 *            The haplotypes to display.
+	 */
 	@Inject
 	@Optional
 	public void setActiveHaplotypes(@UIEventTopic(EventTopics.ACTIVE_HAPLOTYPES) final List<Haplotype> haplotypes) {
@@ -264,6 +287,12 @@ public class HaplotypeComponent {
 		tableViewer.setInput(null);
 	}
 
+	/**
+	 * Updates the given haplotype.
+	 *
+	 * @param haplotype
+	 *            The haplotype that has been changed.
+	 */
 	@Inject
 	@Optional
 	public void updateHaplotype(@UIEventTopic(EventTopics.UPDATE_HAPLOTYPE) final Haplotype haplotype) {

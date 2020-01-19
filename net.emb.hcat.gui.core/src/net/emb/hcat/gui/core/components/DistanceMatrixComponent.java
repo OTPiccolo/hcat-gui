@@ -30,7 +30,7 @@ import net.emb.hcat.gui.core.messages.Messages;
 
 /**
  * Component to show a distance matrix for sequences.
- * 
+ *
  * @author OT Piccolo
  */
 public class DistanceMatrixComponent {
@@ -134,15 +134,20 @@ public class DistanceMatrixComponent {
 	/**
 	 * Gets the top control of this component.
 	 *
-	 * @return
+	 * @return The control, or <code>null</code> if not yet created.
 	 */
 	public Control getControl() {
 		return control;
 	}
 
+	/**
+	 * Sets focus to this component.
+	 */
 	@Focus
 	public void setFocus() {
-		tableViewer.getGrid().setFocus();
+		if (tableViewer != null && !tableViewer.getGrid().isDisposed()) {
+			tableViewer.getGrid().setFocus();
+		}
 	}
 
 	/**
@@ -160,6 +165,12 @@ public class DistanceMatrixComponent {
 		tableViewer.setInput(haploModel);
 	}
 
+	/**
+	 * Updates the given haplotype.
+	 *
+	 * @param haplotype
+	 *            The haplotype that has been changed.
+	 */
 	@Inject
 	@Optional
 	public void updateHaplotype(@UIEventTopic(EventTopics.UPDATE_HAPLOTYPE) final Haplotype haplotype) {

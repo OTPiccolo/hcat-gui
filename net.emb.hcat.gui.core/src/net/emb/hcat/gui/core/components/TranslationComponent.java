@@ -34,7 +34,7 @@ import net.emb.hcat.gui.core.messages.Messages;
 
 /**
  * Component to translate sequences into codons.
- * 
+ *
  * @author OT Piccolo
  */
 public class TranslationComponent {
@@ -201,15 +201,20 @@ public class TranslationComponent {
 	/**
 	 * Gets the top control of this component.
 	 *
-	 * @return
+	 * @return The control, or <code>null</code> if not yet created.
 	 */
 	public Control getControl() {
 		return control;
 	}
 
+	/**
+	 * Sets focus to this component.
+	 */
 	@Focus
 	public void setFocus() {
-		comboViewer.getCombo().setFocus();
+		if (comboViewer != null && !comboViewer.getCombo().isDisposed()) {
+			comboViewer.getCombo().setFocus();
+		}
 	}
 
 	/**

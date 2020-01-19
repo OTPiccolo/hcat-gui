@@ -33,7 +33,7 @@ import net.emb.hcat.gui.core.parts.ColumnSorter;
 
 /**
  * Component to display an overview over sequences and haplotypes.
- * 
+ *
  * @author OT Piccolo
  */
 public class OverviewComponent {
@@ -281,15 +281,20 @@ public class OverviewComponent {
 	/**
 	 * Gets the top control of this component.
 	 *
-	 * @return
+	 * @return The control, or <code>null</code> if not yet created.
 	 */
 	public Control getControl() {
 		return control;
 	}
 
+	/**
+	 * Sets focus to this component.
+	 */
 	@Focus
 	public void setFocus() {
-		tableViewer.getGrid().setFocus();
+		if (tableViewer != null && !tableViewer.getGrid().isDisposed()) {
+			tableViewer.getGrid().setFocus();
+		}
 	}
 
 	/**
@@ -311,6 +316,12 @@ public class OverviewComponent {
 		tableViewer.setInput(showAsSequnces ? seqModel : haploModel);
 	}
 
+	/**
+	 * Updates the given haplotype.
+	 * 
+	 * @param haplotype
+	 *            The haplotype that has been changed.
+	 */
 	@Inject
 	@Optional
 	public void updateHaplotype(@UIEventTopic(EventTopics.UPDATE_HAPLOTYPE) final Haplotype haplotype) {

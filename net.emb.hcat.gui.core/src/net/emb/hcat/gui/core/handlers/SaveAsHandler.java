@@ -21,8 +21,14 @@ import net.emb.hcat.gui.core.Constants;
 import net.emb.hcat.gui.core.messages.Messages;
 import net.emb.hcat.gui.core.parts.MainPart;
 
+/**
+ * Saves the currently active editor into a new file.
+ * 
+ * @author OT Piccolo
+ */
 public class SaveAsHandler {
 
+	@SuppressWarnings("javadoc")
 	@CanExecute
 	public boolean canExecute(final EPartService partService) {
 		for (final MPart part : partService.getParts()) {
@@ -33,6 +39,7 @@ public class SaveAsHandler {
 		return false;
 	}
 
+	@SuppressWarnings("javadoc")
 	@Execute
 	public void execute(final EPartService partService, final Shell shell) {
 		for (final MPart part : partService.getParts()) {

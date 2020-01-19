@@ -28,13 +28,20 @@ import net.emb.hcat.gui.core.Constants;
 import net.emb.hcat.gui.core.messages.Messages;
 import net.emb.hcat.gui.core.parts.MainPart;
 
+/**
+ * Opens a file to read sequences within.
+ * 
+ * @author OT Piccolo
+ */
 public class OpenHandler {
 
+	@SuppressWarnings("javadoc")
 	@CanExecute
 	public boolean canExecute() {
 		return true;
 	}
 
+	@SuppressWarnings("javadoc")
 	@Execute
 	public void execute(final EPartService partService, final Shell shell) {
 		final FileDialog dialog = createFileDialog(shell);
@@ -46,19 +53,20 @@ public class OpenHandler {
 		}
 	}
 
+	@SuppressWarnings("javadoc")
+	@Execute
+	public void execute(final EPartService partService, final Shell shell, @Named(Constants.OPEN_COMMAND_PARAMETER_ID) final String fileParam) {
+		final Path path = Paths.get(fileParam);
+
+		openPart(partService, shell, path);
+	}
+
 	private FileDialog createFileDialog(final Shell shell) {
 		final FileDialog dialog = new FileDialog(shell, SWT.OPEN);
 		dialog.setText(Messages.OpenHandler_openDialogTitle);
 		dialog.setFilterExtensions(new String[] { "*.fas;*.txt;*.phy", "*.fas;*.txt", "*.phy", "*" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		dialog.setFilterNames(new String[] { Messages.OpenHandler_openDialogAllFormats, Messages.OpenHandler_openDialogFastaFormat, Messages.OpenHandler_openDialogPhylipFormat, Messages.OpenHandler_openDialogAllFiles });
 		return dialog;
-	}
-
-	@Execute
-	public void execute(final EPartService partService, final Shell shell, @Named(Constants.OPEN_COMMAND_PARAMETER_ID) final String fileParam) {
-		final Path path = Paths.get(fileParam);
-
-		openPart(partService, shell, path);
 	}
 
 	private void openPart(final EPartService partService, final Shell shell, final Path path) {

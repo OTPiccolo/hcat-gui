@@ -17,8 +17,14 @@ import net.emb.hcat.gui.core.Constants;
 import net.emb.hcat.gui.core.parts.MainPart;
 import net.emb.hcat.gui.core.wizards.CutSequenceWizard;
 
+/**
+ * Opens a wizard to cut one or more sequences to a specified size.
+ *
+ * @author OT Piccolo
+ */
 public class CutSequenceHandler {
 
+	@SuppressWarnings("javadoc")
 	@CanExecute
 	public boolean canExecute(final EPartService partService) {
 		for (final MPart part : partService.getParts()) {
@@ -29,6 +35,7 @@ public class CutSequenceHandler {
 		return false;
 	}
 
+	@SuppressWarnings("javadoc")
 	@Execute
 	public void execute(final EPartService partService, final Shell shell, final CutSequenceWizard wizard) {
 		for (final MPart part : partService.getParts()) {

@@ -5,6 +5,8 @@ import org.eclipse.osgi.util.NLS;
 @SuppressWarnings("javadoc")
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "net.emb.hcat.gui.core.messages.messages"; //$NON-NLS-1$
+	public static String AboutHandler_message;
+	public static String AboutHandler_title;
 	public static String CutSequenceWizard_fromSpinner;
 	public static String CutSequenceWizard_pageDescription;
 	public static String CutSequenceWizard_pageTitle;
@@ -40,6 +42,8 @@ public class Messages extends NLS {
 	public static String OverviewComponent_SeqNameColumn;
 	public static String OverviewComponent_SequenceColumn;
 	public static String OverviewComponent_ShowAsSequenceButton;
+	public static String QuitHandler_message;
+	public static String QuitHandler_title;
 	public static String SaveAsHandler_csvFileExtension;
 	public static String SaveAsHandler_errorSaveFileMessage;
 	public static String SaveAsHandler_errorSaveFileTitle;

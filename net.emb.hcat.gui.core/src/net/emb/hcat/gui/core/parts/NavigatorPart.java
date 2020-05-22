@@ -38,6 +38,11 @@ import org.eclipse.swt.widgets.Composite;
 import net.emb.hcat.gui.core.Constants;
 import net.emb.hcat.gui.core.EventTopics;
 
+/**
+ * Shows all relevant files of a folder to open them in the editor.
+ *
+ * @author OT Piccolo
+ */
 @SuppressWarnings("restriction")
 public class NavigatorPart {
 
@@ -54,6 +59,14 @@ public class NavigatorPart {
 	private Image folderImage;
 	private Image fileImage;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param parent
+	 *            Parent composite.
+	 * @param context
+	 *            Eclipse context to get information from.
+	 */
 	@PostConstruct
 	public void createComposite(final Composite parent, final IEclipseContext context) {
 		parent.setLayout(new FillLayout());
@@ -86,6 +99,9 @@ public class NavigatorPart {
 		return fileEndings;
 	}
 
+	/**
+	 * Destructor.
+	 */
 	@PreDestroy
 	public void destroy() {
 		if (folderImage != null) {
@@ -96,9 +112,14 @@ public class NavigatorPart {
 		}
 	}
 
+	/**
+	 * Focus method.
+	 */
 	@Focus
 	public void setFocus() {
-		getViewer().getTree().setFocus();
+		if (getViewer() != null && !getViewer().getTree().isDisposed()) {
+			treeViewer.getTree().setFocus();
+		}
 	}
 
 	private TreeViewer getViewer() {
@@ -213,6 +234,12 @@ public class NavigatorPart {
 		handlerService.executeHandler(pcmd);
 	}
 
+	/**
+	 * Sets the working directory, to display files and folders.
+	 * 
+	 * @param path
+	 *            The path of the directory.
+	 */
 	@Inject
 	@Optional
 	public void setWorkingDirectory(@UIEventTopic(EventTopics.WORKING_DIRECTORY) final Path path) {

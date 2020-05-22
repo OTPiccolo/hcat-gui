@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.model.application.ui.MUIElement;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.UIEvents.EventTags;
@@ -29,6 +30,12 @@ import net.emb.hcat.gui.core.components.OverviewComponent;
 import net.emb.hcat.gui.core.components.TranslationComponent;
 import net.emb.hcat.gui.core.messages.Messages;
 
+/**
+ * Main part, containing all relevant information about a list of
+ * sequences/haplotypes.
+ *
+ * @author OT Piccolo
+ */
 public class MainPart {
 
 	@Inject
@@ -44,6 +51,14 @@ public class MainPart {
 
 	private EventHandler partListener;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param parent
+	 *            Parent composite.
+	 * @param context
+	 *            Eclipse context to get information from.
+	 */
 	@PostConstruct
 	public void createComposite(final Composite parent, final IEclipseContext context) {
 		parent.setLayout(new FillLayout());
@@ -71,11 +86,27 @@ public class MainPart {
 		broker.subscribe(UILifeCycle.ACTIVATE, partListener);
 	}
 
+	/**
+	 * Destructor.
+	 *
+	 * @param part
+	 *            The part that will be destroyed.
+	 */
 	@PreDestroy
 	public void destroy(final MPart part) {
 		if (partListener != null) {
 			broker.unsubscribe(partListener);
 			clearWorkbench(part);
+		}
+	}
+
+	/**
+	 * Focus method.
+	 */
+	@Focus
+	public void setFocus() {
+		if (overview != null) {
+			overview.setFocus();
 		}
 	}
 
@@ -141,9 +172,11 @@ public class MainPart {
 	}
 
 	/**
-	 * Gets all haplotypes thar are displayed in this part.
-	 * 
-	 * @return
+	 * Gets all haplotypes that are displayed in this part.
+	 *
+	 * @return A list containing all haplotypes. Can be <code>null</code> if no
+	 *         sequences have yet been set.
+	 * @see #setSequences(List)
 	 */
 	public List<Haplotype> getHaplotypes() {
 		return haplotypes;

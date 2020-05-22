@@ -12,6 +12,7 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.nebula.jface.gridviewer.GridTableViewer;
 import org.eclipse.nebula.jface.gridviewer.GridViewerColumn;
@@ -316,8 +317,10 @@ public class OverviewComponent {
 	private void updateViewer() {
 		tableViewer.setInput(showAsSequnces ? seqModel : haploModel);
 		if (seqModel != null && !seqModel.isEmpty()) {
-			// Select first sequence or haplotype, that when viewer is shown for
-			// first time, something is selected.
+			// Select first sequence or haplotype. Need to do a general
+			// selection first, as otherwise a 'null' selection is propagated to
+			// listeners. Afterwards, select the proper cell and show it.
+			tableViewer.setSelection(new StructuredSelection((showAsSequnces ? seqModel : haploModel).get(0)), false);
 			tableViewer.getGrid().setCellSelection(new Point(2, 0));
 			tableViewer.getGrid().showSelection();
 		}

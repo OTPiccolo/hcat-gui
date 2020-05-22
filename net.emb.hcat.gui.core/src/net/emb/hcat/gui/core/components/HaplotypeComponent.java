@@ -1,7 +1,6 @@
 package net.emb.hcat.gui.core.components;
 
 import java.text.MessageFormat;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,6 +16,7 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -29,7 +29,9 @@ import org.eclipse.nebula.jface.gridviewer.GridViewerColumn;
 import org.eclipse.nebula.widgets.grid.Grid;
 import org.eclipse.nebula.widgets.grid.GridColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -50,7 +52,8 @@ public class HaplotypeComponent {
 
 	private Control control;
 
-	private ComboViewer comboViewer;
+	private ComboViewer sequencesComboViewer;
+	private ComboViewer haplotypesComboViewer;
 	private GridTableViewer tableViewer;
 
 	private List<Haplotype> haploModel;
@@ -71,8 +74,10 @@ public class HaplotypeComponent {
 		label.setText(Messages.HaplotypeTablePart_MasterSequenceLabel);
 		label.setLayoutData(GridDataFactory.defaultsFor(label).create());
 
-		comboViewer = createCombo(body);
-		comboViewer.getCombo().setLayoutData(GridDataFactory.defaultsFor(comboViewer.getCombo()).create());
+		haplotypesComboViewer = createHaplotypesCombo(body);
+		haplotypesComboViewer.getCombo().setLayoutData(GridDataFactory.defaultsFor(haplotypesComboViewer.getCombo()).create());
+		sequencesComboViewer = createSequencesCombo(body);
+		sequencesComboViewer.getCombo().setLayoutData(GridDataFactory.defaultsFor(sequencesComboViewer.getCombo()).exclude(true).create());
 
 		tableViewer = createViewer(body);
 		tableViewer.getGrid().setLayoutData(GridDataFactory.defaultsFor(tableViewer.getGrid()).span(2, 1).create());
@@ -81,19 +86,23 @@ public class HaplotypeComponent {
 		return body;
 	}
 
-	private ComboViewer createCombo(final Composite parent) {
+	private ComboViewer createHaplotypesCombo(final Composite parent) {
 		final ComboViewer viewer = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
-		viewer.setContentProvider(new IStructuredContentProvider() {
-
-			@SuppressWarnings("unchecked")
+		viewer.setContentProvider(ArrayContentProvider.getInstance());
+		viewer.setLabelProvider(new LabelProvider() {
 			@Override
-			public Object[] getElements(final Object inputElement) {
-				if (inputElement == null) {
-					return new Object[0];
-				}
-				return ((Collection<Haplotype>) inputElement).stream().flatMap(h -> h.stream()).collect(Collectors.toList()).toArray();
+			public String getText(final Object element) {
+				return ((Haplotype) element).getName();
 			}
 		});
+		viewer.setComparator(new ViewerComparator());
+		viewer.addPostSelectionChangedListener(e -> masterHaplotypeSelected((Haplotype) haplotypesComboViewer.getStructuredSelection().getFirstElement()));
+		return viewer;
+	}
+
+	private ComboViewer createSequencesCombo(final Composite parent) {
+		final ComboViewer viewer = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
+		viewer.setContentProvider(ArrayContentProvider.getInstance());
 		viewer.setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(final Object element) {
@@ -101,7 +110,7 @@ public class HaplotypeComponent {
 			}
 		});
 		viewer.setComparator(new ViewerComparator());
-		viewer.addPostSelectionChangedListener(e -> masterSequenceSelected((Sequence) comboViewer.getStructuredSelection().getFirstElement()));
+		viewer.addPostSelectionChangedListener(e -> masterSequenceSelected((Sequence) sequencesComboViewer.getStructuredSelection().getFirstElement()));
 		return viewer;
 	}
 
@@ -195,6 +204,11 @@ public class HaplotypeComponent {
 		return viewer;
 	}
 
+	private void masterHaplotypeSelected(final Haplotype haplotype) {
+		masterHaplotype = haplotype;
+		tableViewer.setInput(createViewerInput(haplotype == null ? null : haplotype.getFirstSequence()));
+	}
+
 	private void masterSequenceSelected(final Sequence sequence) {
 		masterHaplotype = findHaplotype(sequence);
 		tableViewer.setInput(createViewerInput(sequence));
@@ -240,8 +254,8 @@ public class HaplotypeComponent {
 	 */
 	@Focus
 	public void setFocus() {
-		if (comboViewer != null && !comboViewer.getCombo().isDisposed()) {
-			comboViewer.getCombo().setFocus();
+		if (sequencesComboViewer != null && !sequencesComboViewer.getCombo().isDisposed()) {
+			sequencesComboViewer.getCombo().setFocus();
 		}
 	}
 
@@ -254,7 +268,12 @@ public class HaplotypeComponent {
 	@Inject
 	@Optional
 	public void setSelectedHaplotype(@UIEventTopic(EventTopics.SELECTED_HAPLOTYPE) final Haplotype haplotype) {
-		setSelectedSequence(haplotype == null ? null : haplotype.getFirstSequence());
+		showViewer(haplotypesComboViewer, sequencesComboViewer);
+		if (haplotype == null) {
+			haplotypesComboViewer.setSelection(StructuredSelection.EMPTY, true);
+		} else {
+			haplotypesComboViewer.setSelection(new StructuredSelection(haplotype), true);
+		}
 	}
 
 	/**
@@ -266,10 +285,26 @@ public class HaplotypeComponent {
 	@Inject
 	@Optional
 	public void setSelectedSequence(@UIEventTopic(EventTopics.SELECTED_SEQUENCE) final Sequence sequence) {
+		showViewer(sequencesComboViewer, haplotypesComboViewer);
 		if (sequence == null) {
-			comboViewer.setSelection(StructuredSelection.EMPTY, true);
+			sequencesComboViewer.setSelection(StructuredSelection.EMPTY, true);
 		} else {
-			comboViewer.setSelection(new StructuredSelection(sequence), true);
+			sequencesComboViewer.setSelection(new StructuredSelection(sequence), true);
+		}
+	}
+
+	// Switch which viewer is visible
+	private void showViewer(final ComboViewer toShow, final ComboViewer toHide) {
+		final Combo show = toShow.getCombo();
+		final Combo hide = toHide.getCombo();
+		final GridData data = (GridData) show.getLayoutData();
+		if (data.exclude) {
+			data.exclude = false;
+			((GridData) hide.getLayoutData()).exclude = true;
+			show.requestLayout();
+			hide.requestLayout();
+			show.setVisible(true);
+			hide.setVisible(false);
 		}
 	}
 
@@ -283,7 +318,8 @@ public class HaplotypeComponent {
 	@Optional
 	public void setActiveHaplotypes(@UIEventTopic(EventTopics.ACTIVE_HAPLOTYPES) final List<Haplotype> haplotypes) {
 		haploModel = haplotypes;
-		comboViewer.setInput(haplotypes);
+		haplotypesComboViewer.setInput(haplotypes);
+		sequencesComboViewer.setInput(haplotypes == null ? null : haplotypes.stream().flatMap(h -> h.stream()).collect(Collectors.toList()).toArray());
 		tableViewer.setInput(null);
 	}
 

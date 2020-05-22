@@ -19,6 +19,7 @@ import org.eclipse.nebula.widgets.grid.Grid;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -314,11 +315,17 @@ public class OverviewComponent {
 
 	private void updateViewer() {
 		tableViewer.setInput(showAsSequnces ? seqModel : haploModel);
+		if (seqModel != null && !seqModel.isEmpty()) {
+			// Select first sequence or haplotype, that when viewer is shown for
+			// first time, something is selected.
+			tableViewer.getGrid().setCellSelection(new Point(2, 0));
+			tableViewer.getGrid().showSelection();
+		}
 	}
 
 	/**
 	 * Updates the given haplotype.
-	 * 
+	 *
 	 * @param haplotype
 	 *            The haplotype that has been changed.
 	 */

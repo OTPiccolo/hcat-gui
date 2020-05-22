@@ -130,7 +130,7 @@ public class HaplotypeComponent {
 					map.values().stream().map(Difference::getDifferencePosition).forEach(positions::addAll);
 					for (final Integer pos : positions) {
 						final GridViewerColumn column = new GridViewerColumn(gridViewer, SWT.NONE);
-						column.getColumn().setText(pos.toString());
+						column.getColumn().setText(Integer.toString(pos.intValue() + 1));
 						column.getColumn().setWidth(40);
 						column.setLabelProvider(new ColumnLabelProvider() {
 							@SuppressWarnings("unchecked")
@@ -275,7 +275,7 @@ public class HaplotypeComponent {
 
 	/**
 	 * Sets the haplotypes to be displayed in this component.
-	 * 
+	 *
 	 * @param haplotypes
 	 *            The haplotypes to display.
 	 */

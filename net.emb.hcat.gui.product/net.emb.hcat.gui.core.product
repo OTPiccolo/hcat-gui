@@ -13,17 +13,16 @@
 
    <windowImages/>
 
-
+   <splash
+      location="net.emb.hcat.gui.core" />
    <launcher name="hcat">
       <win useIco="false">
          <bmp/>
       </win>
    </launcher>
 
-
    <vm>
    </vm>
-
 
    <plugins>
    </plugins>

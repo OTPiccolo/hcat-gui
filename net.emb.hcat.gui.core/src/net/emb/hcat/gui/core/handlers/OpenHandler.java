@@ -20,25 +20,45 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import net.emb.hcat.cli.ErrorCodeException;
+import net.emb.hcat.cli.ErrorCodeException.EErrorCode;
+import net.emb.hcat.cli.io.BaseSequenceReader;
 import net.emb.hcat.cli.io.ESequenceType;
 import net.emb.hcat.cli.io.ISequenceReader;
 import net.emb.hcat.cli.sequence.Sequence;
 import net.emb.hcat.gui.core.Constants;
+import net.emb.hcat.gui.core.messages.ErrorCodeMessages;
 import net.emb.hcat.gui.core.messages.Messages;
 import net.emb.hcat.gui.core.parts.MainPart;
 
 /**
  * Opens a file to read sequences within.
- * 
+ *
  * @author OT Piccolo
  */
 public class OpenHandler {
+
+	private static final Logger log = LoggerFactory.getLogger(OpenHandler.class);
 
 	@SuppressWarnings("javadoc")
 	@CanExecute
 	public boolean canExecute() {
 		return true;
+	}
+
+	// More detailed execute method must come first in code declaration, as
+	// otherwise, less detailed method might be called even though a more
+	// detailed command was exectued.
+
+	@SuppressWarnings("javadoc")
+	@Execute
+	public void execute(final EPartService partService, final Shell shell, @Named(Constants.OPEN_COMMAND_PARAMETER_ID) final String fileParam) {
+		final Path path = Paths.get(fileParam);
+
+		openPart(partService, shell, path);
 	}
 
 	@SuppressWarnings("javadoc")
@@ -53,14 +73,6 @@ public class OpenHandler {
 		}
 	}
 
-	@SuppressWarnings("javadoc")
-	@Execute
-	public void execute(final EPartService partService, final Shell shell, @Named(Constants.OPEN_COMMAND_PARAMETER_ID) final String fileParam) {
-		final Path path = Paths.get(fileParam);
-
-		openPart(partService, shell, path);
-	}
-
 	private FileDialog createFileDialog(final Shell shell) {
 		final FileDialog dialog = new FileDialog(shell, SWT.OPEN);
 		dialog.setText(Messages.OpenHandler_openDialogTitle);
@@ -70,31 +82,47 @@ public class OpenHandler {
 	}
 
 	private void openPart(final EPartService partService, final Shell shell, final Path path) {
+		final List<Sequence> sequences = getSequences(shell, path);
+		if (sequences.isEmpty()) {
+			// Don't open an editor, if no sequences can be displayed.
+			return;
+		}
+
 		MPart part = findPart(partService, path);
 		if (part == null) {
 			part = createPart(partService, path);
 		}
 
-		final List<Sequence> sequences = getSequences(path);
-		if (sequences.isEmpty()) {
-			createMessageDialog(shell, path);
-		}
 		final MainPart mainPart = (MainPart) part.getObject();
 		mainPart.setSequences(sequences);
 
 		partService.showPart(part, PartState.ACTIVATE);
 	}
 
-	private List<Sequence> getSequences(final Path path) {
+	private List<Sequence> getSequences(final Shell shell, final Path path) {
 		final List<Sequence> sequences = new ArrayList<>();
+
 		final ESequenceType type = getSequenceType(path);
 		if (type != null) {
 			try (ISequenceReader reader = type.createReader(new BufferedReader(new FileReader(path.toString())))) {
+				if (reader instanceof BaseSequenceReader) {
+					((BaseSequenceReader) reader).setEnforceSameLength(true);
+				}
 				sequences.addAll(reader.read());
+				if (sequences.isEmpty()) {
+					createMessageDialog(shell, MessageDialog.WARNING, Messages.OpenHandler_errorEmptyFileTitle, MessageFormat.format(Messages.OpenHandler_errorEmptyFileMessage, path, type));
+				}
+			} catch (final ErrorCodeException e) {
+				log.error(e.getMessage(), e);
+				createErrorCodeDialog(shell, path, e);
 			} catch (final IOException e) {
-				e.printStackTrace();
+				log.error(e.getMessage(), e);
+				createErrorCodeDialog(shell, path, new ErrorCodeException(EErrorCode.GENERIC_READ, e, e.getMessage(), e.getMessage()));
 			}
+		} else {
+			createMessageDialog(shell, MessageDialog.ERROR, Messages.OpenHandler_errorUnknownFormatTitle, MessageFormat.format(Messages.OpenHandler_errorUnknownFormatMessage, path));
 		}
+
 		return sequences;
 	}
 
@@ -150,25 +178,17 @@ public class OpenHandler {
 		return part;
 	}
 
-	private void createMessageDialog(final Shell shell, final Path path) {
-		final ESequenceType sequenceType = getSequenceType(path);
-
-		int kind;
-		String title;
-		String message;
-
-		if (sequenceType == null) {
-			// Opened file format could not be determined.
-			kind = MessageDialog.ERROR;
-			title = Messages.OpenHandler_errorUnknownFormatTitle;
-			message = MessageFormat.format(Messages.OpenHandler_errorUnknownFormatMessage, path);
-		} else {
-			// File format was recognized, but empty.
-			kind = MessageDialog.WARNING;
-			title = Messages.OpenHandler_errorEmptyFileTitle;
-			message = MessageFormat.format(Messages.OpenHandler_errorEmptyFileMessage, path, sequenceType);
-		}
-
+	private void createMessageDialog(final Shell shell, final int kind, final String title, final String message) {
 		MessageDialog.open(kind, shell, title, message, SWT.NONE);
 	}
+
+	private void createErrorCodeDialog(final Shell shell, final Path path, final ErrorCodeException e) {
+		final String errorCodeMessage = getErrorCodeMessage(e);
+		createMessageDialog(shell, MessageDialog.ERROR, Messages.OpenHandler_errorCodeTitle, MessageFormat.format(Messages.OpenHandler_errorCodeMessage, path, errorCodeMessage));
+	}
+
+	private String getErrorCodeMessage(final ErrorCodeException e) {
+		return ErrorCodeMessages.getErrorCodeMessage(e);
+	}
+
 }

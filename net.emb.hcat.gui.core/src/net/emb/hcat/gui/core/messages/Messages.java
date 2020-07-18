@@ -14,6 +14,14 @@ public class Messages extends NLS {
 	public static String CutSequenceWizard_wizardTitle;
 	public static String DistanceMatrixComponent_IdColumn;
 	public static String DistanceMatrixComponent_MinMaxFooter;
+	public static String ErrorCodeException_GENERIC_READ;
+	public static String ErrorCodeException_GENERIC_WRITE;
+	public static String ErrorCodeException_INVALID_HEADER;
+	public static String ErrorCodeException_MISSING_VALUE;
+	public static String ErrorCodeException_SEQUENCES_WRONG_AMOUNT;
+	public static String ErrorCodeException_SEQUENCE_WRONG_LENGTH;
+	public static String ErrorCodeException_SEQUENCE_WRONG_NAME;
+	public static String ErrorCodeException_UNEXPECTED;
 	public static String HaplotypeComponent_MaxFooter;
 	public static String HaplotypeTablePart_IdColumn;
 	public static String HaplotypeTablePart_NotAvailable;
@@ -28,6 +36,8 @@ public class Messages extends NLS {
 	public static String MainPart_DistanceMatrixTab;
 	public static String MainPart_OverviewTab;
 	public static String MainPart_TranslationTab;
+	public static String OpenHandler_errorCodeMessage;
+	public static String OpenHandler_errorCodeTitle;
 	public static String OpenHandler_errorEmptyFileMessage;
 	public static String OpenHandler_errorEmptyFileTitle;
 	public static String OpenHandler_errorUnknownFormatMessage;

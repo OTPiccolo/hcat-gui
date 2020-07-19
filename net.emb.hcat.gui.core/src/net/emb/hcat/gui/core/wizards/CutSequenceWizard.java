@@ -146,7 +146,7 @@ public class CutSequenceWizard extends Wizard {
 	 * Sets the sequences to be cut.
 	 *
 	 * @param sequences
-	 *            The sequnces to be cut.
+	 *            The sequences to be cut.
 	 */
 	public void setSequences(final Collection<Sequence> sequences) {
 		this.sequences.clear();
@@ -158,7 +158,7 @@ public class CutSequenceWizard extends Wizard {
 
 	/**
 	 * Gets the selected from position to cut.
-	 * 
+	 *
 	 * @return The selected from position to cut.
 	 */
 	public int getFrom() {
@@ -167,7 +167,7 @@ public class CutSequenceWizard extends Wizard {
 
 	/**
 	 * Gets the selected to position to cut.
-	 * 
+	 *
 	 * @return The selected to position to cut.
 	 */
 	public int getTo() {

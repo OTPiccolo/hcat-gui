@@ -19,6 +19,8 @@ public class Constants {
 	public static final String ABOUT_COMMAND_ID = "org.eclipse.ui.help.aboutAction";
 	/** Command ID to cut sequences. */
 	public static final String CUT_SEQUENCE_COMMAND_ID = "net.emb.hcat.ui.cutSequence";
+	/** Command ID to cut sequences. */
+	public static final String SEQUENCE_TRANSLATION_COMMAND_ID = "net.emb.hcat.ui.sequenceTranslation";
 
 	/** Part ID of the main editor. */
 	public static final String MAIN_EDITOR_PART_ID = "net.emb.hcat.gui.core.partdescriptor.main";

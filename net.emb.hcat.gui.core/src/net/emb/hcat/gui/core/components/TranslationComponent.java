@@ -47,6 +47,7 @@ public class TranslationComponent {
 	private Function<CodonTransformer, Sequence> transformation;
 
 	private List<Sequence> seqModel;
+	private final List<Sequence> translationModel = new ArrayList<Sequence>();
 
 	/**
 	 * Creates this component.
@@ -93,7 +94,7 @@ public class TranslationComponent {
 		viewer.setComparator(new ViewerComparator());
 		viewer.addPostSelectionChangedListener(e -> {
 			data = (CodonTransformationData) ((IStructuredSelection) viewer.getSelection()).getFirstElement();
-			updateViewer();
+			update();
 		});
 		return viewer;
 	}
@@ -108,7 +109,7 @@ public class TranslationComponent {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				transformation = t -> t.transformAuto();
-				updateViewer();
+				update();
 			}
 		});
 
@@ -118,7 +119,7 @@ public class TranslationComponent {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				transformation = t -> t.transform(0);
-				updateViewer();
+				update();
 			}
 		});
 
@@ -128,7 +129,7 @@ public class TranslationComponent {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				transformation = t -> t.transform(1);
-				updateViewer();
+				update();
 			}
 		});
 
@@ -138,7 +139,7 @@ public class TranslationComponent {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				transformation = t -> t.transform(2);
-				updateViewer();
+				update();
 			}
 		});
 
@@ -176,7 +177,26 @@ public class TranslationComponent {
 		grid.setHeaderVisible(true);
 		grid.setAutoHeight(true);
 
+		viewer.setInput(translationModel);
 		return viewer;
+	}
+
+	private void update() {
+		updateTranslationModel();
+		updateViewer();
+	}
+
+	private void updateTranslationModel() {
+		translationModel.clear();
+
+		if (data == null || transformation == null || seqModel == null) {
+			return;
+		}
+
+		for (final Sequence seq : seqModel) {
+			final CodonTransformer transformer = new CodonTransformer(data, seq);
+			translationModel.add(transformation.apply(transformer));
+		}
 	}
 
 	private void updateViewer() {
@@ -184,18 +204,7 @@ public class TranslationComponent {
 			return;
 		}
 
-		if (data == null || transformation == null) {
-			tableViewer.setInput(null);
-			return;
-		}
-
-		final List<Sequence> codons = new ArrayList<>(seqModel.size());
-		for (final Sequence seq : seqModel) {
-			final CodonTransformer transformer = new CodonTransformer(data, seq);
-			codons.add(transformation.apply(transformer));
-		}
-
-		tableViewer.setInput(codons);
+		tableViewer.refresh();
 	}
 
 	/**
@@ -225,7 +234,30 @@ public class TranslationComponent {
 	 */
 	public void setModel(final List<Sequence> sequences) {
 		seqModel = sequences;
-		updateViewer();
+		update();
+	}
+
+	/**
+	 * Gets the translated sequences.
+	 *
+	 * @return The translated sequences. Or and empty list if no translation yet
+	 *         happened. This list can not be used to manipulate the viewed
+	 *         transaltions.
+	 */
+	public List<Sequence> getTranslation() {
+		return new ArrayList<Sequence>(translationModel);
+	}
+
+	/**
+	 * Gets the selected transformation data.
+	 * 
+	 * @return The transformation data. Or null if no data was selected.
+	 */
+	public CodonTransformationData getData() {
+		if (comboViewer != null && !comboViewer.getControl().isDisposed()) {
+			return (CodonTransformationData) comboViewer.getStructuredSelection().getFirstElement();
+		}
+		return null;
 	}
 
 }

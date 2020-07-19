@@ -22,6 +22,7 @@
       </children>
       <children xsi:type="menu:Menu" xmi:id="_Er-Q0CGrEeqL6q41GEyy8w" elementId="net.emb.hcat.gui.core.menu.edit" label="%Application_editMenu" mnemonics="">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_WSFy8CGrEeqL6q41GEyy8w" elementId="net.emb.hcat.gui.core.handleditem.cutSequence" label="%Application_editMenu_CutSequence" command="_HVJSgCGrEeqL6q41GEyy8w"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_6u1cQMmxEeqHWo1NhZ4Gyg" elementId="net.emb.hcat.gui.core.handleditem.sequenceTranslation" label="%Application_editMenu_SequenceTranslation" command="_EvBL8MmrEeqHWo1NhZ4Gyg"/>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_6wlLjsgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.menu.help" label="%Application_helpMenu">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLj8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handleditem.about" label="%Application_helpMenu_About" command="_6wlLhsgZEeSyMNYR5xypkQ"/>
@@ -39,6 +40,7 @@
   <handlers xmi:id="_6wlLhMgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handler.saveHandler" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.handlers.SaveAsHandler" command="_6wlLg8gZEeSyMNYR5xypkQ"/>
   <handlers xmi:id="_6wlLh8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handler.aboutHandler" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.handlers.AboutHandler" command="_6wlLhsgZEeSyMNYR5xypkQ"/>
   <handlers xmi:id="_vAetYCGtEeqL6q41GEyy8w" elementId="net.emb.hcat.gui.core.handler.cutSequenceHandler" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.handlers.CutSequenceHandler" command="_HVJSgCGrEeqL6q41GEyy8w"/>
+  <handlers xmi:id="_CKD74MmrEeqHWo1NhZ4Gyg" elementId="net.emb.hcat.gui.core.handler.sequenceTranslationHandler" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.handlers.SequenceTranslationHandler" command="_EvBL8MmrEeqHWo1NhZ4Gyg"/>
   <bindingTables xmi:id="_6wlLfsgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.bindingtable" bindingContext="_6wlLecgZEeSyMNYR5xypkQ">
     <bindings xmi:id="_6wlLf8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.keybinding.m1q" keySequence="M1+Q" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
     <bindings xmi:id="_6wlLgsgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.keybinding.m1o" keySequence="M1+O" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
@@ -57,6 +59,7 @@
   <commands xmi:id="_6wlLg8gZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.file.save" commandName="saveCommand"/>
   <commands xmi:id="_6wlLhsgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.help.aboutAction" commandName="aboutCommand"/>
   <commands xmi:id="_HVJSgCGrEeqL6q41GEyy8w" elementId="net.emb.hcat.ui.cutSequence" commandName="cutSequenceCommand"/>
+  <commands xmi:id="_EvBL8MmrEeqHWo1NhZ4Gyg" elementId="net.emb.hcat.ui.sequenceTranslation" commandName="sequenceTranslationCommand"/>
   <addons xmi:id="_6wlLcsgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_6wlLc8gZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_6wlLdMgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

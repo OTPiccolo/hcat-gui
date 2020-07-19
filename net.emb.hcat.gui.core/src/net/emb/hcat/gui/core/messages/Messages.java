@@ -67,6 +67,9 @@ public class Messages extends NLS {
 	public static String SelectionPage_lblModus_text;
 	public static String SelectionPage_lblWorkspace_text;
 	public static String SelectionWizard_Title;
+	public static String SequenceTranslationWizard_pageDescription;
+	public static String SequenceTranslationWizard_pageTitle;
+	public static String SequenceTranslationWizard_wizardTitle;
 	public static String TranslationComponent_1Button;
 	public static String TranslationComponent_2Button;
 	public static String TranslationComponent_3Button;

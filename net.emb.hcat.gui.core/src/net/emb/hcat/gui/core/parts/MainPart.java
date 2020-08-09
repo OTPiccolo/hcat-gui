@@ -27,6 +27,7 @@ import net.emb.hcat.cli.sequence.Sequence;
 import net.emb.hcat.gui.core.EventTopics;
 import net.emb.hcat.gui.core.components.DistanceMatrixComponent;
 import net.emb.hcat.gui.core.components.OverviewComponent;
+import net.emb.hcat.gui.core.components.TextLogComponent;
 import net.emb.hcat.gui.core.messages.Messages;
 
 /**
@@ -46,6 +47,7 @@ public class MainPart {
 
 	private OverviewComponent overview;
 	private DistanceMatrixComponent matrix;
+	private TextLogComponent textLog;
 
 	private EventHandler partListener;
 
@@ -73,6 +75,12 @@ public class MainPart {
 		matrix = ContextInjectionFactory.make(DistanceMatrixComponent.class, context);
 		matrix.createComposite(folder);
 		matrixItem.setControl(matrix.getControl());
+
+		final TabItem textLogItem = new TabItem(folder, SWT.NONE);
+		textLogItem.setText("Text Log");
+		textLog = ContextInjectionFactory.make(TextLogComponent.class, context);
+		textLog.createComposite(folder);
+		textLogItem.setControl(textLog.getControl());
 
 		partListener = e -> handleActivate(e);
 		broker.subscribe(UILifeCycle.ACTIVATE, partListener);
@@ -160,6 +168,7 @@ public class MainPart {
 	private void updateComponents() {
 		overview.setModel(getHaplotypes(), getSequences());
 		matrix.setModel(getHaplotypes());
+		textLog.setModel(getHaplotypes());
 	}
 
 	/**

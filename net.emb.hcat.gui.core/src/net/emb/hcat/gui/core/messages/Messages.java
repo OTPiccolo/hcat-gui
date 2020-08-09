@@ -70,6 +70,15 @@ public class Messages extends NLS {
 	public static String SequenceTranslationWizard_pageDescription;
 	public static String SequenceTranslationWizard_pageTitle;
 	public static String SequenceTranslationWizard_wizardTitle;
+	public static String TextLogComponent_DistMatrix_Max;
+	public static String TextLogComponent_DistMatrix_Min;
+	public static String TextLogComponent_DistMatrix_Title;
+	public static String TextLogComponent_Hap_ContainedSeq;
+	public static String TextLogComponent_Hap_Id;
+	public static String TextLogComponent_Hap_NrOfHap;
+	public static String TextLogComponent_Hap_Title;
+	public static String TextLogComponent_Seq_NrOfSeq;
+	public static String TextLogComponent_Seq_Title;
 	public static String TranslationComponent_1Button;
 	public static String TranslationComponent_2Button;
 	public static String TranslationComponent_3Button;

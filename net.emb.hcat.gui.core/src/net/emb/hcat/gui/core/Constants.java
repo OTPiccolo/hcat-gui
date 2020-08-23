@@ -29,6 +29,9 @@ public class Constants {
 	/** Part ID of the transformer view. */
 	public static final String TRANSFORM_PART_ID = "net.emb.hcat.gui.core.part.transform";
 
+	/** ID to the node of preferences for the core. */
+	public static final String CORE_PREFERENCES_ID = "net.emb.hcat.gui.core.preferences";
+
 	/** Context ID of the workspace location */
 	public static final String WORKSPACE_CONTEXT_ID = "workspace";
 }

@@ -7,10 +7,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Named;
 
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -20,6 +22,8 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.osgi.service.prefs.BackingStoreException;
+import org.osgi.service.prefs.Preferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -97,6 +101,8 @@ public class OpenHandler {
 		mainPart.setSequences(sequences);
 
 		partService.showPart(part, PartState.ACTIVATE);
+
+		addToRecentFiles(path);
 	}
 
 	private List<Sequence> getSequences(final Shell shell, final Path path) {
@@ -189,6 +195,44 @@ public class OpenHandler {
 
 	private String getErrorCodeMessage(final ErrorCodeException e) {
 		return ErrorCodeMessages.getErrorCodeMessage(e);
+	}
+
+	private void addToRecentFiles(final Path path) {
+		final String pathStr = path.toString();
+
+		try {
+			final Preferences node = InstanceScope.INSTANCE.getNode(Constants.CORE_PREFERENCES_ID).node("recentFiles"); //$NON-NLS-1$
+			final String[] keys = node.keys();
+			Arrays.sort(keys);
+
+			final List<String> values = new ArrayList<String>(keys.length + 1);
+			for (final String key : keys) {
+				values.add(node.get(key, null));
+			}
+
+			final int index = values.indexOf(pathStr);
+			if (index == 0) {
+				// Path already at first index. Nothing to do here.
+				return;
+			} else if (index > 0) {
+				// Path already present, remove old entry, so can be put in
+				// front again.
+				values.remove(index);
+			}
+
+			values.add(0, pathStr);
+
+			// We want to store at most 10 files.
+			final int size = Math.min(values.size(), 10);
+			for (int i = 0; i < size; i++) {
+				final String value = values.get(i);
+				node.put(String.valueOf(i), value);
+			}
+
+			node.flush();
+		} catch (final BackingStoreException e) {
+			log.error(e.getMessage(), e);
+		}
 	}
 
 }

@@ -35,7 +35,6 @@ public class Messages extends NLS {
 	public static String HcatFunction_SequenceTranslation;
 	public static String MainPart_DistanceMatrixTab;
 	public static String MainPart_OverviewTab;
-	public static String MainPart_TranslationTab;
 	public static String OpenHandler_errorCodeMessage;
 	public static String OpenHandler_errorCodeTitle;
 	public static String OpenHandler_errorEmptyFileMessage;
@@ -54,6 +53,7 @@ public class Messages extends NLS {
 	public static String OverviewComponent_ShowAsSequenceButton;
 	public static String QuitHandler_message;
 	public static String QuitHandler_title;
+	public static String RecentFilesItem_noRecentFiles;
 	public static String SaveAsHandler_csvFileExtension;
 	public static String SaveAsHandler_errorSaveFileMessage;
 	public static String SaveAsHandler_errorSaveFileTitle;

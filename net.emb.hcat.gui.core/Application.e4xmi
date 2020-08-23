@@ -17,7 +17,12 @@
     <mainMenu xmi:id="_6wlLicgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.main.menu">
       <children xsi:type="menu:Menu" xmi:id="_6wlLisgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.menu.file" label="%Application_fileMenu">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLi8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handleditem.file.open" label="%Application_fileMenu_Open" iconURI="platform:/plugin/net.emb.hcat.gui.core/icons/sample.png" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
+        <children xsi:type="menu:Menu" xmi:id="_XB7U4N-fEeq4Ft1EWbVhyQ" elementId="net.emb.hcat.gui.core.menu.recentFiles" label="%Application_fileMenu_RecentFiles">
+          <children xsi:type="menu:DynamicMenuContribution" xmi:id="_m_chgN-fEeq4Ft1EWbVhyQ" elementId="net.emb.hcat.gui.core.menu.recentFiles.recentFiles" label="" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.items.RecentFilesItem"/>
+        </children>
+        <children xsi:type="menu:MenuSeparator" xmi:id="_HO4S4N-fEeq4Ft1EWbVhyQ" elementId="net.emb.hcat.gui.core.menuseparator.1"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLjMgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handleditem.save" label="%Application_fileMenu_Save" iconURI="platform:/plugin/net.emb.hcat.gui.core/icons/save_edit.png" command="_6wlLg8gZEeSyMNYR5xypkQ"/>
+        <children xsi:type="menu:MenuSeparator" xmi:id="_EAUsMN-fEeq4Ft1EWbVhyQ" elementId="net.emb.hcat.gui.core.menuseparator.0"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLjcgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handleditem.quit" label="%Application_fileMenu_Quit" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_Er-Q0CGrEeqL6q41GEyy8w" elementId="net.emb.hcat.gui.core.menu.edit" label="%Application_editMenu" mnemonics="">

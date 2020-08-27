@@ -53,6 +53,7 @@ public class Messages extends NLS {
 	public static String OverviewComponent_ShowAsSequenceButton;
 	public static String QuitHandler_message;
 	public static String QuitHandler_title;
+	public static String RecentFilesItem_errorRecentFiles;
 	public static String RecentFilesItem_noRecentFiles;
 	public static String SaveAsHandler_csvFileExtension;
 	public static String SaveAsHandler_errorSaveFileMessage;

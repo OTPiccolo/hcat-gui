@@ -34,4 +34,9 @@ public class Constants {
 
 	/** Context ID of the workspace location */
 	public static final String WORKSPACE_CONTEXT_ID = "workspace";
+
+	/** ID of this plugin. */
+	public static final String PLUGIN_ID = "net.emb.hcat.gui.core";
+	/** URI to this plugin on the platform. */
+	public static final String PLUGIN_URI = "platform:/plugin/" + PLUGIN_ID;
 }

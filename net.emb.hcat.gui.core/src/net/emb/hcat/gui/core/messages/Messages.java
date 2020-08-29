@@ -22,7 +22,6 @@ public class Messages extends NLS {
 	public static String ErrorCodeException_SEQUENCE_WRONG_LENGTH;
 	public static String ErrorCodeException_SEQUENCE_WRONG_NAME;
 	public static String ErrorCodeException_UNEXPECTED;
-	public static String HaplotypeComponent_MaxFooter;
 	public static String HaplotypeTablePart_IdColumn;
 	public static String HaplotypeTablePart_NotAvailable;
 	public static String HaplotypeTablePart_MasterSequenceLabel;

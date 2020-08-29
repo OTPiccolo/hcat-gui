@@ -1,7 +1,5 @@
 package net.emb.hcat.gui.core.components;
 
-import java.text.MessageFormat;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -134,7 +132,6 @@ public class HaplotypeComponent {
 					// Add new columns. Skip ID column as always present.
 					@SuppressWarnings("unchecked")
 					final Map<Haplotype, Difference> map = (Map<Haplotype, Difference>) newInput;
-					final int maxDistance = map.isEmpty() ? 0 : map.values().stream().map(Difference::getDistance).max(Comparator.naturalOrder()).get();
 					final SortedSet<Integer> positions = new TreeSet<>();
 					map.values().stream().map(Difference::getDifferencePosition).forEach(positions::addAll);
 					for (final Integer pos : positions) {
@@ -156,10 +153,6 @@ public class HaplotypeComponent {
 							}
 						});
 					}
-
-					// Set max distance information.
-					final String footer = MessageFormat.format(Messages.HaplotypeComponent_MaxFooter, maxDistance);
-					gridViewer.getGrid().getColumn(0).setFooterText(footer);
 				}
 			}
 
@@ -199,7 +192,6 @@ public class HaplotypeComponent {
 		final Grid grid = viewer.getGrid();
 		grid.setHeaderVisible(true);
 		grid.setAutoHeight(true);
-		grid.setFooterVisible(true);
 
 		return viewer;
 	}
@@ -343,6 +335,8 @@ public class HaplotypeComponent {
 					}
 				}
 			}
+
+			haplotypesComboViewer.update(haplotype, null);
 		}
 	}
 

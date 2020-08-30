@@ -41,6 +41,17 @@ public class WorkspaceSelectionManager {
 	void postContextCreate(final IApplicationContext appContext, final IEclipseContext eclipseContext, final Display display) {
 		configureLogger(appContext);
 
+		final String workspace = getDefaultWorkspace();
+
+		eclipseContext.set(Constants.WORKSPACE_CONTEXT_ID, Paths.get(workspace));
+		broker.post(EventTopics.WORKING_DIRECTORY, Paths.get(workspace));
+	}
+
+	private String getDefaultWorkspace() {
+		return System.getProperty("user.home"); //$NON-NLS-1$
+	}
+
+	private String getUserWorkspace(final IApplicationContext appContext, final IEclipseContext eclipseContext, final Display display) {
 		final Shell shell = new Shell(display, SWT.SHELL_TRIM);
 
 		// final IEclipseContext eclipseContext =
@@ -61,9 +72,7 @@ public class WorkspaceSelectionManager {
 		}
 		shell.dispose();
 		final String workspace = wizard.getWorkspace();
-
-		eclipseContext.set(Constants.WORKSPACE_CONTEXT_ID, Paths.get(workspace));
-		broker.post(EventTopics.WORKING_DIRECTORY, Paths.get(workspace));
+		return workspace;
 	}
 
 	private void setLocation(final Display display, final Shell shell) {

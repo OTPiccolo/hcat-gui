@@ -161,6 +161,11 @@ public class NavigatorPart {
 				if (!Files.isDirectory(path)) {
 					return false;
 				}
+				// If a directory can't be accessed, don't try to check what is
+				// inside.
+				if (!Files.isReadable(path)) {
+					return false;
+				}
 				try (Stream<Path> s = Files.list(path)) {
 					return s.anyMatch(validElement);
 				} catch (final IOException e) {
@@ -236,7 +241,7 @@ public class NavigatorPart {
 
 	/**
 	 * Sets the working directory, to display files and folders.
-	 * 
+	 *
 	 * @param path
 	 *            The path of the directory.
 	 */

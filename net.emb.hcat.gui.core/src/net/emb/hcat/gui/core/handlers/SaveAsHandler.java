@@ -14,8 +14,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
-import net.emb.hcat.cli.io.ESequenceType;
-import net.emb.hcat.cli.io.ISequenceWriter;
+import net.emb.hcat.cli.io.sequence.ESequenceType;
+import net.emb.hcat.cli.io.sequence.ISequenceWriter;
 import net.emb.hcat.cli.sequence.Sequence;
 import net.emb.hcat.gui.core.Constants;
 import net.emb.hcat.gui.core.messages.Messages;
@@ -23,7 +23,7 @@ import net.emb.hcat.gui.core.parts.MainPart;
 
 /**
  * Saves the currently active editor into a new file.
- * 
+ *
  * @author OT Piccolo
  */
 public class SaveAsHandler {

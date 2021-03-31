@@ -161,7 +161,7 @@ public class MainPart {
 	 */
 	public void setSequences(final List<Sequence> sequences) {
 		this.sequences = sequences;
-		haplotypes = sequences == null ? null : Haplotype.createHaplotypes(sequences);
+		haplotypes = sequences == null ? null : Haplotype.wrap(sequences);
 		updateComponents();
 	}
 

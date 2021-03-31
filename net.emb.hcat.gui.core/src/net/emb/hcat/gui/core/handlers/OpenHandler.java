@@ -29,9 +29,9 @@ import org.slf4j.LoggerFactory;
 
 import net.emb.hcat.cli.ErrorCodeException;
 import net.emb.hcat.cli.ErrorCodeException.EErrorCode;
-import net.emb.hcat.cli.io.BaseSequenceReader;
-import net.emb.hcat.cli.io.ESequenceType;
-import net.emb.hcat.cli.io.ISequenceReader;
+import net.emb.hcat.cli.io.sequence.BaseSequenceReader;
+import net.emb.hcat.cli.io.sequence.ESequenceType;
+import net.emb.hcat.cli.io.sequence.ISequenceReader;
 import net.emb.hcat.cli.sequence.Sequence;
 import net.emb.hcat.gui.core.Constants;
 import net.emb.hcat.gui.core.messages.ErrorCodeMessages;

@@ -4,6 +4,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.inject.Named;
 
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
@@ -41,23 +44,47 @@ public class SaveAsHandler {
 
 	@SuppressWarnings("javadoc")
 	@Execute
-	public void execute(final EPartService partService, final Shell shell) {
-		for (final MPart part : partService.getParts()) {
-			if (part.getElementId().equals(Constants.MAIN_EDITOR_PART_ID)) {
-				if (partService.isPartVisible(part)) {
-					saveAs(part, shell);
-					return;
-				}
-			}
+	public void execute(final EPartService partService, final Shell shell, @Named(Constants.SAVE_COMMAND_PARAMETER_ID) final String contentParam) {
+		final MainPart part = getPart(partService);
+		if (part != null) {
+			saveAs(part, shell, contentParam);
 		}
 	}
 
-	private void saveAs(final MPart part, final Shell shell) {
+	private MainPart getPart(final EPartService partService) {
+		for (final MPart part : partService.getParts()) {
+			if (part.getElementId().equals(Constants.MAIN_EDITOR_PART_ID)) {
+				if (partService.isPartVisible(part)) {
+					return (MainPart) part.getObject();
+				}
+			}
+		}
+		return null;
+	}
+
+	private void saveAs(final MainPart part, final Shell shell, final String contentType) {
+		switch (contentType) {
+		case Constants.SAVE_COMMAND_PARAMETER_VALUE_SEQUENCES:
+			saveAs(shell, part.getSequences());
+			break;
+
+		case Constants.SAVE_COMMAND_PARAMETER_VALUE_HAPLOTYPES:
+			saveAs(shell, part.getHaplotypes().stream().map(h -> h.asSequence()).collect(Collectors.toList()));
+			break;
+
+		case Constants.SAVE_COMMAND_PARAMETER_VALUE_HAPLOTYPE_TABLE:
+		case Constants.SAVE_COMMAND_PARAMETER_VALUE_DISTANCE_MATRIX:
+		case Constants.SAVE_COMMAND_PARAMETER_VALUE_TEXT_LOG:
+		default:
+			// Should never happen.
+			throw new IllegalArgumentException("Unknown content type to save: " + contentType); //$NON-NLS-1$
+		}
+	}
+
+	private void saveAs(final Shell shell, final List<Sequence> sequences) {
 		final FileDialog dialog = createDialog(shell);
 		final String file = dialog.open();
 		if (file != null) {
-			final MainPart mainPart = (MainPart) part.getObject();
-			final List<Sequence> sequences = mainPart.getSequences();
 			try {
 				saveAs(file, sequences, getType(dialog));
 			} catch (final IOException e) {
@@ -83,4 +110,5 @@ public class SaveAsHandler {
 	private ESequenceType getType(final FileDialog dialog) {
 		return ESequenceType.values()[dialog.getFilterIndex()];
 	}
+
 }

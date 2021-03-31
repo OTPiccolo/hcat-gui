@@ -77,7 +77,7 @@ public class MainPart {
 		matrixItem.setControl(matrix.getControl());
 
 		final TabItem textLogItem = new TabItem(folder, SWT.NONE);
-		textLogItem.setText("Text Log");
+		textLogItem.setText(Messages.MainPart_TextLogTab);
 		textLog = ContextInjectionFactory.make(TextLogComponent.class, context);
 		textLog.createComposite(folder);
 		textLogItem.setControl(textLog.getControl());

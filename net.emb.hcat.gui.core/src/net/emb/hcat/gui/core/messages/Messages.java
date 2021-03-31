@@ -34,6 +34,7 @@ public class Messages extends NLS {
 	public static String HcatFunction_SequenceTranslation;
 	public static String MainPart_DistanceMatrixTab;
 	public static String MainPart_OverviewTab;
+	public static String MainPart_TextLogTab;
 	public static String OpenHandler_errorCodeMessage;
 	public static String OpenHandler_errorCodeTitle;
 	public static String OpenHandler_errorEmptyFileMessage;

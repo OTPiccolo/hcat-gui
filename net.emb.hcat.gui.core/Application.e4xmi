@@ -28,6 +28,15 @@
           <children xsi:type="menu:HandledMenuItem" xmi:id="_ALQDAJIjEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.menu.save.haplotypes" label="%Application_fileMenu_Save_Haplotypes" iconURI="" command="_6wlLg8gZEeSyMNYR5xypkQ">
             <parameters xmi:id="_OV3uoJIjEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.haplotypesContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Haplotypes"/>
           </children>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_5FFtEJIsEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.menu.save.haplotypeTable" toBeRendered="false" label="%Application_fileMenu_Save_HaplotypeTable" command="_6wlLg8gZEeSyMNYR5xypkQ">
+            <parameters xmi:id="_-XIOcJIsEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.haplotypeTableContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Haplotype Table"/>
+          </children>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_hZIb0JIxEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.menu.save.distanceMatrix" toBeRendered="false" label="%Application_fileMenu_Save_DistanceMatrix" command="_6wlLg8gZEeSyMNYR5xypkQ">
+            <parameters xmi:id="_nJJ5sJIxEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.distanceMatrixContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Distance Matrix"/>
+          </children>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_hw6CoJIxEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.menu.save.textLog" toBeRendered="false" label="%Application_fileMenu_Save_TextLog" tooltip="" command="_6wlLg8gZEeSyMNYR5xypkQ">
+            <parameters xmi:id="_0qKnoJIxEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.textLogContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Text Log"/>
+          </children>
         </children>
         <children xsi:type="menu:MenuSeparator" xmi:id="_EAUsMN-fEeq4Ft1EWbVhyQ" elementId="net.emb.hcat.gui.core.menuseparator.0"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLjcgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handleditem.quit" label="%Application_fileMenu_Quit" command="_6wlLfMgZEeSyMNYR5xypkQ"/>

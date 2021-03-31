@@ -61,6 +61,7 @@ public class Messages extends NLS {
 	public static String SaveAsHandler_fastaFileExtension;
 	public static String SaveAsHandler_phylipFileExtension;
 	public static String SaveAsHandler_phylipTcsFileExtension;
+	public static String SaveAsHandler_textFileExtension;
 	public static String SelectionPage_Description;
 	public static String SelectionPage_Title;
 	public static String SelectionPage_button_text;

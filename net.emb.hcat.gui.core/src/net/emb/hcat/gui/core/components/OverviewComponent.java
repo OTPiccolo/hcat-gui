@@ -325,7 +325,7 @@ public class OverviewComponent {
 		// Need to do a general selection first, as otherwise a 'null' selection
 		// is propagated to listeners. Afterwards, select the proper cell and
 		// show it.
-		tableViewer.setSelection(selection == null ? StructuredSelection.EMPTY : new StructuredSelection(selection), false);
+		tableViewer.setSelection(selection == null ? StructuredSelection.EMPTY : new StructuredSelection(selection), true);
 		final Grid grid = tableViewer.getGrid();
 		final int selectionIndex = grid.getSelectionIndex();
 		if (selectionIndex != -1) {

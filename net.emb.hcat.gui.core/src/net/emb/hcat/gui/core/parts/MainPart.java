@@ -8,8 +8,10 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
+import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.MUIElement;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.UIEvents.EventTags;
@@ -26,6 +28,7 @@ import net.emb.hcat.cli.haplotype.Haplotype;
 import net.emb.hcat.cli.sequence.Sequence;
 import net.emb.hcat.gui.core.EventTopics;
 import net.emb.hcat.gui.core.components.DistanceMatrixComponent;
+import net.emb.hcat.gui.core.components.HaplotypeComponent;
 import net.emb.hcat.gui.core.components.OverviewComponent;
 import net.emb.hcat.gui.core.components.TextLogComponent;
 import net.emb.hcat.gui.core.messages.Messages;
@@ -46,6 +49,7 @@ public class MainPart {
 	private List<Haplotype> haplotypes;
 
 	private OverviewComponent overview;
+	private HaplotypeComponent haplotypeTable;
 	private DistanceMatrixComponent matrix;
 	private TextLogComponent textLog;
 
@@ -69,6 +73,12 @@ public class MainPart {
 		overview = ContextInjectionFactory.make(OverviewComponent.class, context);
 		overview.createComposite(folder);
 		overviewItem.setControl(overview.getControl());
+
+		final TabItem haplotypeItem = new TabItem(folder, SWT.NONE);
+		haplotypeItem.setText(Messages.MainPart_HaplotypeTable);
+		haplotypeTable = ContextInjectionFactory.make(HaplotypeComponent.class, context);
+		haplotypeTable.createComposite(folder);
+		haplotypeItem.setControl(haplotypeTable.getControl());
 
 		final TabItem matrixItem = new TabItem(folder, SWT.NONE);
 		matrixItem.setText(Messages.MainPart_DistanceMatrixTab);
@@ -167,8 +177,14 @@ public class MainPart {
 
 	private void updateComponents() {
 		overview.setModel(getHaplotypes(), getSequences());
+		haplotypeTable.setModel(getHaplotypes());
 		matrix.setModel(getHaplotypes());
 		textLog.setModel(getHaplotypes());
+		if (overview.isShowAsHaplotypes()) {
+			haplotypeTable.setSelectedHaplotype(getHaplotypes().isEmpty() ? null : getHaplotypes().get(0));
+		} else {
+			haplotypeTable.setSelectedSequence(getSequences().isEmpty() ? null : getSequences().get(0));
+		}
 	}
 
 	/**
@@ -197,6 +213,26 @@ public class MainPart {
 	private boolean isPart(final Event e) {
 		final Object element = e.getProperty(EventTags.ELEMENT);
 		return element instanceof MPart && ((MPart) element).getObject() == this;
+	}
+
+	@SuppressWarnings({ "javadoc", "unused" })
+	@Inject
+	@Optional
+	public void setSelectedHaplotype(@UIEventTopic(EventTopics.SELECTED_HAPLOTYPE) final Haplotype haplotype) {
+		// A bit of a hack to make sure that when the 'show as sequence' button
+		// in the overview component is pressed, the corresponding selection in
+		// the haplotype table component is now using haplotypes.
+		haplotypeTable.selectWithHaplotypes();
+	}
+
+	@SuppressWarnings({ "javadoc", "unused" })
+	@Inject
+	@Optional
+	public void setSelectedSequence(@UIEventTopic(EventTopics.SELECTED_SEQUENCE) final Sequence sequence) {
+		// A bit of a hack to make sure that when the 'show as sequence' button
+		// in the overview component is pressed, the corresponding selection in
+		// the haplotype table component is now using sequences.
+		haplotypeTable.selectWithSequences();
 	}
 
 }

@@ -33,6 +33,7 @@ public class Messages extends NLS {
 	public static String HcatFunction_SaveHaplotypes;
 	public static String HcatFunction_SequenceTranslation;
 	public static String MainPart_DistanceMatrixTab;
+	public static String MainPart_HaplotypeTable;
 	public static String MainPart_OverviewTab;
 	public static String MainPart_TextLogTab;
 	public static String OpenHandler_errorCodeMessage;

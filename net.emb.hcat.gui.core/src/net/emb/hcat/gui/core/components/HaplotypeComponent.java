@@ -8,16 +8,12 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-import javax.inject.Inject;
-
-import org.eclipse.e4.core.di.annotations.Optional;
-import org.eclipse.e4.ui.di.Focus;
-import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
@@ -38,7 +34,6 @@ import net.emb.hcat.cli.haplotype.Haplotype;
 import net.emb.hcat.cli.haplotype.HaplotypeTransformer;
 import net.emb.hcat.cli.sequence.Difference;
 import net.emb.hcat.cli.sequence.Sequence;
-import net.emb.hcat.gui.core.EventTopics;
 import net.emb.hcat.gui.core.messages.Messages;
 
 /**
@@ -244,11 +239,62 @@ public class HaplotypeComponent {
 	/**
 	 * Sets focus to this component.
 	 */
-	@Focus
 	public void setFocus() {
 		if (sequencesComboViewer != null && !sequencesComboViewer.getCombo().isDisposed()) {
 			sequencesComboViewer.getCombo().setFocus();
 		}
+	}
+
+	/**
+	 * Displays the selection as haplotypes.
+	 */
+	public void selectWithHaplotypes() {
+		if (!isViewerVisible(haplotypesComboViewer)) {
+			final Haplotype selectedHaplo = getSelectedHaplo();
+			final Sequence selectedSeq = getSelectedSeq();
+			// Try to preserve selection, so that the corresponding haplotype of
+			// the currently selected sequence is shown.
+			if (selectedHaplo == null || !selectedHaplo.belongsToHaplotype(selectedSeq)) {
+				setSelectedHaplotype(findHaplotype(selectedSeq));
+			} else {
+				showViewer(haplotypesComboViewer, sequencesComboViewer);
+			}
+		}
+	}
+
+	/**
+	 * Displays the selection as sequences.
+	 */
+	public void selectWithSequences() {
+		if (!isViewerVisible(sequencesComboViewer)) {
+			final Haplotype selectedHaplo = getSelectedHaplo();
+			final Sequence selectedSeq = getSelectedSeq();
+			// Try to preserve selection, so that the corresponding sequence of
+			// the currently selected haplotype is shown.
+			if (selectedHaplo == null || selectedHaplo.belongsToHaplotype(selectedSeq)) {
+				showViewer(sequencesComboViewer, haplotypesComboViewer);
+			} else {
+				setSelectedSequence(selectedHaplo.getFirstSequence());
+			}
+		}
+	}
+
+	/**
+	 * Gets the selected haplotype.
+	 *
+	 * @return The selected haplotype, or <code>null</code> if no haplotype is
+	 *         currently selected.
+	 */
+	public Haplotype getSelectedHaplotype() {
+		if (isViewerVisible(haplotypesComboViewer)) {
+			return getSelectedHaplo();
+		}
+		return null;
+	}
+
+	private Haplotype getSelectedHaplo() {
+		final IStructuredSelection selection = (IStructuredSelection) haplotypesComboViewer.getSelection();
+		return (Haplotype) selection.getFirstElement();
 	}
 
 	/**
@@ -257,9 +303,7 @@ public class HaplotypeComponent {
 	 * @param haplotype
 	 *            The haplotype to select.
 	 */
-	@Inject
-	@Optional
-	public void setSelectedHaplotype(@UIEventTopic(EventTopics.SELECTED_HAPLOTYPE) final Haplotype haplotype) {
+	public void setSelectedHaplotype(final Haplotype haplotype) {
 		showViewer(haplotypesComboViewer, sequencesComboViewer);
 		if (haplotype == null) {
 			haplotypesComboViewer.setSelection(StructuredSelection.EMPTY, true);
@@ -269,14 +313,30 @@ public class HaplotypeComponent {
 	}
 
 	/**
+	 * Gets the selected sequence.
+	 *
+	 * @return The selected sequence, or <code>null</code> if no sequence is
+	 *         currently selected.
+	 */
+	public Sequence getSelectedSequence() {
+		if (isViewerVisible(sequencesComboViewer)) {
+			return getSelectedSeq();
+		}
+		return null;
+	}
+
+	private Sequence getSelectedSeq() {
+		final IStructuredSelection selection = (IStructuredSelection) sequencesComboViewer.getSelection();
+		return (Sequence) selection.getFirstElement();
+	}
+
+	/**
 	 * Select the given sequence.
 	 *
 	 * @param sequence
 	 *            The sequence to select.
 	 */
-	@Inject
-	@Optional
-	public void setSelectedSequence(@UIEventTopic(EventTopics.SELECTED_SEQUENCE) final Sequence sequence) {
+	public void setSelectedSequence(final Sequence sequence) {
 		showViewer(sequencesComboViewer, haplotypesComboViewer);
 		if (sequence == null) {
 			sequencesComboViewer.setSelection(StructuredSelection.EMPTY, true);
@@ -300,15 +360,22 @@ public class HaplotypeComponent {
 		}
 	}
 
+	private boolean isViewerVisible(final ComboViewer viewer) {
+		final Combo combo = viewer.getCombo();
+		if (combo.isDisposed()) {
+			return false;
+		}
+		final GridData data = (GridData) combo.getLayoutData();
+		return !data.exclude;
+	}
+
 	/**
 	 * Sets the haplotypes to be displayed in this component.
 	 *
 	 * @param haplotypes
 	 *            The haplotypes to display.
 	 */
-	@Inject
-	@Optional
-	public void setActiveHaplotypes(@UIEventTopic(EventTopics.ACTIVE_HAPLOTYPES) final List<Haplotype> haplotypes) {
+	public void setModel(final List<Haplotype> haplotypes) {
 		haploModel = haplotypes;
 		haplotypesComboViewer.setInput(haplotypes);
 		sequencesComboViewer.setInput(haplotypes == null ? null : haplotypes.stream().flatMap(h -> h.stream()).collect(Collectors.toList()).toArray());
@@ -321,9 +388,7 @@ public class HaplotypeComponent {
 	 * @param haplotype
 	 *            The haplotype that has been changed.
 	 */
-	@Inject
-	@Optional
-	public void updateHaplotype(@UIEventTopic(EventTopics.UPDATE_HAPLOTYPE) final Haplotype haplotype) {
+	public void updateHaplotype(final Haplotype haplotype) {
 		if (haplotype != null && tableViewer != null && !tableViewer.getGrid().isDisposed()) {
 			@SuppressWarnings("unchecked")
 			final Map<Haplotype, Difference> input = (Map<Haplotype, Difference>) tableViewer.getInput();

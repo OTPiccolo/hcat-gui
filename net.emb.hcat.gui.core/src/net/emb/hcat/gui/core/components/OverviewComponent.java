@@ -315,15 +315,51 @@ public class OverviewComponent {
 	}
 
 	private void updateViewer() {
-		tableViewer.setInput(showAsSequnces ? seqModel : haploModel);
-		if (seqModel != null && !seqModel.isEmpty()) {
-			// Select first sequence or haplotype. Need to do a general
-			// selection first, as otherwise a 'null' selection is propagated to
-			// listeners. Afterwards, select the proper cell and show it.
-			tableViewer.setSelection(new StructuredSelection((showAsSequnces ? seqModel : haploModel).get(0)), false);
-			tableViewer.getGrid().setCellSelection(new Point(2, 0));
-			tableViewer.getGrid().showSelection();
+		Object selection = preserveSelection();
+		if (selection == null && seqModel != null && !seqModel.isEmpty()) {
+			selection = showAsSequnces ? seqModel.get(0) : haploModel.get(0);
 		}
+
+		tableViewer.setInput(showAsSequnces ? seqModel : haploModel);
+
+		// Need to do a general selection first, as otherwise a 'null' selection
+		// is propagated to listeners. Afterwards, select the proper cell and
+		// show it.
+		tableViewer.setSelection(selection == null ? StructuredSelection.EMPTY : new StructuredSelection(selection), false);
+		final Grid grid = tableViewer.getGrid();
+		final int selectionIndex = grid.getSelectionIndex();
+		if (selectionIndex != -1) {
+			grid.setCellSelection(new Point(2, selectionIndex));
+			grid.showSelection();
+		}
+	}
+
+	private Object preserveSelection() {
+		final Object oldSelection = ((IStructuredSelection) tableViewer.getSelection()).getFirstElement();
+		if (oldSelection == null) {
+			return null;
+		}
+
+		if (oldSelection instanceof Haplotype) {
+			if (showAsSequnces) {
+				return ((Haplotype) oldSelection).getFirstSequence();
+			}
+			return oldSelection;
+		}
+
+		if (oldSelection instanceof Sequence) {
+			if (showAsSequnces) {
+				return oldSelection;
+			}
+			for (final Haplotype haplotype : haploModel) {
+				if (haplotype.belongsToHaplotype((Sequence) oldSelection)) {
+					return haplotype;
+				}
+			}
+		}
+
+		// Should never happen.
+		return null;
 	}
 
 	/**
@@ -377,7 +413,7 @@ public class OverviewComponent {
 	 * Gets the currently selected haplotype.
 	 *
 	 * @return The currently selected haplotype, or <code>null</code>, if no
-	 *         sequence is selected or sequences are shown.
+	 *         haplotype is selected or sequences are shown.
 	 * @see #isShowAsHaplotypes()
 	 */
 	public Haplotype getSelectedHaplotype() {

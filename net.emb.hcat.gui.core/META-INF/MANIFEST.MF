@@ -4,7 +4,8 @@ Bundle-Name: HCAT Core
 Bundle-SymbolicName: net.emb.hcat.gui.core;singleton:=true
 Bundle-Version: 0.0.1.qualifier
 Bundle-Activator: net.emb.hcat.gui.core.Activator
-Require-Bundle: javax.inject;bundle-version="0.0.0";visibility:=reexport,
+Require-Bundle: javax.annotation;bundle-version="0.0.0";visibility:=reexport,
+ javax.inject;bundle-version="0.0.0";visibility:=reexport,
  org.eclipse.swt;bundle-version="0.0.0";visibility:=reexport,
  org.eclipse.jface;bundle-version="0.0.0";visibility:=reexport,
  org.eclipse.e4.ui.model.workbench;bundle-version="0.0.0",
@@ -18,14 +19,10 @@ Require-Bundle: javax.inject;bundle-version="0.0.0";visibility:=reexport,
  org.eclipse.core.runtime;bundle-version="0.0.0";visibility:=reexport,
  org.eclipse.nebula.widgets.grid,
  org.eclipse.osgi.services;bundle-version="3.7.100",
- org.slf4j.api;bundle-version="1.7.30",
+ wrapped.net.emb.hcat-cli;bundle-version="0.0.0",
+ slf4j.api;bundle-version="1.7.25",
  ch.qos.logback.classic;bundle-version="1.2.3",
  ch.qos.logback.core;bundle-version="1.2.3"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: net/emb/hcat/gui/core/messages/messages
-Bundle-ClassPath: lib/hcat-cli.jar,.
-Export-Package: net.emb.hcat.cli,net.emb.hcat.cli.codon,net.emb.hcat.cli
- .haplotype,net.emb.hcat.cli.io,net.emb.hcat.gui.core,net.emb.hcat.gui.c
- ore.handlers,net.emb.hcat.gui.core.parts
-

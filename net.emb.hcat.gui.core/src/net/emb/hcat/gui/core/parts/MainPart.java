@@ -198,6 +198,22 @@ public class MainPart {
 		return haplotypes;
 	}
 
+	/**
+	 * Gets the selected master haplotype in the haplotype table component.
+	 *
+	 * @return The selected master haplotype, or <code>null</code> if it can't
+	 *         be computed.
+	 */
+	public Haplotype getMasterHaplotype() {
+		final Haplotype haplotype = haplotypeTable.getSelectedHaplotype();
+		if (haplotype != null) {
+			return haplotype;
+		}
+
+		final Sequence sequence = haplotypeTable.getSelectedSequence();
+		return Haplotype.find(sequence, getHaplotypes());
+	}
+
 	private void handleActivate(final Event e) {
 		if (isPart(e)) {
 			broker.post(EventTopics.ACTIVE_SEQUENCES, getSequences());

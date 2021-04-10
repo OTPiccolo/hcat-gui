@@ -25,7 +25,7 @@
           <children xsi:type="menu:HandledMenuItem" xmi:id="_ALQDAJIjEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.menu.save.haplotypes" label="%Application_fileMenu_Save_Haplotypes" iconURI="" command="_6wlLg8gZEeSyMNYR5xypkQ">
             <parameters xmi:id="_OV3uoJIjEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.haplotypesContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Haplotypes"/>
           </children>
-          <children xsi:type="menu:HandledMenuItem" xmi:id="_5FFtEJIsEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.menu.save.haplotypeTable" toBeRendered="false" label="%Application_fileMenu_Save_HaplotypeTable" command="_6wlLg8gZEeSyMNYR5xypkQ">
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_5FFtEJIsEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.menu.save.haplotypeTable" label="%Application_fileMenu_Save_HaplotypeTable" command="_6wlLg8gZEeSyMNYR5xypkQ">
             <parameters xmi:id="_-XIOcJIsEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.haplotypeTableContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Haplotype Table"/>
           </children>
           <children xsi:type="menu:HandledMenuItem" xmi:id="_hZIb0JIxEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.menu.save.distanceMatrix" toBeRendered="false" label="%Application_fileMenu_Save_DistanceMatrix" command="_6wlLg8gZEeSyMNYR5xypkQ">

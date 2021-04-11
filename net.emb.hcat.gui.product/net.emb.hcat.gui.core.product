@@ -17,11 +17,19 @@
       location="net.emb.hcat.gui.core" />
    <launcher name="hcat">
       <win useIco="false">
-         <bmp/>
+         <bmp
+            winSmallHigh="/net.emb.hcat.gui.core/icons/Icon_16x16.bmp"
+            winSmallLow="/net.emb.hcat.gui.core/icons/Icon_16x16_8.bmp"
+            winMediumHigh="/net.emb.hcat.gui.core/icons/Icon_32x32.bmp"
+            winMediumLow="/net.emb.hcat.gui.core/icons/Icon_32x32_8.bmp"
+            winLargeHigh="/net.emb.hcat.gui.core/icons/Icon_48x48.bmp"
+            winLargeLow="/net.emb.hcat.gui.core/icons/Icon_48x48_8.bmp"
+            winExtraLargeHigh="/net.emb.hcat.gui.core/icons/Icon_256x256.bmp"/>
       </win>
    </launcher>
 
    <vm>
+      <windows include="true">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</windows>
    </vm>
 
    <plugins>

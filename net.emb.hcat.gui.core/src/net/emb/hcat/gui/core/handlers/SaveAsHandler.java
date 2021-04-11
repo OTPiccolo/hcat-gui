@@ -19,8 +19,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
+import net.emb.hcat.cli.haplotype.DistanceMatrix;
 import net.emb.hcat.cli.haplotype.Haplotype;
 import net.emb.hcat.cli.haplotype.HaplotypeTransformer;
+import net.emb.hcat.cli.io.DistanceMatrixWriter;
 import net.emb.hcat.cli.io.HaplotypeTableWriter;
 import net.emb.hcat.cli.io.sequence.ESequenceType;
 import net.emb.hcat.cli.io.sequence.ISequenceWriter;
@@ -80,6 +82,9 @@ public class SaveAsHandler {
 			break;
 
 		case Constants.SAVE_COMMAND_PARAMETER_VALUE_DISTANCE_MATRIX:
+			saveDistanceMatrix(shell, part.getHaplotypes());
+			break;
+
 		case Constants.SAVE_COMMAND_PARAMETER_VALUE_TEXT_LOG:
 		default:
 			// Should never happen.
@@ -125,6 +130,26 @@ public class SaveAsHandler {
 		try (Writer buffer = new BufferedWriter(new FileWriter(file))) {
 			final HaplotypeTableWriter writer = new HaplotypeTableWriter(buffer);
 			writer.write(masterSequence, transformer.compareToMaster(masterSequence));
+		}
+	}
+
+	private void saveDistanceMatrix(final Shell shell, final List<Haplotype> haplotypes) {
+		final FileDialog dialog = createTextDialog(shell);
+		final String file = dialog.open();
+		if (file != null) {
+			try {
+				saveHaplotypeTable(file, new DistanceMatrix(haplotypes));
+			} catch (final IOException e) {
+				final String message = MessageFormat.format(Messages.SaveAsHandler_errorSaveFileMessage, file, e.getLocalizedMessage());
+				MessageDialog.open(MessageDialog.ERROR, shell, Messages.SaveAsHandler_errorSaveFileTitle, message, SWT.NONE);
+			}
+		}
+	}
+
+	private void saveHaplotypeTable(final String file, final DistanceMatrix distanceMatrix) throws IOException {
+		try (Writer buffer = new BufferedWriter(new FileWriter(file))) {
+			final DistanceMatrixWriter writer = new DistanceMatrixWriter(buffer);
+			writer.write(distanceMatrix);
 		}
 	}
 

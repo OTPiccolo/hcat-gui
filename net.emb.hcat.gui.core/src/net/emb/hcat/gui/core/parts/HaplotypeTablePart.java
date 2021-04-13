@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Composite;
 import net.emb.hcat.cli.haplotype.Haplotype;
 import net.emb.hcat.cli.sequence.Sequence;
 import net.emb.hcat.gui.core.EventTopics;
-import net.emb.hcat.gui.core.components.HaplotypeComponent;
+import net.emb.hcat.gui.core.components.HaplotypeTableComponent;
 
 /**
  * Shows information about haplotypes and how they diverge from each other.
@@ -27,12 +27,12 @@ import net.emb.hcat.gui.core.components.HaplotypeComponent;
 @Deprecated
 public class HaplotypeTablePart {
 
-	private HaplotypeComponent haplotype;
+	private HaplotypeTableComponent haplotype;
 
 	@PostConstruct
 	public void createComposite(final Composite parent, final IEclipseContext context) {
 		parent.setLayout(new FillLayout());
-		haplotype = ContextInjectionFactory.make(HaplotypeComponent.class, context);
+		haplotype = ContextInjectionFactory.make(HaplotypeTableComponent.class, context);
 		haplotype.createComposite(parent);
 	}
 

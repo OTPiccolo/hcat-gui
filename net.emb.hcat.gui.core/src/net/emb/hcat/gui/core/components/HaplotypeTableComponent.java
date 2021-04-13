@@ -42,7 +42,7 @@ import net.emb.hcat.gui.core.messages.Messages;
  *
  * @author OT Piccolo
  */
-public class HaplotypeComponent {
+public class HaplotypeTableComponent {
 
 	private Control control;
 

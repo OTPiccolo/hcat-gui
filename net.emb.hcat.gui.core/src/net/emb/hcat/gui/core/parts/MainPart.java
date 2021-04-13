@@ -28,7 +28,7 @@ import net.emb.hcat.cli.haplotype.Haplotype;
 import net.emb.hcat.cli.sequence.Sequence;
 import net.emb.hcat.gui.core.EventTopics;
 import net.emb.hcat.gui.core.components.DistanceMatrixComponent;
-import net.emb.hcat.gui.core.components.HaplotypeComponent;
+import net.emb.hcat.gui.core.components.HaplotypeTableComponent;
 import net.emb.hcat.gui.core.components.OverviewComponent;
 import net.emb.hcat.gui.core.components.TextLogComponent;
 import net.emb.hcat.gui.core.messages.Messages;
@@ -49,7 +49,7 @@ public class MainPart {
 	private List<Haplotype> haplotypes;
 
 	private OverviewComponent overview;
-	private HaplotypeComponent haplotypeTable;
+	private HaplotypeTableComponent haplotypeTable;
 	private DistanceMatrixComponent matrix;
 	private TextLogComponent textLog;
 
@@ -76,7 +76,7 @@ public class MainPart {
 
 		final TabItem haplotypeItem = new TabItem(folder, SWT.NONE);
 		haplotypeItem.setText(Messages.MainPart_HaplotypeTable);
-		haplotypeTable = ContextInjectionFactory.make(HaplotypeComponent.class, context);
+		haplotypeTable = ContextInjectionFactory.make(HaplotypeTableComponent.class, context);
 		haplotypeTable.createComposite(folder);
 		haplotypeItem.setControl(haplotypeTable.getControl());
 

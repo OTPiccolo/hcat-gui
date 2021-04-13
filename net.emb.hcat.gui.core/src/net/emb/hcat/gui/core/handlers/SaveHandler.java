@@ -7,6 +7,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 // Unused. Only here for reference, can be deleted later.
 
 @SuppressWarnings("javadoc")
+@Deprecated
 public class SaveHandler {
 
 	@CanExecute

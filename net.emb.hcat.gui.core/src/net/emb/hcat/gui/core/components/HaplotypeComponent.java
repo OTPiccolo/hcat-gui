@@ -1,5 +1,6 @@
 package net.emb.hcat.gui.core.components;
 
+import java.text.MessageFormat;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +65,7 @@ public class HaplotypeComponent {
 		body.setLayout(new GridLayout(2, false));
 
 		final Label label = new Label(body, SWT.NONE);
-		label.setText(Messages.HaplotypeTablePart_MasterSequenceLabel);
+		label.setText(Messages.HaplotypeTableComponent_MasterSequenceLabel);
 		label.setLayoutData(GridDataFactory.defaultsFor(label).create());
 
 		haplotypesComboViewer = createHaplotypesCombo(body);
@@ -148,6 +149,7 @@ public class HaplotypeComponent {
 							}
 						});
 					}
+					gridViewer.getGrid().getColumn(0).setFooterText(MessageFormat.format(Messages.HaplotypeTableComponent_VariableSites, positions.size()));
 				}
 			}
 
@@ -158,7 +160,7 @@ public class HaplotypeComponent {
 		});
 
 		final GridViewerColumn idColumn = new GridViewerColumn(viewer, SWT.NONE);
-		idColumn.getColumn().setText(Messages.HaplotypeTablePart_IdColumn);
+		idColumn.getColumn().setText(Messages.HaplotypeTableComponent_IdColumn);
 		idColumn.getColumn().setWidth(150);
 		idColumn.setLabelProvider(new ColumnLabelProvider() {
 			@SuppressWarnings("unchecked")
@@ -169,14 +171,14 @@ public class HaplotypeComponent {
 		});
 
 		final GridViewerColumn seqNamesColumn = new GridViewerColumn(viewer, SWT.NONE);
-		seqNamesColumn.getColumn().setText(Messages.HaplotypeTablePart_SeqNamesColumn);
+		seqNamesColumn.getColumn().setText(Messages.HaplotypeTableComponent_SeqNamesColumn);
 		seqNamesColumn.getColumn().setWidth(150);
 		seqNamesColumn.setLabelProvider(new ColumnLabelProvider() {
 			@SuppressWarnings("unchecked")
 			@Override
 			public String getText(final Object element) {
 				final Haplotype haplotype = ((Entry<Haplotype, ?>) element).getKey();
-				String text = haplotype.stream().map(seq -> seq.getName() == null ? Messages.HaplotypeTablePart_NotAvailable : seq.getName()).reduce("", (a, b) -> a + "/" + b); //$NON-NLS-1$ //$NON-NLS-2$
+				String text = haplotype.stream().map(seq -> seq.getName() == null ? Messages.HaplotypeTableComponent_NotAvailable : seq.getName()).reduce("", (a, b) -> a + "/" + b); //$NON-NLS-1$ //$NON-NLS-2$
 				if (!text.isEmpty()) {
 					text = text.substring(1);
 				}
@@ -187,6 +189,7 @@ public class HaplotypeComponent {
 		final Grid grid = viewer.getGrid();
 		grid.setHeaderVisible(true);
 		grid.setAutoHeight(true);
+		grid.setFooterVisible(true);
 
 		return viewer;
 	}

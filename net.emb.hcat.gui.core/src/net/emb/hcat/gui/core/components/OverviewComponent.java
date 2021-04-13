@@ -1,5 +1,6 @@
 package net.emb.hcat.gui.core.components;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -261,6 +262,7 @@ public class OverviewComponent {
 		grid.setCellSelectionEnabled(true);
 		grid.setHeaderVisible(true);
 		grid.setAutoHeight(true);
+		grid.setFooterVisible(true);
 		grid.enableDefaultKeyListener();
 
 		return viewer;
@@ -320,7 +322,15 @@ public class OverviewComponent {
 			selection = showAsSequnces ? seqModel.get(0) : haploModel.get(0);
 		}
 
-		tableViewer.setInput(showAsSequnces ? seqModel : haploModel);
+		if (showAsSequnces) {
+			final String footer = MessageFormat.format(Messages.OverviewComponent_CountSequences, seqModel.size());
+			tableViewer.getGrid().getColumn(0).setFooterText(footer);
+			tableViewer.setInput(seqModel);
+		} else {
+			final String footer = MessageFormat.format(Messages.OverviewComponent_CountHaplotypes, haploModel.size());
+			tableViewer.getGrid().getColumn(0).setFooterText(footer);
+			tableViewer.setInput(haploModel);
+		}
 
 		// Need to do a general selection first, as otherwise a 'null' selection
 		// is propagated to listeners. Afterwards, select the proper cell and

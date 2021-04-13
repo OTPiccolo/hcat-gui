@@ -22,10 +22,11 @@ public class Messages extends NLS {
 	public static String ErrorCodeException_SEQUENCE_WRONG_LENGTH;
 	public static String ErrorCodeException_SEQUENCE_WRONG_NAME;
 	public static String ErrorCodeException_UNEXPECTED;
-	public static String HaplotypeTablePart_IdColumn;
-	public static String HaplotypeTablePart_NotAvailable;
-	public static String HaplotypeTablePart_MasterSequenceLabel;
-	public static String HaplotypeTablePart_SeqNamesColumn;
+	public static String HaplotypeTableComponent_IdColumn;
+	public static String HaplotypeTableComponent_NotAvailable;
+	public static String HaplotypeTableComponent_MasterSequenceLabel;
+	public static String HaplotypeTableComponent_SeqNamesColumn;
+	public static String HaplotypeTableComponent_VariableSites;
 	public static String HcatFunction_CutSequences;
 	public static String HcatFunction_ExportConvertedFile;
 	public static String HcatFunction_HaplotypeAnalysis;
@@ -47,6 +48,8 @@ public class Messages extends NLS {
 	public static String OpenHandler_openDialogFastaFormat;
 	public static String OpenHandler_openDialogTitle;
 	public static String OpenHandler_openDialogPhylipFormat;
+	public static String OverviewComponent_CountHaplotypes;
+	public static String OverviewComponent_CountSequences;
 	public static String OverviewComponent_IdColumn;
 	public static String OverviewComponent_NotAvailable;
 	public static String OverviewComponent_SeqNameColumn;

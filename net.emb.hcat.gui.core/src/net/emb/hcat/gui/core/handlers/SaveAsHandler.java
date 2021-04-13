@@ -86,6 +86,9 @@ public class SaveAsHandler {
 			break;
 
 		case Constants.SAVE_COMMAND_PARAMETER_VALUE_TEXT_LOG:
+			saveTextLog(shell, part.getTextLog());
+			break;
+
 		default:
 			// Should never happen.
 			throw new IllegalArgumentException("Unknown content type to save: " + contentType); //$NON-NLS-1$
@@ -150,6 +153,25 @@ public class SaveAsHandler {
 		try (Writer buffer = new BufferedWriter(new FileWriter(file))) {
 			final DistanceMatrixWriter writer = new DistanceMatrixWriter(buffer);
 			writer.write(distanceMatrix);
+		}
+	}
+
+	private void saveTextLog(final Shell shell, final String text) {
+		final FileDialog dialog = createTextDialog(shell);
+		final String file = dialog.open();
+		if (file != null) {
+			try {
+				saveTextLog(file, text);
+			} catch (final IOException e) {
+				final String message = MessageFormat.format(Messages.SaveAsHandler_errorSaveFileMessage, file, e.getLocalizedMessage());
+				MessageDialog.open(MessageDialog.ERROR, shell, Messages.SaveAsHandler_errorSaveFileTitle, message, SWT.NONE);
+			}
+		}
+	}
+
+	private void saveTextLog(final String file, final String text) throws IOException {
+		try (Writer buffer = new BufferedWriter(new FileWriter(file))) {
+			buffer.write(text);
 		}
 	}
 

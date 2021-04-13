@@ -87,6 +87,15 @@ public class TextLogComponent {
 		}
 	}
 
+	/**
+	 * Gets the displayed text log.
+	 *
+	 * @return The currently displayed text in the log.
+	 */
+	public String getTextLog() {
+		return writeLog(haploModel);
+	}
+
 	private void updateViewer() {
 		text.setText(writeLog(haploModel));
 	}

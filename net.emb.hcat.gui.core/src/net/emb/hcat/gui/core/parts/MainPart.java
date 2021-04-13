@@ -214,6 +214,15 @@ public class MainPart {
 		return Haplotype.find(sequence, getHaplotypes());
 	}
 
+	/**
+	 * Gets the displayed text log.
+	 *
+	 * @return The currently displayed text in the log.
+	 */
+	public String getTextLog() {
+		return textLog.getTextLog();
+	}
+
 	private void handleActivate(final Event e) {
 		if (isPart(e)) {
 			broker.post(EventTopics.ACTIVE_SEQUENCES, getSequences());

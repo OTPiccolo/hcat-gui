@@ -30,6 +30,7 @@ import net.emb.hcat.cli.sequence.Sequence;
 import net.emb.hcat.gui.core.Constants;
 import net.emb.hcat.gui.core.messages.Messages;
 import net.emb.hcat.gui.core.parts.MainPart;
+import net.emb.hcat.gui.core.parts.MainPart.DISPLAYED_CONTENT;
 
 /**
  * Saves the currently active editor into a new file.
@@ -69,29 +70,66 @@ public class SaveAsHandler {
 
 	private void saveAs(final MainPart part, final Shell shell, final String contentType) {
 		switch (contentType) {
-		case Constants.SAVE_COMMAND_PARAMETER_VALUE_SEQUENCES:
-			saveSequences(shell, part.getSequences());
+		case Constants.SAVE_COMMAND_PARAMETER_VALUE_DYNAMIC:
+			saveAs(part, shell, part.getDisplayedContent());
 			break;
 
 		case Constants.SAVE_COMMAND_PARAMETER_VALUE_HAPLOTYPES:
-			saveSequences(shell, part.getHaplotypes().stream().map(h -> h.asSequence()).collect(Collectors.toList()));
+			saveAs(part, shell, DISPLAYED_CONTENT.HAPLOTYPES);
+			break;
+
+		case Constants.SAVE_COMMAND_PARAMETER_VALUE_SEQUENCES:
+			saveAs(part, shell, DISPLAYED_CONTENT.SEQUENCES);
 			break;
 
 		case Constants.SAVE_COMMAND_PARAMETER_VALUE_HAPLOTYPE_TABLE:
-			saveHaplotypeTable(shell, part.getHaplotypes(), part.getMasterHaplotype());
+			saveAs(part, shell, DISPLAYED_CONTENT.HAPLOTYPE_TABLE);
 			break;
 
 		case Constants.SAVE_COMMAND_PARAMETER_VALUE_DISTANCE_MATRIX:
-			saveDistanceMatrix(shell, part.getHaplotypes());
+			saveAs(part, shell, DISPLAYED_CONTENT.DISTANCE_MATRIX);
 			break;
 
 		case Constants.SAVE_COMMAND_PARAMETER_VALUE_TEXT_LOG:
-			saveTextLog(shell, part.getTextLog());
+			saveAs(part, shell, DISPLAYED_CONTENT.TEXT_LOG);
 			break;
 
 		default:
 			// Should never happen.
 			throw new IllegalArgumentException("Unknown content type to save: " + contentType); //$NON-NLS-1$
+		}
+	}
+
+	private void saveAs(final MainPart part, final Shell shell, final DISPLAYED_CONTENT content) {
+		if (content == null) {
+			// Should never happen.
+			throw new IllegalArgumentException("No content type selected to save."); //$NON-NLS-1$
+		}
+
+		switch (content) {
+		case DISTANCE_MATRIX:
+			saveDistanceMatrix(shell, part.getHaplotypes());
+			break;
+
+		case HAPLOTYPES:
+			saveSequences(shell, part.getHaplotypes().stream().map(h -> h.asSequence()).collect(Collectors.toList()));
+			break;
+
+		case HAPLOTYPE_TABLE:
+			saveHaplotypeTable(shell, part.getHaplotypes(), part.getMasterHaplotype());
+			break;
+
+		case SEQUENCES:
+			saveSequences(shell, part.getSequences());
+			break;
+
+		case TEXT_LOG:
+			saveTextLog(shell, part.getTextLog());
+			break;
+
+		default:
+			// Should never happen.
+			throw new IllegalArgumentException("Unknown content to save: " + content); //$NON-NLS-1$
 		}
 	}
 

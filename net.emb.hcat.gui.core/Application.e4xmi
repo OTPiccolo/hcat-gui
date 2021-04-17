@@ -19,11 +19,14 @@
         </children>
         <children xsi:type="menu:MenuSeparator" xmi:id="_HO4S4N-fEeq4Ft1EWbVhyQ" elementId="net.emb.hcat.gui.core.menuseparator.1"/>
         <children xsi:type="menu:Menu" xmi:id="_nd7fkJIgEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.menu.save" label="%Application_fileMenu_Save">
-          <children xsi:type="menu:HandledMenuItem" xmi:id="_xJJAoJIgEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.menu.save.sequences" label="%Application_fileMenu_Save_Sequences" iconURI="platform:/plugin/net.emb.hcat.gui.core/icons/save_edit.png" command="_6wlLg8gZEeSyMNYR5xypkQ">
-            <parameters xmi:id="_Cnl0gJIhEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.sequencesContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Sequences"/>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_xJJAoJIgEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.menu.save.dynamic" label="%Application_fileMenu_Save_Dynamic" iconURI="platform:/plugin/net.emb.hcat.gui.core/icons/save_edit.png" command="_6wlLg8gZEeSyMNYR5xypkQ">
+            <parameters xmi:id="_Cnl0gJIhEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.dynamicContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Dynamic"/>
           </children>
           <children xsi:type="menu:HandledMenuItem" xmi:id="_ALQDAJIjEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.menu.save.haplotypes" label="%Application_fileMenu_Save_Haplotypes" iconURI="" command="_6wlLg8gZEeSyMNYR5xypkQ">
             <parameters xmi:id="_OV3uoJIjEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.haplotypesContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Haplotypes"/>
+          </children>
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_21zicJ9bEeujRN3csvn5Cg" elementId="net.emb.hcat.gui.core.menu.save.sequences" label="%Application_fileMenu_Save_Sequences" command="_6wlLg8gZEeSyMNYR5xypkQ">
+            <parameters xmi:id="_CxHocJ9dEeujRN3csvn5Cg" elementId="net.emb.hcat.gui.core.parameter.sequencesContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Sequences"/>
           </children>
           <children xsi:type="menu:HandledMenuItem" xmi:id="_5FFtEJIsEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.menu.save.haplotypeTable" label="%Application_fileMenu_Save_HaplotypeTable" command="_6wlLg8gZEeSyMNYR5xypkQ">
             <parameters xmi:id="_-XIOcJIsEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.haplotypeTableContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Haplotype Table"/>
@@ -50,7 +53,7 @@
       <children xsi:type="menu:ToolBar" xmi:id="_6wlLlsgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.main.toolbar">
         <children xsi:type="menu:HandledToolItem" xmi:id="_6wlLl8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handleditem.trimbar.top.open" iconURI="platform:/plugin/net.emb.hcat.gui.core/icons/sample.png" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
         <children xsi:type="menu:HandledToolItem" xmi:id="_6wlLmMgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handleditem.trimbar.top.save" iconURI="platform:/plugin/net.emb.hcat.gui.core/icons/save_edit.png" command="_6wlLg8gZEeSyMNYR5xypkQ">
-          <parameters xmi:id="_c24y8JIhEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.sequencesContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Sequences"/>
+          <parameters xmi:id="_c24y8JIhEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.sequencesContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Dynamic"/>
         </children>
       </children>
     </trimBars>
@@ -65,7 +68,7 @@
     <bindings xmi:id="_6wlLf8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.keybinding.m1q" keySequence="M1+Q" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
     <bindings xmi:id="_6wlLgsgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.keybinding.m1o" keySequence="M1+O" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
     <bindings xmi:id="_6wlLhcgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.keybinding.m1s" keySequence="M1+S" command="_6wlLg8gZEeSyMNYR5xypkQ">
-      <parameters xmi:id="_i1gGcJIhEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.sequencesContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Sequences"/>
+      <parameters xmi:id="_i1gGcJIhEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.sequencesContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Dynamic"/>
     </bindings>
     <bindings xmi:id="_6wlLiMgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.keybinding.m1a" keySequence="M1+A" command="_6wlLhsgZEeSyMNYR5xypkQ"/>
   </bindingTables>
@@ -80,8 +83,9 @@
   </commands>
   <commands xmi:id="_6wlLg8gZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.file.save" commandName="saveCommand">
     <parameters xmi:id="_Waov8JIbEeuZ5u1ZvytO5Q" elementId="org.eclipse.ui.file.save.parameter.contentType" name="Content Type" optional="false">
-      <tags>Sequences</tags>
+      <tags>Dynamic</tags>
       <tags>Haplotypes</tags>
+      <tags>Sequences</tags>
       <tags>Haplotype Table</tags>
       <tags>Distance Matrix</tags>
       <tags>Text Log</tags>

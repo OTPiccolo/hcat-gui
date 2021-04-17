@@ -41,6 +41,16 @@ import net.emb.hcat.gui.core.messages.Messages;
  */
 public class MainPart {
 
+	/**
+	 * Describes which content is currently displayed in this part.
+	 *
+	 * @author OT Piccolo
+	 */
+	@SuppressWarnings("javadoc")
+	public enum DISPLAYED_CONTENT {
+		SEQUENCES, HAPLOTYPES, HAPLOTYPE_TABLE, DISTANCE_MATRIX, TEXT_LOG;
+	}
+
 	@Inject
 	private IEventBroker broker;
 
@@ -48,6 +58,7 @@ public class MainPart {
 	private List<Sequence> sequences;
 	private List<Haplotype> haplotypes;
 
+	private TabFolder folder;
 	private OverviewComponent overview;
 	private HaplotypeTableComponent haplotypeTable;
 	private DistanceMatrixComponent matrix;
@@ -66,7 +77,7 @@ public class MainPart {
 	@PostConstruct
 	public void createComposite(final Composite parent, final IEclipseContext context) {
 		parent.setLayout(new FillLayout());
-		final TabFolder folder = new TabFolder(parent, SWT.BOTTOM);
+		folder = new TabFolder(parent, SWT.BOTTOM);
 
 		final TabItem overviewItem = new TabItem(folder, SWT.NONE);
 		overviewItem.setText(Messages.MainPart_OverviewTab);
@@ -221,6 +232,40 @@ public class MainPart {
 	 */
 	public String getTextLog() {
 		return textLog.getTextLog();
+	}
+
+	/**
+	 * Gets the currently displayed content type of this part.
+	 *
+	 * @return The content type that is currently displayed in the part.
+	 */
+	public DISPLAYED_CONTENT getDisplayedContent() {
+		if (folder == null || folder.isDisposed()) {
+			return null;
+		}
+
+		final TabItem item = folder.getItem(folder.getSelectionIndex());
+		if (item.getControl() == overview.getControl()) {
+			if (overview.isShowAsHaplotypes()) {
+				return DISPLAYED_CONTENT.HAPLOTYPES;
+			}
+			return DISPLAYED_CONTENT.SEQUENCES;
+		}
+
+		if (item.getControl() == haplotypeTable.getControl()) {
+			return DISPLAYED_CONTENT.HAPLOTYPE_TABLE;
+		}
+
+		if (item.getControl() == matrix.getControl()) {
+			return DISPLAYED_CONTENT.DISTANCE_MATRIX;
+		}
+
+		if (item.getControl() == textLog.getControl()) {
+			return DISPLAYED_CONTENT.TEXT_LOG;
+		}
+
+		// Should never happen as all tab items must be listed here.
+		return null;
 	}
 
 	private void handleActivate(final Event e) {

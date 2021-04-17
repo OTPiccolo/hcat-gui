@@ -17,10 +17,12 @@ public class Constants {
 	public static final String SAVE_COMMAND_ID = "org.eclipse.ui.file.save";
 	/** Command Parameter ID to save editor content. */
 	public static final String SAVE_COMMAND_PARAMETER_ID = "org.eclipse.ui.file.save.parameter.contentType";
-	/** Command Parameter Value to save sequences. */
-	public static final String SAVE_COMMAND_PARAMETER_VALUE_SEQUENCES = "Sequences";
+	/** Command Parameter Value to save depending on the displayed content. */
+	public static final String SAVE_COMMAND_PARAMETER_VALUE_DYNAMIC = "Dynamic";
 	/** Command Parameter Value to save haplotypes. */
 	public static final String SAVE_COMMAND_PARAMETER_VALUE_HAPLOTYPES = "Haplotypes";
+	/** Command Parameter Value to save sequences. */
+	public static final String SAVE_COMMAND_PARAMETER_VALUE_SEQUENCES = "Sequences";
 	/** Command Parameter Value to save haplotype table. */
 	public static final String SAVE_COMMAND_PARAMETER_VALUE_HAPLOTYPE_TABLE = "Haplotype Table";
 	/** Command Parameter Value to save distance matrix. */

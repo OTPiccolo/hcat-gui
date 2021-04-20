@@ -5,7 +5,7 @@
       <children xsi:type="advanced:Perspective" xmi:id="_6wlLkcgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.perspective.sample">
         <children xsi:type="basic:PartSashContainer" xmi:id="_6wlLksgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.partsashcontainer.0" selectedElement="_3OwqIC-9EemdB4aYK-ZD6g" horizontal="true">
           <children xsi:type="basic:Part" xmi:id="_3OwqIC-9EemdB4aYK-ZD6g" elementId="net.emb.hcat.gui.core.part.navigator" containerData="1500" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.parts.NavigatorPart" label="Workspace Navigation" iconURI="platform:/plugin/org.eclipse.ui/icons/full/eview16/filenav_nav.png"/>
-          <children xsi:type="basic:PartStack" xmi:id="_6wlLk8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.partstack.0" containerData="7500">
+          <children xsi:type="basic:PartStack" xmi:id="_6wlLk8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.partstack.0" containerData="8500">
             <tags>editorArea</tags>
           </children>
         </children>
@@ -76,7 +76,9 @@
     <children xmi:id="_6wlLesgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>
     <children xmi:id="_6wlLe8gZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.contexts.dialog" name="In Dialogs"/>
   </rootContext>
-  <descriptors xmi:id="_wGC0EJXQEemyobe59e_BnQ" elementId="net.emb.hcat.gui.core.partdescriptor.main" label="Main Part" allowMultiple="true" category="editorArea" closeable="true" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.parts.MainPart"/>
+  <descriptors xmi:id="_wGC0EJXQEemyobe59e_BnQ" elementId="net.emb.hcat.gui.core.partdescriptor.main" label="Main Part" allowMultiple="true" category="editorArea" closeable="true" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.parts.MainPart">
+    <tags>removeOnHide</tags>
+  </descriptors>
   <commands xmi:id="_6wlLfMgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.file.exit" commandName="quitCommand"/>
   <commands xmi:id="_6wlLgMgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.file.open" commandName="openCommand">
     <parameters xmi:id="_0FOWIJpUEemHVMZxI2y8fw" elementId="org.eclipse.ui.file.open.parameter.file" name="File"/>

@@ -1,6 +1,12 @@
 package net.emb.hcat.gui.core.parts;
 
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -11,6 +17,7 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
+import org.eclipse.e4.ui.di.PersistState;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.MUIElement;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -19,12 +26,19 @@ import org.eclipse.e4.ui.workbench.UIEvents.UILifeCycle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import net.emb.hcat.cli.ErrorCodeException;
 import net.emb.hcat.cli.haplotype.Haplotype;
+import net.emb.hcat.cli.io.sequence.ESequenceType;
+import net.emb.hcat.cli.io.sequence.ISequenceReader;
+import net.emb.hcat.cli.io.sequence.ISequenceWriter;
 import net.emb.hcat.cli.sequence.Sequence;
 import net.emb.hcat.gui.core.EventTopics;
 import net.emb.hcat.gui.core.components.DistanceMatrixComponent;
@@ -40,6 +54,14 @@ import net.emb.hcat.gui.core.messages.Messages;
  * @author OT Piccolo
  */
 public class MainPart {
+
+	private static final Logger log = LoggerFactory.getLogger(MainPart.class);
+
+	private static final String PERSIST_ID_MAIN_ID = "ID"; //$NON-NLS-1$
+	private static final String PERSIST_ID_MAIN_SEQUENCES = "Sequences"; //$NON-NLS-1$
+	private static final String PERSIST_ID_MAIN_DISPLAYED_COMPONENT = "DisplayedComponent"; //$NON-NLS-1$
+	private static final String PERSIST_ID_OVERVIEW_SHOW_AS_SEQUENCES = "ShowAsSequences"; //$NON-NLS-1$
+	private static final String PERSIST_ID_HAPLOTYPETABLE_MASTER_ID = "HaplotypeTable.MasterId"; //$NON-NLS-1$
 
 	/**
 	 * Describes which content is currently displayed in this part.
@@ -71,11 +93,13 @@ public class MainPart {
 	 *
 	 * @param parent
 	 *            Parent composite.
-	 * @param context
-	 *            Eclipse context to get information from.
+	 * @param part
+	 *            The part this part will be created in.
 	 */
 	@PostConstruct
-	public void createComposite(final Composite parent, final IEclipseContext context) {
+	public void createComposite(final Composite parent, final MPart part) {
+		final IEclipseContext context = part.getContext();
+
 		parent.setLayout(new FillLayout());
 		folder = new TabFolder(parent, SWT.BOTTOM);
 
@@ -105,6 +129,62 @@ public class MainPart {
 
 		partListener = e -> handleActivate(e);
 		broker.subscribe(UILifeCycle.ACTIVATE, partListener);
+
+		restoreState(part.getPersistedState());
+	}
+
+	private void restoreState(final Map<String, String> state) {
+		if (!state.containsKey(PERSIST_ID_MAIN_ID)) {
+			return;
+		}
+
+		final String id = state.get(PERSIST_ID_MAIN_ID);
+		log.debug("Restoring state for: {}", id); //$NON-NLS-1$
+
+		setId(id);
+
+		final StringReader reader = new StringReader(state.get(PERSIST_ID_MAIN_SEQUENCES));
+		final ISequenceReader csvReader = ESequenceType.CSV.createReader(reader);
+		try {
+			setSequences(csvReader.read());
+		} catch (final ErrorCodeException e) {
+			log.error("Could not restore state of \"" + getId() + "\". Error message: " + e.getMessage(), e); //$NON-NLS-1$ //$NON-NLS-2$
+			return;
+		}
+
+		if (state.containsKey(PERSIST_ID_OVERVIEW_SHOW_AS_SEQUENCES)) {
+			if (Boolean.parseBoolean(state.get(PERSIST_ID_OVERVIEW_SHOW_AS_SEQUENCES))) {
+				overview.setShowAsSequnces();
+			} else {
+				overview.setShowAsHaplotypes();
+			}
+		}
+
+		if (state.containsKey(PERSIST_ID_HAPLOTYPETABLE_MASTER_ID)) {
+			final String masterId = state.get(PERSIST_ID_HAPLOTYPETABLE_MASTER_ID);
+			for (final Sequence sequence : sequences) {
+				if (masterId.equals(sequence.getName())) {
+					if (overview.isShowAsHaplotypes()) {
+						final Haplotype haplotype = Haplotype.find(sequence, haplotypes);
+						haplotypeTable.setSelectedHaplotype(haplotype);
+					} else {
+						haplotypeTable.setSelectedSequence(sequence);
+					}
+					break;
+				}
+			}
+		}
+
+		if (state.containsKey(PERSIST_ID_MAIN_DISPLAYED_COMPONENT)) {
+			DISPLAYED_CONTENT component = null;
+			try {
+				component = DISPLAYED_CONTENT.valueOf(state.get(PERSIST_ID_MAIN_DISPLAYED_COMPONENT));
+			} catch (final IllegalArgumentException e) {
+				// Should never happen.
+				log.error("Unknown value for displayed component encountered on restoring part: " + state.get(PERSIST_ID_MAIN_DISPLAYED_COMPONENT), e); //$NON-NLS-1$
+			}
+			setDisplayedContent(component);
+		}
 	}
 
 	/**
@@ -128,6 +208,43 @@ public class MainPart {
 	public void setFocus() {
 		if (overview != null) {
 			overview.setFocus();
+		}
+	}
+
+	/**
+	 * Persisting state when HCAT is closed.
+	 *
+	 * @param part
+	 *            The part this part belongs to.
+	 */
+	@PersistState
+	public void persist(final MPart part) {
+		if (!part.isToBeRendered() || sequences == null || sequences.isEmpty()) {
+			return;
+		}
+
+		log.debug("Persisting state of: {}", getId()); //$NON-NLS-1$
+		final Map<String, String> state = part.getPersistedState();
+
+		final StringWriter writer = new StringWriter(sequences.size() * (sequences.get(0).getLength() + 100));
+		final ISequenceWriter csvWriter = ESequenceType.CSV.createWriter(writer);
+		try {
+			csvWriter.write(sequences);
+		} catch (final IOException e) {
+			log.error("Could not persist state of \"" + getId() + "\". Error message: " + e.getMessage(), e); //$NON-NLS-1$ //$NON-NLS-2$
+			return;
+		}
+		state.put(PERSIST_ID_MAIN_SEQUENCES, writer.toString());
+
+		state.put(PERSIST_ID_MAIN_ID, getId());
+
+		state.put(PERSIST_ID_MAIN_DISPLAYED_COMPONENT, getDisplayedContent().name());
+
+		state.put(PERSIST_ID_OVERVIEW_SHOW_AS_SEQUENCES, Boolean.toString(overview.isShowAsSequences()));
+
+		final String masterId = (overview.isShowAsSequences() ? haplotypeTable.getSelectedSequence() : haplotypeTable.getSelectedHaplotype().getFirstSequence()).getName();
+		if (masterId != null && !masterId.isBlank()) {
+			state.put(PERSIST_ID_HAPLOTYPETABLE_MASTER_ID, masterId);
 		}
 	}
 
@@ -170,7 +287,7 @@ public class MainPart {
 	 * @return All sequences.
 	 */
 	public List<Sequence> getSequences() {
-		return sequences;
+		return sequences == null ? null : Collections.unmodifiableList(sequences);
 	}
 
 	/**
@@ -181,7 +298,7 @@ public class MainPart {
 	 *            The sequences. May be null to display nothing.
 	 */
 	public void setSequences(final List<Sequence> sequences) {
-		this.sequences = sequences;
+		this.sequences = sequences == null ? null : new ArrayList<Sequence>(sequences);
 		haplotypes = sequences == null ? null : Haplotype.wrap(sequences);
 		updateComponents();
 	}
@@ -235,9 +352,9 @@ public class MainPart {
 	}
 
 	/**
-	 * Gets the currently displayed content type of this part.
+	 * Gets the currently displayed component of this part.
 	 *
-	 * @return The content type that is currently displayed in the part.
+	 * @return The component that is currently displayed in the part.
 	 */
 	public DISPLAYED_CONTENT getDisplayedContent() {
 		if (folder == null || folder.isDisposed()) {
@@ -265,7 +382,57 @@ public class MainPart {
 		}
 
 		// Should never happen as all tab items must be listed here.
+		log.warn("Unknown tab selected: {}", item.getText()); //$NON-NLS-1$
 		return null;
+	}
+
+	/**
+	 * Sets the displayed component of this part.
+	 *
+	 * @param displayedComponent
+	 *            The component that is currently displayed in the part.
+	 */
+	public void setDisplayedContent(final DISPLAYED_CONTENT displayedComponent) {
+		if (folder == null || folder.isDisposed() || displayedComponent == null) {
+			return;
+		}
+
+		Control lookup = null;
+		switch (displayedComponent) {
+		case DISTANCE_MATRIX:
+			lookup = matrix.getControl();
+			break;
+
+		case HAPLOTYPES:
+			overview.setShowAsHaplotypes();
+			lookup = overview.getControl();
+			break;
+
+		case HAPLOTYPE_TABLE:
+			lookup = haplotypeTable.getControl();
+			break;
+
+		case SEQUENCES:
+			overview.setShowAsSequnces();
+			lookup = overview.getControl();
+			break;
+
+		case TEXT_LOG:
+			lookup = textLog.getControl();
+			break;
+
+		default:
+			// Should never happen as all components need to be listed here.
+			log.warn("Unknown component to display selected: {}", displayedComponent); //$NON-NLS-1$
+			break;
+		}
+
+		for (final TabItem item : folder.getItems()) {
+			if (item.getControl() == lookup) {
+				folder.setSelection(item);
+				break;
+			}
+		}
 	}
 
 	private void handleActivate(final Event e) {

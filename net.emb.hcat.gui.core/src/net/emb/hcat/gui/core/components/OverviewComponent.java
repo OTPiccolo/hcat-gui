@@ -153,6 +153,7 @@ public class OverviewComponent {
 	private List<Haplotype> haploModel;
 
 	private boolean showAsSequnces;
+	private Button switchButton;
 
 	/**
 	 * Creates this component.
@@ -269,17 +270,16 @@ public class OverviewComponent {
 	}
 
 	private Button createSwitch(final Composite parent) {
-		final Button button = new Button(parent, SWT.CHECK);
-		button.setText(Messages.OverviewComponent_ShowAsSequenceButton);
-		button.addSelectionListener(new SelectionAdapter() {
+		switchButton = new Button(parent, SWT.CHECK);
+		switchButton.setText(Messages.OverviewComponent_ShowAsSequenceButton);
+		switchButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				showAsSequnces = button.getSelection();
-				updateViewer();
+				setShowAsSequence(switchButton.getSelection());
 			}
 		});
 
-		return button;
+		return switchButton;
 	}
 
 	/**
@@ -398,6 +398,21 @@ public class OverviewComponent {
 	}
 
 	/**
+	 * Sets that the components shows sequences.
+	 *
+	 * @see #setShowAsHaplotypes()
+	 */
+	public void setShowAsSequnces() {
+		if (showAsSequnces) {
+			return;
+		}
+
+		// Does not trigger selection listener of switch button.
+		switchButton.setSelection(true);
+		setShowAsSequence(true);
+	}
+
+	/**
 	 * Whether the component shows haplotypes.
 	 *
 	 * @return <code>true</code>, if haplotypes are shown, <code>false</code>
@@ -406,6 +421,26 @@ public class OverviewComponent {
 	 */
 	public boolean isShowAsHaplotypes() {
 		return !showAsSequnces;
+	}
+
+	/**
+	 * Sets that the components shows haplotypes.
+	 *
+	 * @see #setShowAsSequnces()
+	 */
+	public void setShowAsHaplotypes() {
+		if (!showAsSequnces) {
+			return;
+		}
+
+		// Does not trigger selection listener of switch button.
+		switchButton.setSelection(false);
+		setShowAsSequence(false);
+	}
+
+	private void setShowAsSequence(final boolean showAsSequences) {
+		this.showAsSequnces = showAsSequences;
+		updateViewer();
 	}
 
 	/**

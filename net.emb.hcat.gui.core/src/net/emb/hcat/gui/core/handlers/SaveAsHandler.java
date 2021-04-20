@@ -30,7 +30,7 @@ import net.emb.hcat.cli.sequence.Sequence;
 import net.emb.hcat.gui.core.Constants;
 import net.emb.hcat.gui.core.messages.Messages;
 import net.emb.hcat.gui.core.parts.MainPart;
-import net.emb.hcat.gui.core.parts.MainPart.DISPLAYED_CONTENT;
+import net.emb.hcat.gui.core.parts.MainPart.DISPLAYED_COMPONENT;
 
 /**
  * Saves the currently active editor into a new file.
@@ -71,27 +71,27 @@ public class SaveAsHandler {
 	private void saveAs(final MainPart part, final Shell shell, final String contentType) {
 		switch (contentType) {
 		case Constants.SAVE_COMMAND_PARAMETER_VALUE_DYNAMIC:
-			saveAs(part, shell, part.getDisplayedContent());
+			saveAs(part, shell, part.getDisplayedComponent());
 			break;
 
 		case Constants.SAVE_COMMAND_PARAMETER_VALUE_HAPLOTYPES:
-			saveAs(part, shell, DISPLAYED_CONTENT.HAPLOTYPES);
+			saveAs(part, shell, DISPLAYED_COMPONENT.HAPLOTYPES);
 			break;
 
 		case Constants.SAVE_COMMAND_PARAMETER_VALUE_SEQUENCES:
-			saveAs(part, shell, DISPLAYED_CONTENT.SEQUENCES);
+			saveAs(part, shell, DISPLAYED_COMPONENT.SEQUENCES);
 			break;
 
 		case Constants.SAVE_COMMAND_PARAMETER_VALUE_HAPLOTYPE_TABLE:
-			saveAs(part, shell, DISPLAYED_CONTENT.HAPLOTYPE_TABLE);
+			saveAs(part, shell, DISPLAYED_COMPONENT.HAPLOTYPE_TABLE);
 			break;
 
 		case Constants.SAVE_COMMAND_PARAMETER_VALUE_DISTANCE_MATRIX:
-			saveAs(part, shell, DISPLAYED_CONTENT.DISTANCE_MATRIX);
+			saveAs(part, shell, DISPLAYED_COMPONENT.DISTANCE_MATRIX);
 			break;
 
 		case Constants.SAVE_COMMAND_PARAMETER_VALUE_TEXT_LOG:
-			saveAs(part, shell, DISPLAYED_CONTENT.TEXT_LOG);
+			saveAs(part, shell, DISPLAYED_COMPONENT.TEXT_LOG);
 			break;
 
 		default:
@@ -100,13 +100,13 @@ public class SaveAsHandler {
 		}
 	}
 
-	private void saveAs(final MainPart part, final Shell shell, final DISPLAYED_CONTENT content) {
-		if (content == null) {
+	private void saveAs(final MainPart part, final Shell shell, final DISPLAYED_COMPONENT component) {
+		if (component == null) {
 			// Should never happen.
 			throw new IllegalArgumentException("No content type selected to save."); //$NON-NLS-1$
 		}
 
-		switch (content) {
+		switch (component) {
 		case DISTANCE_MATRIX:
 			saveDistanceMatrix(shell, part.getHaplotypes());
 			break;
@@ -129,7 +129,7 @@ public class SaveAsHandler {
 
 		default:
 			// Should never happen.
-			throw new IllegalArgumentException("Unknown content to save: " + content); //$NON-NLS-1$
+			throw new IllegalArgumentException("Unknown content to save: " + component); //$NON-NLS-1$
 		}
 	}
 

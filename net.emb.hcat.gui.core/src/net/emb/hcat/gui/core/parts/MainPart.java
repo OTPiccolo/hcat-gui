@@ -69,7 +69,7 @@ public class MainPart {
 	 * @author OT Piccolo
 	 */
 	@SuppressWarnings("javadoc")
-	public enum DISPLAYED_CONTENT {
+	public enum DISPLAYED_COMPONENT {
 		SEQUENCES, HAPLOTYPES, HAPLOTYPE_TABLE, DISTANCE_MATRIX, TEXT_LOG;
 	}
 
@@ -176,14 +176,14 @@ public class MainPart {
 		}
 
 		if (state.containsKey(PERSIST_ID_MAIN_DISPLAYED_COMPONENT)) {
-			DISPLAYED_CONTENT component = null;
+			DISPLAYED_COMPONENT component = null;
 			try {
-				component = DISPLAYED_CONTENT.valueOf(state.get(PERSIST_ID_MAIN_DISPLAYED_COMPONENT));
+				component = DISPLAYED_COMPONENT.valueOf(state.get(PERSIST_ID_MAIN_DISPLAYED_COMPONENT));
 			} catch (final IllegalArgumentException e) {
 				// Should never happen.
 				log.error("Unknown value for displayed component encountered on restoring part: " + state.get(PERSIST_ID_MAIN_DISPLAYED_COMPONENT), e); //$NON-NLS-1$
 			}
-			setDisplayedContent(component);
+			setDisplayedComponent(component);
 		}
 	}
 
@@ -238,7 +238,7 @@ public class MainPart {
 
 		state.put(PERSIST_ID_MAIN_ID, getId());
 
-		state.put(PERSIST_ID_MAIN_DISPLAYED_COMPONENT, getDisplayedContent().name());
+		state.put(PERSIST_ID_MAIN_DISPLAYED_COMPONENT, getDisplayedComponent().name());
 
 		state.put(PERSIST_ID_OVERVIEW_SHOW_AS_SEQUENCES, Boolean.toString(overview.isShowAsSequences()));
 
@@ -356,7 +356,7 @@ public class MainPart {
 	 *
 	 * @return The component that is currently displayed in the part.
 	 */
-	public DISPLAYED_CONTENT getDisplayedContent() {
+	public DISPLAYED_COMPONENT getDisplayedComponent() {
 		if (folder == null || folder.isDisposed()) {
 			return null;
 		}
@@ -364,21 +364,21 @@ public class MainPart {
 		final TabItem item = folder.getItem(folder.getSelectionIndex());
 		if (item.getControl() == overview.getControl()) {
 			if (overview.isShowAsHaplotypes()) {
-				return DISPLAYED_CONTENT.HAPLOTYPES;
+				return DISPLAYED_COMPONENT.HAPLOTYPES;
 			}
-			return DISPLAYED_CONTENT.SEQUENCES;
+			return DISPLAYED_COMPONENT.SEQUENCES;
 		}
 
 		if (item.getControl() == haplotypeTable.getControl()) {
-			return DISPLAYED_CONTENT.HAPLOTYPE_TABLE;
+			return DISPLAYED_COMPONENT.HAPLOTYPE_TABLE;
 		}
 
 		if (item.getControl() == matrix.getControl()) {
-			return DISPLAYED_CONTENT.DISTANCE_MATRIX;
+			return DISPLAYED_COMPONENT.DISTANCE_MATRIX;
 		}
 
 		if (item.getControl() == textLog.getControl()) {
-			return DISPLAYED_CONTENT.TEXT_LOG;
+			return DISPLAYED_COMPONENT.TEXT_LOG;
 		}
 
 		// Should never happen as all tab items must be listed here.
@@ -392,7 +392,7 @@ public class MainPart {
 	 * @param displayedComponent
 	 *            The component that is currently displayed in the part.
 	 */
-	public void setDisplayedContent(final DISPLAYED_CONTENT displayedComponent) {
+	public void setDisplayedComponent(final DISPLAYED_COMPONENT displayedComponent) {
 		if (folder == null || folder.isDisposed() || displayedComponent == null) {
 			return;
 		}

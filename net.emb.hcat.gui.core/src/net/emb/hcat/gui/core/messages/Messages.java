@@ -88,11 +88,16 @@ public class Messages extends NLS {
 	public static String TranslationComponent_1Button;
 	public static String TranslationComponent_2Button;
 	public static String TranslationComponent_3Button;
+	public static String TranslationComponent_AdditionalDescription;
+	public static String TranslationComponent_AdditionalEndLabel;
+	public static String TranslationComponent_AdditionalItem;
+	public static String TranslationComponent_AdditionalStartLabel;
 	public static String TranslationComponent_AutomaticButton;
 	public static String TranslationComponent_CodonColumn;
 	public static String TranslationComponent_CodonLabel;
 	public static String TranslationComponent_IdColumn;
 	public static String TranslationComponent_OffsetLabel;
+	public static String TranslationComponent_TranslationItem;
 	public static String WorkspaceModus_BatchFunctionProcession;
 	public static String WorkspaceModus_SingleFunctionProcession;
 	static {

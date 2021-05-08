@@ -243,7 +243,7 @@ public class MainPart {
 		state.put(PERSIST_ID_OVERVIEW_SHOW_AS_SEQUENCES, Boolean.toString(overview.isShowAsSequences()));
 
 		final String masterId = (overview.isShowAsSequences() ? haplotypeTable.getSelectedSequence() : haplotypeTable.getSelectedHaplotype().getFirstSequence()).getName();
-		if (masterId != null && !masterId.isBlank()) {
+		if (masterId != null && !masterId.isEmpty()) {
 			state.put(PERSIST_ID_HAPLOTYPETABLE_MASTER_ID, masterId);
 		}
 	}

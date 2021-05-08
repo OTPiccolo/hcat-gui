@@ -42,13 +42,12 @@ public class CutSequenceHandler {
 			if (dialog.open() == Window.OK) {
 				createPart(partService, wizard, part);
 			}
-			return;
 		}
 	}
 
 	private void createPart(final EPartService partService, final CutSequenceWizard wizard, final MPart orgPart) {
 		final String name = orgPart.getLabel();
-		final String label = name + " " + (wizard.getFrom() + 1) + " -> " + wizard.getTo(); //$NON-NLS-1$ //$NON-NLS-2$
+		final String label = name + " (" + (wizard.getFrom() + 1) + " - " + wizard.getTo() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		final String id = name + System.currentTimeMillis();
 		final MPart newPart = partService.createPart(Constants.MAIN_EDITOR_PART_ID);
 		partService.showPart(newPart, PartState.CREATE);
@@ -62,10 +61,8 @@ public class CutSequenceHandler {
 
 	private MPart getSelectedPart(final EPartService partService) {
 		for (final MPart part : partService.getParts()) {
-			if (part.getElementId().equals(Constants.MAIN_EDITOR_PART_ID)) {
-				if (partService.isPartVisible(part)) {
-					return part;
-				}
+			if (part.getElementId().equals(Constants.MAIN_EDITOR_PART_ID) && partService.isPartVisible(part)) {
+				return part;
 			}
 		}
 		return null;

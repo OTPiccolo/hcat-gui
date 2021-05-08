@@ -53,45 +53,45 @@ public class SaveAsHandler {
 	@SuppressWarnings("javadoc")
 	@Execute
 	public void execute(final EPartService partService, final Shell shell, @Named(Constants.SAVE_COMMAND_PARAMETER_ID) final String contentParam) {
-		final MainPart part = getPart(partService);
+		final MPart part = getPart(partService);
 		if (part != null) {
-			saveAs(part, shell, contentParam);
+			saveAs((MainPart) part.getObject(), shell, contentParam, part.getLabel());
 		}
 	}
 
-	private MainPart getPart(final EPartService partService) {
+	private MPart getPart(final EPartService partService) {
 		for (final MPart part : partService.getParts()) {
 			if (part.getElementId().equals(Constants.MAIN_EDITOR_PART_ID) && partService.isPartVisible(part)) {
-				return (MainPart) part.getObject();
+				return part;
 			}
 		}
 		return null;
 	}
 
-	private void saveAs(final MainPart part, final Shell shell, final String contentType) {
+	private void saveAs(final MainPart part, final Shell shell, final String contentType, final String partName) {
 		switch (contentType) {
 		case Constants.SAVE_COMMAND_PARAMETER_VALUE_DYNAMIC:
-			saveAs(part, shell, part.getDisplayedComponent());
+			saveAs(part, shell, part.getDisplayedComponent(), partName);
 			break;
 
 		case Constants.SAVE_COMMAND_PARAMETER_VALUE_HAPLOTYPES:
-			saveAs(part, shell, DISPLAYED_COMPONENT.HAPLOTYPES);
+			saveAs(part, shell, DISPLAYED_COMPONENT.HAPLOTYPES, partName);
 			break;
 
 		case Constants.SAVE_COMMAND_PARAMETER_VALUE_SEQUENCES:
-			saveAs(part, shell, DISPLAYED_COMPONENT.SEQUENCES);
+			saveAs(part, shell, DISPLAYED_COMPONENT.SEQUENCES, partName);
 			break;
 
 		case Constants.SAVE_COMMAND_PARAMETER_VALUE_HAPLOTYPE_TABLE:
-			saveAs(part, shell, DISPLAYED_COMPONENT.HAPLOTYPE_TABLE);
+			saveAs(part, shell, DISPLAYED_COMPONENT.HAPLOTYPE_TABLE, partName);
 			break;
 
 		case Constants.SAVE_COMMAND_PARAMETER_VALUE_DISTANCE_MATRIX:
-			saveAs(part, shell, DISPLAYED_COMPONENT.DISTANCE_MATRIX);
+			saveAs(part, shell, DISPLAYED_COMPONENT.DISTANCE_MATRIX, partName);
 			break;
 
 		case Constants.SAVE_COMMAND_PARAMETER_VALUE_TEXT_LOG:
-			saveAs(part, shell, DISPLAYED_COMPONENT.TEXT_LOG);
+			saveAs(part, shell, DISPLAYED_COMPONENT.TEXT_LOG, partName);
 			break;
 
 		default:
@@ -100,7 +100,7 @@ public class SaveAsHandler {
 		}
 	}
 
-	private void saveAs(final MainPart part, final Shell shell, final DISPLAYED_COMPONENT component) {
+	private void saveAs(final MainPart part, final Shell shell, final DISPLAYED_COMPONENT component, final String partName) {
 		if (component == null) {
 			// Should never happen.
 			throw new IllegalArgumentException("No content type selected to save."); //$NON-NLS-1$
@@ -108,23 +108,23 @@ public class SaveAsHandler {
 
 		switch (component) {
 		case DISTANCE_MATRIX:
-			saveDistanceMatrix(shell, part.getHaplotypes());
+			saveDistanceMatrix(shell, part.getHaplotypes(), partName + "_dist-table"); //$NON-NLS-1$
 			break;
 
 		case HAPLOTYPES:
-			saveSequences(shell, part.getHaplotypes().stream().map(h -> h.asSequence()).collect(Collectors.toList()));
+			saveSequences(shell, part.getHaplotypes().stream().map(h -> h.asSequence()).collect(Collectors.toList()), partName + "_ht"); //$NON-NLS-1$
 			break;
 
 		case HAPLOTYPE_TABLE:
-			saveHaplotypeTable(shell, part.getHaplotypes(), part.getMasterHaplotype());
+			saveHaplotypeTable(shell, part.getHaplotypes(), part.getMasterHaplotype(), partName + "_ht-table"); //$NON-NLS-1$
 			break;
 
 		case SEQUENCES:
-			saveSequences(shell, part.getSequences());
+			saveSequences(shell, part.getSequences(), partName + "_seq"); //$NON-NLS-1$
 			break;
 
 		case TEXT_LOG:
-			saveTextLog(shell, part.getTextLog());
+			saveTextLog(shell, part.getTextLog(), partName + "_prot"); //$NON-NLS-1$
 			break;
 
 		default:
@@ -133,8 +133,8 @@ public class SaveAsHandler {
 		}
 	}
 
-	private void saveSequences(final Shell shell, final List<Sequence> sequences) {
-		final FileDialog dialog = createSequenceDialog(shell);
+	private void saveSequences(final Shell shell, final List<Sequence> sequences, final String filename) {
+		final FileDialog dialog = createSequenceDialog(shell, filename);
 		final String file = dialog.open();
 		if (file != null) {
 			try {
@@ -152,8 +152,8 @@ public class SaveAsHandler {
 		}
 	}
 
-	private void saveHaplotypeTable(final Shell shell, final List<Haplotype> haplotypes, final Haplotype masterHaplotype) {
-		final FileDialog dialog = createTextDialog(shell);
+	private void saveHaplotypeTable(final Shell shell, final List<Haplotype> haplotypes, final Haplotype masterHaplotype, final String filename) {
+		final FileDialog dialog = createTextDialog(shell, filename);
 		final String file = dialog.open();
 		if (file != null) {
 			try {
@@ -174,8 +174,8 @@ public class SaveAsHandler {
 		}
 	}
 
-	private void saveDistanceMatrix(final Shell shell, final List<Haplotype> haplotypes) {
-		final FileDialog dialog = createTextDialog(shell);
+	private void saveDistanceMatrix(final Shell shell, final List<Haplotype> haplotypes, final String filename) {
+		final FileDialog dialog = createTextDialog(shell, filename);
 		final String file = dialog.open();
 		if (file != null) {
 			try {
@@ -194,8 +194,8 @@ public class SaveAsHandler {
 		}
 	}
 
-	private void saveTextLog(final Shell shell, final String text) {
-		final FileDialog dialog = createTextDialog(shell);
+	private void saveTextLog(final Shell shell, final String text, final String filename) {
+		final FileDialog dialog = createTextDialog(shell, filename);
 		final String file = dialog.open();
 		if (file != null) {
 			try {
@@ -213,17 +213,21 @@ public class SaveAsHandler {
 		}
 	}
 
-	private FileDialog createTextDialog(final Shell shell) {
+	private FileDialog createTextDialog(final Shell shell, final String filename) {
 		final FileDialog dialog = new FileDialog(shell, SWT.SAVE);
+		dialog.setFileName(filename);
 		dialog.setFilterExtensions(new String[] { "*.txt" }); //$NON-NLS-1$
 		dialog.setFilterNames(new String[] { Messages.SaveAsHandler_textFileExtension });
+		dialog.setOverwrite(true);
 		return dialog;
 	}
 
-	private FileDialog createSequenceDialog(final Shell shell) {
+	private FileDialog createSequenceDialog(final Shell shell, final String filename) {
 		final FileDialog dialog = new FileDialog(shell, SWT.SAVE);
+		dialog.setFileName(filename);
 		dialog.setFilterExtensions(new String[] { "*.fas", "*.phy", "*.phy", "*.csv" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		dialog.setFilterNames(new String[] { Messages.SaveAsHandler_fastaFileExtension, Messages.SaveAsHandler_phylipFileExtension, Messages.SaveAsHandler_phylipTcsFileExtension, Messages.SaveAsHandler_csvFileExtension });
+		dialog.setOverwrite(true);
 		return dialog;
 	}
 

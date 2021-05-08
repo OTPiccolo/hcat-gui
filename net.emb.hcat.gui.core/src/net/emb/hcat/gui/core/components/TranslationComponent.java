@@ -294,8 +294,8 @@ public class TranslationComponent {
 
 		for (final Sequence seq : seqModel) {
 			final CodonTransformer transformer = new CodonTransformer(data, seq);
-			transformer.getAdditionalStart().addAll(additionalStart);
-			transformer.getAdditionalEnd().addAll(additionalEnd);
+			transformer.getAlternativeStart().addAll(additionalStart);
+			transformer.getAlternativeEnd().addAll(additionalEnd);
 			translationModel.add(transformation.apply(transformer));
 		}
 	}

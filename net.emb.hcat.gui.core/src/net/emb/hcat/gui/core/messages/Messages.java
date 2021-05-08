@@ -81,6 +81,7 @@ public class Messages extends NLS {
 	public static String TextLogComponent_DistMatrix_Min;
 	public static String TextLogComponent_DistMatrix_Title;
 	public static String TextLogComponent_Hap_ContainedSeq;
+	public static String TextLogComponent_Hap_VariableSites;
 	public static String TextLogComponent_Hap_Id;
 	public static String TextLogComponent_Hap_NrOfHap;
 	public static String TextLogComponent_Hap_Title;

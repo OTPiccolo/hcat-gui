@@ -1,6 +1,9 @@
 package net.emb.hcat.gui.core.components;
 
 import java.util.List;
+import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.inject.Inject;
 
@@ -16,6 +19,8 @@ import org.eclipse.swt.widgets.Text;
 
 import net.emb.hcat.cli.haplotype.DistanceMatrix;
 import net.emb.hcat.cli.haplotype.Haplotype;
+import net.emb.hcat.cli.haplotype.HaplotypeTransformer;
+import net.emb.hcat.cli.sequence.Difference;
 import net.emb.hcat.cli.sequence.Sequence;
 import net.emb.hcat.gui.core.EventTopics;
 import net.emb.hcat.gui.core.messages.Messages;
@@ -130,6 +135,14 @@ public class TextLogComponent {
 	}
 
 	private void writeHaplotypes(final List<Haplotype> haplotypes, final StringBuilder builder) {
+		int diff = 0;
+		if (haplotypes.size() > 1) {
+			final Map<Haplotype, Difference> map = new HaplotypeTransformer(haploModel).compareToMaster(haploModel.get(0).getFirstSequence());
+			final SortedSet<Integer> positions = new TreeSet<>();
+			map.values().stream().map(Difference::getDifferencePosition).forEach(positions::addAll);
+			diff = positions.size();
+		}
+
 		builder.append(Messages.TextLogComponent_Hap_Title);
 		builder.append("\n"); //$NON-NLS-1$
 		builder.append("--------------------"); //$NON-NLS-1$
@@ -138,6 +151,9 @@ public class TextLogComponent {
 		builder.append(Messages.TextLogComponent_Hap_NrOfHap);
 		builder.append(haplotypes.size());
 		builder.append("\n"); //$NON-NLS-1$
+		builder.append(Messages.TextLogComponent_Hap_VariableSites);
+		builder.append(diff);
+		builder.append("\n"); //$NON-NLS-1$
 		builder.append("\n"); //$NON-NLS-1$
 		for (final Haplotype haplotype : haplotypes) {
 			builder.append(Messages.TextLogComponent_Hap_Id);
@@ -145,14 +161,13 @@ public class TextLogComponent {
 			builder.append("\n"); //$NON-NLS-1$
 			builder.append(Messages.TextLogComponent_Hap_ContainedSeq);
 			for (final Sequence sequence : haplotype) {
+				builder.append("\n"); //$NON-NLS-1$
 				builder.append(sequence.getName());
-				builder.append(" / "); //$NON-NLS-1$
 			}
-			builder.setLength(builder.length() - 3);
-			builder.append("\n"); //$NON-NLS-1$
 			builder.append("\n"); //$NON-NLS-1$
 			builder.append("\n"); //$NON-NLS-1$
 		}
+		builder.append("\n"); //$NON-NLS-1$
 	}
 
 	private void writeDistanceMatrix(final List<Haplotype> haplotypes, final StringBuilder builder) {

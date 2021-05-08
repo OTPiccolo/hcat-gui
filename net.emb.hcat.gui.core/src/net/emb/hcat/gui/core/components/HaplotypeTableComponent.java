@@ -226,6 +226,7 @@ public class HaplotypeTableComponent {
 		final Map<Haplotype, Difference> compared = new HaplotypeTransformer(haploModel).compareToMaster(sequence);
 		final LinkedHashMap<Haplotype, Difference> input = new LinkedHashMap<>(compared.size());
 		input.put(masterHaplotype, compared.get(masterHaplotype));
+		compared.remove(masterHaplotype);
 		input.putAll(compared);
 		return input;
 	}

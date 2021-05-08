@@ -73,6 +73,10 @@ public class SequenceTranslationWizard extends Wizard {
 	@Override
 	public boolean performFinish() {
 		final TranslationComponent component = page.getComponent();
+		if (component.getData() == null) {
+			page.setErrorMessage(Messages.SequenceTranslationWizard_error_noTranslationTable);
+			return false;
+		}
 
 		sequences.clear();
 		sequences.addAll(component.getTranslation());

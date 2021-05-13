@@ -1,10 +1,15 @@
 package net.emb.hcat.gui.core.components;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,9 +56,10 @@ public class TranslationComponent {
 	private Control control;
 	private ComboViewer comboViewer;
 	private GridTableViewer tableViewer;
+	private Label startStopLabel;
 
 	private CodonTransformationData data;
-	private Function<CodonTransformer, Sequence> transformation;
+	private int offset = -1;
 
 	private final Set<Integer> additionalStart = new HashSet<Integer>();
 	private final Set<Integer> additionalEnd = new HashSet<Integer>();
@@ -95,11 +101,11 @@ public class TranslationComponent {
 			}
 		});
 
-		final ExpandItem dataItem = translationItem(expandBar);
-		dataItem.setExpanded(true);
+		final ExpandItem translationItem = translationItem(expandBar);
+		translationItem.setExpanded(true);
 
-		final ExpandItem dataItem2 = additionalItem(expandBar);
-		dataItem2.setExpanded(false);
+		final ExpandItem additionalItem = additionalItem(expandBar);
+		additionalItem.setExpanded(false);
 
 		tableViewer = createViewer(body);
 		tableViewer.getGrid().setLayoutData(GridDataFactory.defaultsFor(tableViewer.getGrid()).minSize(SWT.DEFAULT, 400).create());
@@ -139,9 +145,9 @@ public class TranslationComponent {
 		final Composite body = new Composite(parent, SWT.NONE);
 		body.setLayout(new GridLayout(2, false));
 
-		final Label descLabel = new Label(body, SWT.WRAP);
-		descLabel.setText(Messages.TranslationComponent_AdditionalDescription);
-		descLabel.setLayoutData(GridDataFactory.defaultsFor(descLabel).span(2, 1).create());
+		startStopLabel = new Label(body, SWT.WRAP);
+		startStopLabel.setText(MessageFormat.format(Messages.TranslationComponent_AdditionalDescription, Messages.TranslationComponent_NotAvailable, Messages.TranslationComponent_NotAvailable));
+		startStopLabel.setLayoutData(GridDataFactory.defaultsFor(startStopLabel).span(2, 1).create());
 
 		final Label startLabel = new Label(body, SWT.NONE);
 		startLabel.setText(Messages.TranslationComponent_AdditionalStartLabel);
@@ -191,7 +197,7 @@ public class TranslationComponent {
 		automaticButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				transformation = t -> t.transformAuto();
+				offset = -1;
 				update();
 			}
 		});
@@ -201,7 +207,7 @@ public class TranslationComponent {
 		o1Button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				transformation = t -> t.transform(0);
+				offset = 0;
 				update();
 			}
 		});
@@ -211,7 +217,7 @@ public class TranslationComponent {
 		o2Button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				transformation = t -> t.transform(1);
+				offset = 1;
 				update();
 			}
 		});
@@ -221,7 +227,7 @@ public class TranslationComponent {
 		o3Button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				transformation = t -> t.transform(2);
+				offset = 1;
 				update();
 			}
 		});
@@ -283,12 +289,13 @@ public class TranslationComponent {
 	private void update() {
 		updateTranslationModel();
 		updateViewer();
+		updateStartStopPos();
 	}
 
 	private void updateTranslationModel() {
 		translationModel.clear();
 
-		if (data == null || transformation == null || seqModel == null) {
+		if (data == null || seqModel == null) {
 			return;
 		}
 
@@ -296,7 +303,7 @@ public class TranslationComponent {
 			final CodonTransformer transformer = new CodonTransformer(data, seq);
 			transformer.getAlternativeStart().addAll(additionalStart);
 			transformer.getAlternativeEnd().addAll(additionalEnd);
-			translationModel.add(transformation.apply(transformer));
+			translationModel.add(offset == -1 ? transformer.transformAuto() : transformer.transform(offset));
 		}
 	}
 
@@ -306,6 +313,98 @@ public class TranslationComponent {
 		}
 
 		tableViewer.refresh();
+	}
+
+	private void updateStartStopPos() {
+		if (startStopLabel == null) {
+			return;
+		}
+
+		String start = null;
+		String end = null;
+		int usedOffset = offset;
+
+		if (data != null && !seqModel.isEmpty()) {
+			if (usedOffset == -1) {
+				final CodonTransformer transformer = new CodonTransformer(data, seqModel.get(0));
+				usedOffset = transformer.findOffset();
+			}
+
+			if (usedOffset != -1) {
+				final Map<Integer, Boolean> startPos = prepareAlternativePositions(seqModel.get(0), usedOffset, data.codon, data.start);
+				compareAlternativePositions(seqModel, startPos, data.codon, data.start);
+				start = displayAlternativePositions(startPos, usedOffset);
+
+				final Map<Integer, Boolean> endPos = prepareAlternativePositions(seqModel.get(0), usedOffset, data.codon, data.end);
+				compareAlternativePositions(seqModel, endPos, data.codon, data.end);
+				end = displayAlternativePositions(endPos, usedOffset);
+			}
+		}
+
+		if (start == null || start.isEmpty()) {
+			start = Messages.TranslationComponent_NotAvailable;
+		}
+		if (end == null || end.isEmpty()) {
+			end = Messages.TranslationComponent_NotAvailable;
+		}
+
+		startStopLabel.setText(MessageFormat.format(Messages.TranslationComponent_AdditionalDescription, start, end));
+	}
+
+	private Map<Integer, Boolean> prepareAlternativePositions(final Sequence seq, final int offset, final Map<String, Character> codon, final Map<String, Character> alternative) {
+		final Map<Integer, Boolean> positions = new LinkedHashMap<Integer, Boolean>();
+		final String value = seq.getValue();
+
+		for (int i = offset; i + 2 < value.length(); i += 3) {
+			final String sub = value.substring(i, i + 3);
+			if (alternative.containsKey(sub)) {
+				positions.put(i, !alternative.get(sub).equals(codon.get(sub)));
+			}
+		}
+
+		return positions;
+	}
+
+	private void compareAlternativePositions(final Collection<Sequence> seqs, final Map<Integer, Boolean> positions, final Map<String, Character> codon, final Map<String, Character> alternative) {
+		for (final Sequence seq : seqs) {
+			compareAlternativePositions(seq, positions, codon, alternative);
+			if (positions.isEmpty()) {
+				break;
+			}
+		}
+	}
+
+	private void compareAlternativePositions(final Sequence seq, final Map<Integer, Boolean> positions, final Map<String, Character> codon, final Map<String, Character> alternative) {
+		final String value = seq.getValue();
+		for (final Iterator<Entry<Integer, Boolean>> iter = positions.entrySet().iterator(); iter.hasNext();) {
+			final Entry<Integer, Boolean> entry = iter.next();
+			final int pos = entry.getKey();
+			final String sub = value.substring(pos, pos + 3);
+			if (alternative.containsKey(sub)) {
+				entry.setValue(entry.getValue() || !alternative.get(sub).equals(codon.get(sub)));
+			} else {
+				iter.remove();
+			}
+		}
+	}
+
+	private String displayAlternativePositions(final Map<Integer, Boolean> positions, final int offset) {
+		if (positions.isEmpty()) {
+			return null;
+		}
+
+		final StringBuilder builder = new StringBuilder(5 * positions.size());
+		for (final Entry<Integer, Boolean> entry : positions.entrySet()) {
+			if (entry.getValue()) {
+				builder.append((entry.getKey().intValue() - offset) / 3 + 1);
+				builder.append(", "); //$NON-NLS-1$
+			}
+		}
+		if (builder.length() > 0) {
+			builder.setLength(builder.length() - 2);
+		}
+
+		return builder.toString();
 	}
 
 	/**

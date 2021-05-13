@@ -98,6 +98,7 @@ public class Messages extends NLS {
 	public static String TranslationComponent_CodonColumn;
 	public static String TranslationComponent_CodonLabel;
 	public static String TranslationComponent_IdColumn;
+	public static String TranslationComponent_NotAvailable;
 	public static String TranslationComponent_OffsetLabel;
 	public static String TranslationComponent_TranslationItem;
 	public static String WorkspaceModus_BatchFunctionProcession;

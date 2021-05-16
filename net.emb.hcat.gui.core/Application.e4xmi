@@ -3,9 +3,8 @@
   <children xsi:type="basic:TrimmedWindow" xmi:id="_6wlLccgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.window.main" label="HCAT" iconURI="platform:/plugin/net.emb.hcat.gui.core/icons/WindowIcon.gif" width="1200" height="900">
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_6wlLkMgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.ide.perspectivestack">
       <children xsi:type="advanced:Perspective" xmi:id="_6wlLkcgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.perspective.sample">
-        <children xsi:type="basic:PartSashContainer" xmi:id="_6wlLksgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.partsashcontainer.0" selectedElement="_3OwqIC-9EemdB4aYK-ZD6g" horizontal="true">
-          <children xsi:type="basic:Part" xmi:id="_3OwqIC-9EemdB4aYK-ZD6g" elementId="net.emb.hcat.gui.core.part.navigator" containerData="1500" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.parts.NavigatorPart" label="Workspace Navigation" iconURI="platform:/plugin/org.eclipse.ui/icons/full/eview16/filenav_nav.png"/>
-          <children xsi:type="basic:PartStack" xmi:id="_6wlLk8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.partstack.0" containerData="8500">
+        <children xsi:type="advanced:Area" xmi:id="_KTb1gKYPEeuN-IjqoYzAVA" elementId="net.emb.hcat.gui.core.area.0">
+          <children xsi:type="basic:PartStack" xmi:id="_6wlLk8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.partstack.0" containerData="">
             <tags>editorArea</tags>
           </children>
         </children>

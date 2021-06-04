@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.inject.Named;
 
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
@@ -23,7 +24,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.osgi.service.prefs.BackingStoreException;
-import org.osgi.service.prefs.Preferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -201,7 +201,7 @@ public class OpenHandler {
 		final String pathStr = path.toString();
 
 		try {
-			final Preferences node = InstanceScope.INSTANCE.getNode(Constants.RECENT_FILES_PREFERENCES_NODE_ID);
+			final IEclipsePreferences node = InstanceScope.INSTANCE.getNode(Constants.RECENT_FILES_PREFERENCES_NODE_ID);
 			final String[] keys = node.keys();
 			Arrays.sort(keys);
 

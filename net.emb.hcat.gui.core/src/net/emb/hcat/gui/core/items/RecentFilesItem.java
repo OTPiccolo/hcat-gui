@@ -6,7 +6,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.e4.core.di.extensions.Preference;
 import org.eclipse.e4.ui.di.AboutToShow;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.commands.MCommand;
@@ -16,7 +17,6 @@ import org.eclipse.e4.ui.model.application.ui.menu.MHandledMenuItem;
 import org.eclipse.e4.ui.model.application.ui.menu.MMenuElement;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.osgi.service.prefs.BackingStoreException;
-import org.osgi.service.prefs.Preferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,11 +47,10 @@ public class RecentFilesItem {
 
 	@SuppressWarnings("javadoc")
 	@AboutToShow
-	public void show(final List<MMenuElement> items) {
-		final Preferences node = InstanceScope.INSTANCE.getNode(Constants.CORE_PREFERENCES_ID).node("recentFiles"); //$NON-NLS-1$
+	public void show(final List<MMenuElement> items, @Preference(nodePath = Constants.RECENT_FILES_PREFERENCES_NODE_ID) final IEclipsePreferences prefs) {
 		final String[] keys;
 		try {
-			keys = node.keys();
+			keys = prefs.keys();
 		} catch (final BackingStoreException e) {
 			log.error(e.getMessage(), e);
 			final MDirectMenuItem item = modelService.createModelElement(MDirectMenuItem.class);
@@ -73,7 +72,7 @@ public class RecentFilesItem {
 		} else {
 			Arrays.sort(keys);
 			for (final String key : keys) {
-				final String value = node.get(key, null);
+				final String value = prefs.get(key, null);
 
 				final MParameter param = modelService.createModelElement(MParameter.class);
 				param.setContributorURI(Constants.PLUGIN_URI);

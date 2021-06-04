@@ -35,6 +35,14 @@ public class Constants {
 	public static final String CUT_SEQUENCE_COMMAND_ID = "net.emb.hcat.ui.cutSequence";
 	/** Command ID to cut sequences. */
 	public static final String SEQUENCE_TRANSLATION_COMMAND_ID = "net.emb.hcat.ui.sequenceTranslation";
+	/** Command ID to toggle color display. */
+	public static final String TOGGLE_COLOR_COMMAND_ID = "net.emb.hcat.ui.toggleColor";
+	/** Command Parameter ID to toggle color display. */
+	public static final String TOGGLE_COLOR_COMMAND_PARAMETER_ID = "net.emb.hcat.ui.toggleColor.tab";
+	/** Command Parameter Value to toggle in Overview tab. */
+	public static final String TOGGLE_COLOR_COMMAND_PARAMETER_VALUE_OVERVIEW = "Overview";
+	/** Command Parameter Value to toggle in Haplotype Table tab. */
+	public static final String TOGGLE_COLOR_COMMAND_PARAMETER_VALUE_HAPLOTYPE_TABLE = "Haplotype Table";
 
 	/** Part ID of the main editor. */
 	public static final String MAIN_EDITOR_PART_ID = "net.emb.hcat.gui.core.partdescriptor.main";
@@ -43,14 +51,17 @@ public class Constants {
 	/** Part ID of the transformer view. */
 	public static final String TRANSFORM_PART_ID = "net.emb.hcat.gui.core.part.transform";
 
-	/** ID to the node of preferences for the core. */
-	public static final String CORE_PREFERENCES_ID = "net.emb.hcat.gui.core.preferences";
-
-	/** Context ID of the workspace location */
-	public static final String WORKSPACE_CONTEXT_ID = "workspace";
-
 	/** ID of this plugin. */
 	public static final String PLUGIN_ID = "net.emb.hcat.gui.core";
 	/** URI to this plugin on the platform. */
 	public static final String PLUGIN_URI = "platform:/plugin/" + PLUGIN_ID;
+
+	/** ID to the node of preferences for the core. */
+	public static final String CORE_PREFERENCES_NODE_ID = PLUGIN_ID + ".preferences";
+	/** ID to the node of recently opened files. */
+	public static final String RECENT_FILES_PREFERENCES_NODE_ID = CORE_PREFERENCES_NODE_ID + ".recentFiles";
+
+	/** Context ID of the workspace location */
+	public static final String WORKSPACE_CONTEXT_ID = "workspace";
+
 }

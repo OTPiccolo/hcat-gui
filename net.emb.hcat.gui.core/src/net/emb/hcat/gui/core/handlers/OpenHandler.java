@@ -201,7 +201,7 @@ public class OpenHandler {
 		final String pathStr = path.toString();
 
 		try {
-			final Preferences node = InstanceScope.INSTANCE.getNode(Constants.CORE_PREFERENCES_ID).node("recentFiles"); //$NON-NLS-1$
+			final Preferences node = InstanceScope.INSTANCE.getNode(Constants.RECENT_FILES_PREFERENCES_NODE_ID);
 			final String[] keys = node.keys();
 			Arrays.sort(keys);
 
@@ -214,7 +214,8 @@ public class OpenHandler {
 			if (index == 0) {
 				// Path already at first index. Nothing to do here.
 				return;
-			} else if (index > 0) {
+			}
+			if (index > 0) {
 				// Path already present, remove old entry, so can be put in
 				// front again.
 				values.remove(index);

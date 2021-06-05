@@ -22,6 +22,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.TextLayout;
+import org.eclipse.swt.graphics.TextStyle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -29,8 +31,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import net.emb.hcat.cli.haplotype.Haplotype;
+import net.emb.hcat.cli.sequence.ATGC;
 import net.emb.hcat.cli.sequence.Sequence;
 import net.emb.hcat.gui.core.EventTopics;
+import net.emb.hcat.gui.core.layout.AtgcColors;
+import net.emb.hcat.gui.core.layout.TextStyleCellRenderer;
 import net.emb.hcat.gui.core.messages.Messages;
 import net.emb.hcat.gui.core.parts.ColumnSorter;
 
@@ -155,6 +160,9 @@ public class OverviewComponent {
 	private boolean showAsSequnces;
 	private Button switchButton;
 
+	private boolean isAtgc;
+	private AtgcColors atgcColors;
+
 	/**
 	 * Creates this component.
 	 *
@@ -253,6 +261,9 @@ public class OverviewComponent {
 				return haplotype.getFirstSequence().getValue();
 			}
 		});
+		final TextStyleCellRenderer renderer = new TextStyleCellRenderer(this::styleSequenceColumn);
+		renderer.setWordWrap(true);
+		seqColumn.getColumn().setCellRenderer(renderer);
 
 		viewer.addPostSelectionChangedListener(e -> broker.post(showAsSequnces ? EventTopics.SELECTED_SEQUENCE : EventTopics.SELECTED_HAPLOTYPE, e.getStructuredSelection().getFirstElement()));
 
@@ -267,6 +278,20 @@ public class OverviewComponent {
 		grid.enableDefaultKeyListener();
 
 		return viewer;
+	}
+
+	private void styleSequenceColumn(final TextLayout tl) {
+		if (!isAtgc || atgcColors == null) {
+			return;
+		}
+
+		final String seq = tl.getText();
+		for (int i = 0; i < seq.length(); i++) {
+			final char c = seq.charAt(i);
+			final ATGC atgc = ATGC.toAtgc(c);
+			final TextStyle style = new TextStyle(null, atgcColors.getForegroundColor(atgc), atgcColors.getBackgroundColor(atgc));
+			tl.setStyle(style, i, i);
+		}
 	}
 
 	private Button createSwitch(final Composite parent) {
@@ -313,6 +338,7 @@ public class OverviewComponent {
 	public void setModel(final List<Haplotype> haplotypes, final List<Sequence> sequences) {
 		seqModel = sequences;
 		haploModel = haplotypes;
+		isAtgc = computeIsAtgc(haplotypes);
 		updateViewer();
 	}
 
@@ -370,6 +396,15 @@ public class OverviewComponent {
 
 		// Should never happen.
 		return null;
+	}
+
+	// Use only one Haplotype for computation. Should be suffice to check if
+	// editor is showing ATGC data.
+	private boolean computeIsAtgc(final List<Haplotype> haplotypes) {
+		if (haplotypes == null || haplotypes.isEmpty()) {
+			return false;
+		}
+		return Sequence.isAtgc(haplotypes.get(0).getFirstSequence());
 	}
 
 	/**
@@ -463,6 +498,28 @@ public class OverviewComponent {
 	 */
 	public Haplotype getSelectedHaplotype() {
 		return isShowAsHaplotypes() ? (Haplotype) ((IStructuredSelection) tableViewer.getSelection()).getFirstElement() : null;
+	}
+
+	/**
+	 * Gets the information to display ATGC nucleotides in color.
+	 *
+	 * @return The color information, or <code>null</code>, for no colors.
+	 */
+	public AtgcColors getAtgcColors() {
+		return atgcColors;
+	}
+
+	/**
+	 * Sets the information to display ATGC nucleotides in color.
+	 *
+	 * @param atgcColors
+	 *            The color information, or <code>null</code>, for no colors.
+	 */
+	public void setAtgcColors(final AtgcColors atgcColors) {
+		this.atgcColors = atgcColors;
+		if (isAtgc && tableViewer != null && !tableViewer.getGrid().isDisposed()) {
+			tableViewer.refresh();
+		}
 	}
 
 }

@@ -20,6 +20,10 @@
                name="appName"
                value="net.emb.hcat.gui.core">
          </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
 	</product>
    </extension>
 

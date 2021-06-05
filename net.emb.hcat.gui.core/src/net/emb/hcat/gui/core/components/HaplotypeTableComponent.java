@@ -24,6 +24,7 @@ import org.eclipse.nebula.jface.gridviewer.GridViewerColumn;
 import org.eclipse.nebula.widgets.grid.Grid;
 import org.eclipse.nebula.widgets.grid.GridColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
@@ -33,8 +34,10 @@ import org.eclipse.swt.widgets.Label;
 
 import net.emb.hcat.cli.haplotype.Haplotype;
 import net.emb.hcat.cli.haplotype.HaplotypeTransformer;
+import net.emb.hcat.cli.sequence.ATGC;
 import net.emb.hcat.cli.sequence.Difference;
 import net.emb.hcat.cli.sequence.Sequence;
+import net.emb.hcat.gui.core.layout.AtgcColors;
 import net.emb.hcat.gui.core.messages.Messages;
 
 /**
@@ -52,6 +55,9 @@ public class HaplotypeTableComponent {
 
 	private List<Haplotype> haploModel;
 	private Haplotype masterHaplotype;
+
+	private boolean isAtgc;
+	private AtgcColors atgcColors;
 
 	/**
 	 * Creates this component.
@@ -111,6 +117,7 @@ public class HaplotypeTableComponent {
 	private GridTableViewer createViewer(final Composite parent) {
 		final GridTableViewer viewer = new GridTableViewer(parent);
 		viewer.setContentProvider(new IStructuredContentProvider() {
+
 			@Override
 			public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput) {
 				final GridTableViewer gridViewer = (GridTableViewer) viewer;
@@ -134,6 +141,7 @@ public class HaplotypeTableComponent {
 						final GridViewerColumn column = new GridViewerColumn(gridViewer, SWT.NONE);
 						column.getColumn().setText(Integer.toString(pos.intValue() + 1));
 						column.getColumn().setWidth(40);
+						column.getColumn().setAlignment(SWT.CENTER);
 						column.setLabelProvider(new ColumnLabelProvider() {
 							@SuppressWarnings("unchecked")
 							@Override
@@ -146,6 +154,31 @@ public class HaplotypeTableComponent {
 									return String.valueOf(masterHaplotype.getFirstSequence().getValue().charAt(pos));
 								}
 								return String.valueOf(entry.getValue().getDifference().charAt(pos));
+							}
+
+							@Override
+							public Color getForeground(final Object element) {
+								if (!isAtgc || getAtgcColors() == null) {
+									return null;
+								}
+
+								final ATGC atgc = getAtgc(element);
+								return getAtgcColors().getForegroundColor(atgc);
+							}
+
+							@Override
+							public Color getBackground(final Object element) {
+								if (!isAtgc || getAtgcColors() == null) {
+									return null;
+								}
+
+								final ATGC atgc = getAtgc(element);
+								return getAtgcColors().getBackgroundColor(atgc);
+							}
+
+							private ATGC getAtgc(final Object element) {
+								final char c = getText(element).charAt(0);
+								return ATGC.toAtgc(c);
 							}
 						});
 					}
@@ -381,9 +414,41 @@ public class HaplotypeTableComponent {
 	 */
 	public void setModel(final List<Haplotype> haplotypes) {
 		haploModel = haplotypes;
+		isAtgc = computeIsAtgc(haplotypes);
 		haplotypesComboViewer.setInput(haplotypes);
 		sequencesComboViewer.setInput(haplotypes == null ? null : haplotypes.stream().flatMap(h -> h.stream()).collect(Collectors.toList()).toArray());
 		tableViewer.setInput(null);
+	}
+
+	/**
+	 * Gets the information to display ATGC nucleotides in color.
+	 *
+	 * @return The color information, or <code>null</code>, for no colors.
+	 */
+	public AtgcColors getAtgcColors() {
+		return atgcColors;
+	}
+
+	/**
+	 * Sets the information to display ATGC nucleotides in color.
+	 *
+	 * @param atgcColors
+	 *            The color information, or <code>null</code>, for no colors.
+	 */
+	public void setAtgcColors(final AtgcColors atgcColors) {
+		this.atgcColors = atgcColors;
+		if (isAtgc && tableViewer != null && !tableViewer.getGrid().isDisposed()) {
+			tableViewer.refresh();
+		}
+	}
+
+	// Use only one Haplotype for computation. Should be suffice to check if
+	// editor is showing ATGC data.
+	private boolean computeIsAtgc(final List<Haplotype> haplotypes) {
+		if (haplotypes == null || haplotypes.isEmpty()) {
+			return false;
+		}
+		return Sequence.isAtgc(haplotypes.get(0).getFirstSequence());
 	}
 
 	/**

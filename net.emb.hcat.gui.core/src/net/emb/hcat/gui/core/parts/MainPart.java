@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import org.eclipse.e4.core.contexts.ContextInjectionFactory;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
+import org.eclipse.e4.core.di.extensions.Preference;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.PersistState;
@@ -24,6 +25,7 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.UIEvents.EventTags;
 import org.eclipse.e4.ui.workbench.UIEvents.UILifeCycle;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -40,11 +42,13 @@ import net.emb.hcat.cli.io.sequence.ESequenceType;
 import net.emb.hcat.cli.io.sequence.ISequenceReader;
 import net.emb.hcat.cli.io.sequence.ISequenceWriter;
 import net.emb.hcat.cli.sequence.Sequence;
+import net.emb.hcat.gui.core.Constants;
 import net.emb.hcat.gui.core.EventTopics;
 import net.emb.hcat.gui.core.components.DistanceMatrixComponent;
 import net.emb.hcat.gui.core.components.HaplotypeTableComponent;
 import net.emb.hcat.gui.core.components.OverviewComponent;
 import net.emb.hcat.gui.core.components.TextLogComponent;
+import net.emb.hcat.gui.core.layout.AtgcColors;
 import net.emb.hcat.gui.core.messages.Messages;
 
 /**
@@ -88,6 +92,10 @@ public class MainPart {
 
 	private EventHandler partListener;
 
+	private AtgcColors atgcColors;
+	private boolean displayColorsOverview;
+	private boolean displayColorsHapTable;
+
 	/**
 	 * Constructor.
 	 *
@@ -100,6 +108,8 @@ public class MainPart {
 	public void createComposite(final Composite parent, final MPart part) {
 		final IEclipseContext context = part.getContext();
 
+		atgcColors = createAtgcColors(parent.getDisplay());
+
 		parent.setLayout(new FillLayout());
 		folder = new TabFolder(parent, SWT.BOTTOM);
 
@@ -107,12 +117,18 @@ public class MainPart {
 		overviewItem.setText(Messages.MainPart_OverviewTab);
 		overview = ContextInjectionFactory.make(OverviewComponent.class, context);
 		overview.createComposite(folder);
+		if (displayColorsOverview) {
+			overview.setAtgcColors(atgcColors);
+		}
 		overviewItem.setControl(overview.getControl());
 
 		final TabItem haplotypeItem = new TabItem(folder, SWT.NONE);
 		haplotypeItem.setText(Messages.MainPart_HaplotypeTable);
 		haplotypeTable = ContextInjectionFactory.make(HaplotypeTableComponent.class, context);
 		haplotypeTable.createComposite(folder);
+		if (displayColorsHapTable) {
+			haplotypeTable.setAtgcColors(atgcColors);
+		}
 		haplotypeItem.setControl(haplotypeTable.getControl());
 
 		final TabItem matrixItem = new TabItem(folder, SWT.NONE);
@@ -131,6 +147,10 @@ public class MainPart {
 		broker.subscribe(UILifeCycle.ACTIVATE, partListener);
 
 		restoreState(part.getPersistedState());
+	}
+
+	private AtgcColors createAtgcColors(final Device device) {
+		return new AtgcColors(device);
 	}
 
 	private void restoreState(final Map<String, String> state) {
@@ -470,6 +490,24 @@ public class MainPart {
 		// in the overview component is pressed, the corresponding selection in
 		// the haplotype table component is now using sequences.
 		haplotypeTable.selectWithSequences();
+	}
+
+	@SuppressWarnings("javadoc")
+	@Inject
+	public void setDisplayColorOverview(@Preference(nodePath = Constants.DISPLAY_COLORS_PREFERENCES_NODE_ID, value = Constants.TOGGLE_COLOR_COMMAND_PARAMETER_VALUE_OVERVIEW) final boolean display) {
+		displayColorsOverview = display;
+		if (overview != null) {
+			overview.setAtgcColors(display ? atgcColors : null);
+		}
+	}
+
+	@SuppressWarnings("javadoc")
+	@Inject
+	public void setDisplayColorHapTable(@Preference(nodePath = Constants.DISPLAY_COLORS_PREFERENCES_NODE_ID, value = Constants.TOGGLE_COLOR_COMMAND_PARAMETER_VALUE_HAPLOTYPE_TABLE) final boolean display) {
+		displayColorsHapTable = display;
+		if (haplotypeTable != null) {
+			haplotypeTable.setAtgcColors(display ? atgcColors : null);
+		}
 	}
 
 }

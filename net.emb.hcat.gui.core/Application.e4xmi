@@ -14,35 +14,43 @@
       <children xsi:type="menu:Menu" xmi:id="_6wlLisgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.menu.file" label="%Application_fileMenu">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLi8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handleditem.file.open" label="%Application_fileMenu_Open" iconURI="platform:/plugin/net.emb.hcat.gui.core/icons/sample.png" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
         <children xsi:type="menu:Menu" xmi:id="_XB7U4N-fEeq4Ft1EWbVhyQ" elementId="net.emb.hcat.gui.core.menu.recentFiles" label="%Application_fileMenu_RecentFiles">
-          <children xsi:type="menu:DynamicMenuContribution" xmi:id="_m_chgN-fEeq4Ft1EWbVhyQ" elementId="net.emb.hcat.gui.core.menu.recentFiles.recentFiles" label="" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.items.RecentFilesItem"/>
+          <children xsi:type="menu:DynamicMenuContribution" xmi:id="_m_chgN-fEeq4Ft1EWbVhyQ" elementId="net.emb.hcat.gui.core.dynamicitem.recentFiles.recentFiles" label="" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.items.RecentFilesItem"/>
         </children>
-        <children xsi:type="menu:MenuSeparator" xmi:id="_HO4S4N-fEeq4Ft1EWbVhyQ" elementId="net.emb.hcat.gui.core.menuseparator.1"/>
+        <children xsi:type="menu:MenuSeparator" xmi:id="_HO4S4N-fEeq4Ft1EWbVhyQ" elementId="net.emb.hcat.gui.core.menuseparator.0"/>
         <children xsi:type="menu:Menu" xmi:id="_nd7fkJIgEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.menu.save" label="%Application_fileMenu_Save">
-          <children xsi:type="menu:HandledMenuItem" xmi:id="_xJJAoJIgEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.menu.save.dynamic" label="%Application_fileMenu_Save_Dynamic" iconURI="platform:/plugin/net.emb.hcat.gui.core/icons/save_edit.png" command="_6wlLg8gZEeSyMNYR5xypkQ">
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_xJJAoJIgEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.handleditem.save.dynamic" label="%Application_fileMenu_Save_Dynamic" iconURI="platform:/plugin/net.emb.hcat.gui.core/icons/save_edit.png" command="_6wlLg8gZEeSyMNYR5xypkQ">
             <parameters xmi:id="_Cnl0gJIhEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.dynamicContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Dynamic"/>
           </children>
-          <children xsi:type="menu:HandledMenuItem" xmi:id="_ALQDAJIjEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.menu.save.haplotypes" label="%Application_fileMenu_Save_Haplotypes" iconURI="" command="_6wlLg8gZEeSyMNYR5xypkQ">
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_ALQDAJIjEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.handleditem.save.haplotypes" label="%Application_fileMenu_Save_Haplotypes" iconURI="" command="_6wlLg8gZEeSyMNYR5xypkQ">
             <parameters xmi:id="_OV3uoJIjEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.haplotypesContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Haplotypes"/>
           </children>
-          <children xsi:type="menu:HandledMenuItem" xmi:id="_21zicJ9bEeujRN3csvn5Cg" elementId="net.emb.hcat.gui.core.menu.save.sequences" label="%Application_fileMenu_Save_Sequences" command="_6wlLg8gZEeSyMNYR5xypkQ">
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_21zicJ9bEeujRN3csvn5Cg" elementId="net.emb.hcat.gui.core.handleditem.save.sequences" label="%Application_fileMenu_Save_Sequences" command="_6wlLg8gZEeSyMNYR5xypkQ">
             <parameters xmi:id="_CxHocJ9dEeujRN3csvn5Cg" elementId="net.emb.hcat.gui.core.parameter.sequencesContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Sequences"/>
           </children>
-          <children xsi:type="menu:HandledMenuItem" xmi:id="_5FFtEJIsEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.menu.save.haplotypeTable" label="%Application_fileMenu_Save_HaplotypeTable" command="_6wlLg8gZEeSyMNYR5xypkQ">
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_5FFtEJIsEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.handleditem.save.haplotypeTable" label="%Application_fileMenu_Save_HaplotypeTable" command="_6wlLg8gZEeSyMNYR5xypkQ">
             <parameters xmi:id="_-XIOcJIsEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.haplotypeTableContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Haplotype Table"/>
           </children>
-          <children xsi:type="menu:HandledMenuItem" xmi:id="_hZIb0JIxEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.menu.save.distanceMatrix" label="%Application_fileMenu_Save_DistanceMatrix" command="_6wlLg8gZEeSyMNYR5xypkQ">
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_hZIb0JIxEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.handleditem.save.distanceMatrix" label="%Application_fileMenu_Save_DistanceMatrix" command="_6wlLg8gZEeSyMNYR5xypkQ">
             <parameters xmi:id="_nJJ5sJIxEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.distanceMatrixContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Distance Matrix"/>
           </children>
-          <children xsi:type="menu:HandledMenuItem" xmi:id="_hw6CoJIxEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.menu.save.textLog" label="%Application_fileMenu_Save_TextLog" tooltip="" command="_6wlLg8gZEeSyMNYR5xypkQ">
+          <children xsi:type="menu:HandledMenuItem" xmi:id="_hw6CoJIxEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.handleditem.save.textLog" label="%Application_fileMenu_Save_TextLog" tooltip="" command="_6wlLg8gZEeSyMNYR5xypkQ">
             <parameters xmi:id="_0qKnoJIxEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.textLogContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Text Log"/>
           </children>
         </children>
-        <children xsi:type="menu:MenuSeparator" xmi:id="_EAUsMN-fEeq4Ft1EWbVhyQ" elementId="net.emb.hcat.gui.core.menuseparator.0"/>
+        <children xsi:type="menu:MenuSeparator" xmi:id="_EAUsMN-fEeq4Ft1EWbVhyQ" elementId="net.emb.hcat.gui.core.menuseparator.1"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLjcgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handleditem.quit" label="%Application_fileMenu_Quit" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_Er-Q0CGrEeqL6q41GEyy8w" elementId="net.emb.hcat.gui.core.menu.edit" label="%Application_editMenu" mnemonics="">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_WSFy8CGrEeqL6q41GEyy8w" elementId="net.emb.hcat.gui.core.handleditem.cutSequence" label="%Application_editMenu_CutSequence" command="_HVJSgCGrEeqL6q41GEyy8w"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_6u1cQMmxEeqHWo1NhZ4Gyg" elementId="net.emb.hcat.gui.core.handleditem.sequenceTranslation" label="%Application_editMenu_SequenceTranslation" command="_EvBL8MmrEeqHWo1NhZ4Gyg"/>
+      </children>
+      <children xsi:type="menu:Menu" xmi:id="_2zdfcMGREeuaa9LwrJENiw" elementId="net.emb.hcat.gui.core.menu.view" label="%Application_viewMenu">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_arX98MGSEeuaa9LwrJENiw" elementId="net.emb.hcat.gui.core.handleditem.toggleColor.overview" label="%Application_viewMenu_ToggleColorOverview" type="Check" command="_Lh9u0MGSEeuaa9LwrJENiw">
+          <parameters xmi:id="_A9HX4MUzEeu9BpwrVazNXg" elementId="net.emb.hcat.gui.core.parameter.toggleColor.tab" name="net.emb.hcat.gui.core.cmd.toggleColor.parameter.tab" value="Overview"/>
+        </children>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_sYxMwMGSEeuaa9LwrJENiw" elementId="net.emb.hcat.gui.core.handleditem.toggleColor.hapTable" label="%Application_viewMenu_ToggleColorHapTable" selected="true" type="Check" command="_Lh9u0MGSEeuaa9LwrJENiw">
+          <parameters xmi:id="_vEy2AMUzEeu9BpwrVazNXg" elementId="net.emb.hcat.gui.core.parameter.toggleColor.tab" name="net.emb.hcat.gui.core.cmd.toggleColor.parameter.tab" value="HaplotypeTable"/>
+        </children>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_6wlLjsgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.menu.help" label="%Application_helpMenu">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_6wlLj8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handleditem.about" label="%Application_helpMenu_About" command="_6wlLhsgZEeSyMNYR5xypkQ"/>
@@ -63,6 +71,7 @@
   <handlers xmi:id="_6wlLh8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.handler.aboutHandler" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.handlers.AboutHandler" command="_6wlLhsgZEeSyMNYR5xypkQ"/>
   <handlers xmi:id="_vAetYCGtEeqL6q41GEyy8w" elementId="net.emb.hcat.gui.core.handler.cutSequenceHandler" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.handlers.CutSequenceHandler" command="_HVJSgCGrEeqL6q41GEyy8w"/>
   <handlers xmi:id="_CKD74MmrEeqHWo1NhZ4Gyg" elementId="net.emb.hcat.gui.core.handler.sequenceTranslationHandler" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.handlers.SequenceTranslationHandler" command="_EvBL8MmrEeqHWo1NhZ4Gyg"/>
+  <handlers xmi:id="_HXVHoMVGEeucjuqKURIKcQ" elementId="net.emb.hcat.gui.core.handler.toggleColorHandler" contributionURI="bundleclass://net.emb.hcat.gui.core/net.emb.hcat.gui.core.handlers.ToggleColorHandler" command="_Lh9u0MGSEeuaa9LwrJENiw"/>
   <bindingTables xmi:id="_6wlLfsgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.bindingtable" bindingContext="_6wlLecgZEeSyMNYR5xypkQ">
     <bindings xmi:id="_6wlLf8gZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.keybinding.m1q" keySequence="M1+Q" command="_6wlLfMgZEeSyMNYR5xypkQ"/>
     <bindings xmi:id="_6wlLgsgZEeSyMNYR5xypkQ" elementId="net.emb.hcat.gui.core.keybinding.m1o" keySequence="M1+O" command="_6wlLgMgZEeSyMNYR5xypkQ"/>
@@ -87,14 +96,20 @@
       <tags>Dynamic</tags>
       <tags>Haplotypes</tags>
       <tags>Sequences</tags>
-      <tags>Haplotype Table</tags>
-      <tags>Distance Matrix</tags>
-      <tags>Text Log</tags>
+      <tags>HaplotypeTable</tags>
+      <tags>DistanceMatrix</tags>
+      <tags>TextLog</tags>
     </parameters>
   </commands>
   <commands xmi:id="_6wlLhsgZEeSyMNYR5xypkQ" elementId="org.eclipse.ui.help.aboutAction" commandName="aboutCommand"/>
-  <commands xmi:id="_HVJSgCGrEeqL6q41GEyy8w" elementId="net.emb.hcat.ui.cutSequence" commandName="cutSequenceCommand"/>
-  <commands xmi:id="_EvBL8MmrEeqHWo1NhZ4Gyg" elementId="net.emb.hcat.ui.sequenceTranslation" commandName="sequenceTranslationCommand"/>
+  <commands xmi:id="_HVJSgCGrEeqL6q41GEyy8w" elementId="net.emb.hcat.gui.core.cmd.cutSequence" commandName="cutSequenceCommand"/>
+  <commands xmi:id="_EvBL8MmrEeqHWo1NhZ4Gyg" elementId="net.emb.hcat.gui.core.cmd.sequenceTranslation" commandName="sequenceTranslationCommand"/>
+  <commands xmi:id="_Lh9u0MGSEeuaa9LwrJENiw" elementId="net.emb.hcat.gui.core.cmd.toggleColor" commandName="toggleColorCommand" description="Toggles whether ATGC nucleotides should be shown in color.">
+    <parameters xmi:id="_1-YpQMRdEeu5ts0IGxwaBg" elementId="net.emb.hcat.gui.core.cmd.toggleColor.parameter.tab" name="Tab to display colors" optional="false">
+      <tags>Overview</tags>
+      <tags>HaplotypeTable</tags>
+    </parameters>
+  </commands>
   <addons xmi:id="_6wlLcsgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_6wlLc8gZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_6wlLdMgZEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

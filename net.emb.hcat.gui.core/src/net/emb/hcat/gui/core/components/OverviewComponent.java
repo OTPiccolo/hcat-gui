@@ -12,6 +12,7 @@ import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
+import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TextCellEditor;
@@ -231,6 +232,7 @@ public class OverviewComponent {
 		nameColumn.getColumn().setWidth(150);
 		nameColumn.getColumn().setWordWrap(true);
 		nameColumn.setLabelProvider(new ColumnLabelProvider() {
+
 			@Override
 			protected String getText(final Sequence sequence) {
 				return sequence.getName();
@@ -243,6 +245,14 @@ public class OverviewComponent {
 					text = text.substring(1);
 				}
 				return text;
+			}
+
+			@Override
+			public String getToolTipText(final Object element) {
+				if (element instanceof Haplotype) {
+					return MessageFormat.format(Messages.OverviewComponent_TooltipCount, ((Haplotype) element).size());
+				}
+				return null;
 			}
 		});
 
@@ -276,6 +286,8 @@ public class OverviewComponent {
 		grid.setAutoHeight(true);
 		grid.setFooterVisible(true);
 		grid.enableDefaultKeyListener();
+
+		ColumnViewerToolTipSupport.enableFor(viewer);
 
 		return viewer;
 	}

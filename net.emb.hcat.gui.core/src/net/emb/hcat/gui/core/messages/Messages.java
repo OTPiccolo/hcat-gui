@@ -55,6 +55,7 @@ public class Messages extends NLS {
 	public static String OverviewComponent_SeqNameColumn;
 	public static String OverviewComponent_SequenceColumn;
 	public static String OverviewComponent_ShowAsSequenceButton;
+	public static String OverviewComponent_TooltipCount;
 	public static String QuitHandler_message;
 	public static String QuitHandler_title;
 	public static String RecentFilesItem_errorRecentFiles;

@@ -177,7 +177,8 @@ public class TranslationComponent {
 		viewer.setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(final Object element) {
-				return ((CodonTransformationData) element).name;
+				final CodonTransformationData ctd = (CodonTransformationData) element;
+				return MessageFormat.format("{0} ({1})", ctd.name, ctd.number); //$NON-NLS-1$
 			}
 		});
 		viewer.setComparator(new ViewerComparator());

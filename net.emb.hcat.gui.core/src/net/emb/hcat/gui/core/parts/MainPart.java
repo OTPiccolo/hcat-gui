@@ -472,6 +472,18 @@ public class MainPart {
 		return element instanceof MPart && ((MPart) element).getObject() == this;
 	}
 
+	@SuppressWarnings("javadoc")
+	@Inject
+	@Optional
+	public void updateHaplotype(@UIEventTopic(EventTopics.UPDATE_HAPLOTYPE) final Haplotype haplotype) {
+		if (overview != null) {
+			overview.updateHaplotype(haplotype);
+		}
+		if (haplotypeTable != null) {
+			haplotypeTable.updateHaplotype(haplotype);
+		}
+	}
+
 	@SuppressWarnings({ "javadoc", "unused" })
 	@Inject
 	@Optional

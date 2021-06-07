@@ -5,10 +5,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.di.Focus;
-import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
@@ -425,9 +423,7 @@ public class OverviewComponent {
 	 * @param haplotype
 	 *            The haplotype that has been changed.
 	 */
-	@Inject
-	@Optional
-	public void updateHaplotype(@UIEventTopic(EventTopics.UPDATE_HAPLOTYPE) final Haplotype haplotype) {
+	public void updateHaplotype(final Haplotype haplotype) {
 		if (haplotype != null && tableViewer != null && !tableViewer.getGrid().isDisposed()) {
 			tableViewer.update(haplotype, null);
 		}

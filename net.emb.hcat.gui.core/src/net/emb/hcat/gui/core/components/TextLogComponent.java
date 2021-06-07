@@ -160,6 +160,7 @@ public class TextLogComponent {
 			builder.append(haplotype.getName());
 			builder.append("\n"); //$NON-NLS-1$
 			builder.append(Messages.TextLogComponent_Hap_ContainedSeq);
+			builder.append(haplotype.size());
 			for (final Sequence sequence : haplotype) {
 				builder.append("\n"); //$NON-NLS-1$
 				builder.append(sequence.getName());

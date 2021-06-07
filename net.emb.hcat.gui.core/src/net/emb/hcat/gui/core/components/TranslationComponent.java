@@ -20,6 +20,7 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.nebula.jface.gridviewer.GridTableViewer;
 import org.eclipse.nebula.jface.gridviewer.GridViewerColumn;
@@ -181,7 +182,12 @@ public class TranslationComponent {
 				return MessageFormat.format("{0} ({1})", ctd.name, ctd.number); //$NON-NLS-1$
 			}
 		});
-		viewer.setComparator(new ViewerComparator());
+		viewer.setComparator(new ViewerComparator() {
+			@Override
+			public int compare(final Viewer viewer, final Object e1, final Object e2) {
+				return Integer.compare(((CodonTransformationData) e1).number, ((CodonTransformationData) e2).number);
+			}
+		});
 		viewer.addPostSelectionChangedListener(e -> {
 			data = (CodonTransformationData) ((IStructuredSelection) viewer.getSelection()).getFirstElement();
 			update();

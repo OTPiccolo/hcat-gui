@@ -345,7 +345,8 @@ public class HaplotypeTableComponent {
 		if (haplotype == null) {
 			haplotypesComboViewer.setSelection(StructuredSelection.EMPTY, true);
 		} else {
-			haplotypesComboViewer.setSelection(new StructuredSelection(haplotype), true);
+			// Do not treat haplotype as a list in selection, as it won't work.
+			haplotypesComboViewer.setSelection(new StructuredSelection((Object) haplotype), true);
 		}
 	}
 

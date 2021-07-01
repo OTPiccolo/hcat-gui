@@ -28,13 +28,13 @@
             <parameters xmi:id="_CxHocJ9dEeujRN3csvn5Cg" elementId="net.emb.hcat.gui.core.parameter.sequencesContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Sequences"/>
           </children>
           <children xsi:type="menu:HandledMenuItem" xmi:id="_5FFtEJIsEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.handleditem.save.haplotypeTable" label="%Application_fileMenu_Save_HaplotypeTable" command="_6wlLg8gZEeSyMNYR5xypkQ">
-            <parameters xmi:id="_-XIOcJIsEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.haplotypeTableContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Haplotype Table"/>
+            <parameters xmi:id="_-XIOcJIsEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.haplotypeTableContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="HaplotypeTable"/>
           </children>
           <children xsi:type="menu:HandledMenuItem" xmi:id="_hZIb0JIxEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.handleditem.save.distanceMatrix" label="%Application_fileMenu_Save_DistanceMatrix" command="_6wlLg8gZEeSyMNYR5xypkQ">
-            <parameters xmi:id="_nJJ5sJIxEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.distanceMatrixContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Distance Matrix"/>
+            <parameters xmi:id="_nJJ5sJIxEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.distanceMatrixContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="DistanceMatrix"/>
           </children>
           <children xsi:type="menu:HandledMenuItem" xmi:id="_hw6CoJIxEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.handleditem.save.textLog" label="%Application_fileMenu_Save_TextLog" tooltip="" command="_6wlLg8gZEeSyMNYR5xypkQ">
-            <parameters xmi:id="_0qKnoJIxEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.textLogContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="Text Log"/>
+            <parameters xmi:id="_0qKnoJIxEeuZ5u1ZvytO5Q" elementId="net.emb.hcat.gui.core.parameter.textLogContentType" name="org.eclipse.ui.file.save.parameter.contentType" value="TextLog"/>
           </children>
         </children>
         <children xsi:type="menu:MenuSeparator" xmi:id="_EAUsMN-fEeq4Ft1EWbVhyQ" elementId="net.emb.hcat.gui.core.menuseparator.1"/>

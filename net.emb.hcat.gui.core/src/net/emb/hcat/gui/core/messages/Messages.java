@@ -25,6 +25,7 @@ public class Messages extends NLS {
 	public static String HaplotypeTableComponent_IdColumn;
 	public static String HaplotypeTableComponent_NotAvailable;
 	public static String HaplotypeTableComponent_MasterSequenceLabel;
+	public static String HaplotypeTableComponent_SeqCountColumn;
 	public static String HaplotypeTableComponent_SeqNamesColumn;
 	public static String HaplotypeTableComponent_VariableSites;
 	public static String HcatFunction_CutSequences;

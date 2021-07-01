@@ -122,10 +122,10 @@ public class HaplotypeTableComponent {
 			public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput) {
 				final GridTableViewer gridViewer = (GridTableViewer) viewer;
 				if (oldInput != null) {
-					// Remove old columns. Skip ID and sequence column as always
-					// present.
+					// Remove old columns. Skip ID, sequence and count column as
+					// always present.
 					final GridColumn[] columns = gridViewer.getGrid().getColumns();
-					for (int i = 2; i < columns.length; i++) {
+					for (int i = 3; i < columns.length; i++) {
 						columns[i].dispose();
 					}
 					columns[0].setFooterText(""); //$NON-NLS-1$
@@ -216,6 +216,18 @@ public class HaplotypeTableComponent {
 					text = text.substring(1);
 				}
 				return text;
+			}
+		});
+
+		final GridViewerColumn seqCountColumn = new GridViewerColumn(viewer, SWT.NONE);
+		seqCountColumn.getColumn().setText(Messages.HaplotypeTableComponent_SeqCountColumn);
+		seqCountColumn.getColumn().setWidth(40);
+		seqCountColumn.getColumn().setAlignment(SWT.RIGHT);
+		seqCountColumn.setLabelProvider(new ColumnLabelProvider() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public String getText(final Object element) {
+				return Integer.toString(((Entry<Haplotype, ?>) element).getKey().size());
 			}
 		});
 

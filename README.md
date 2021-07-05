@@ -2,18 +2,18 @@
 ## Graphical User Interface (GUI)
 
 ### Overview
-HCAT is a tool to help all scientists out there to analyze their sequence data faster and more reliable, by utilizing the strengths of a computer to automate repetitive tasks in a uniform way. No longer do you have to waste hours painstakingly categorizing sequence data into haplotypes, always fearing that you might slip up somewhere and by thus invalidating all the hard work you did.
+HCAT is a tool to help all scientists out there to analyze their haplotype sequence data faster and more reliable, by utilizing the strengths of a computer to automate repetitive tasks in a uniform way. No longer do you have to waste hours painstakingly categorizing sequence data into haplotypes, always fearing that you might slip up somewhere and by thus invalidating all the hard work you did.
 
 With this tool, you can...
-* Easily group sequnces into haplotypes
-* Compare those haplotypes to a master sequence to show the positions where they differ
-* Display a distance matrix
-* Cut sequences
-* Translate sequences into codons, all translation tables pre-configured
+* Easily group sequences into haplotypes
+* Compare those haplotypes to a reference sequence and show the variable sites and differences
+* Automatically create haplotype tables and distance matrices and save them in a format readable by commonly used spreadsheet programs
+* Cut all sequences freely and save them
+* Translate sequences into codons and save them, all translation tables pre-configured
 
 It can read in and write out sequences in different formats, like...
 * Fasta
-* Phylip (normal and TCS)
+* Phylip (normal and for TCS (Clement et al., 2000))
 * CSV (Comma Separated Value)
 
 ### Screenshots
